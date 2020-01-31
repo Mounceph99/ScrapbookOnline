@@ -74,8 +74,3 @@ FUTURE_CODE
 - Users will be able to safely create an account
 - Users will be able to login and logout
 - Users will have a personal and a discovery ScrapBook feed
-
-
-
-
-
