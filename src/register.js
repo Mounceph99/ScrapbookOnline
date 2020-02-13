@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from '@material-ui/core'
 import { TextField } from '@material-ui/core';
 import './App.css';
 
@@ -7,17 +8,27 @@ var password;
 var confirm;
 
 function handleSubmit(e) {
-  validateUsername();
-  validatePassword();
+  if(!(validateUsername() && validatePassword())){
+    return;
+  }
   // TODO rest of submission logic
 }
 
 function validateUsername() {
-  return !(/^[\S]+$/).test(username); // TODO accepts the empty string
+  if((/^[\S]+$/).test(username)) { // TODO accepts the empty string
+    // TODO change username text field style to error
+    return false;
+  }
+  return true;
 }
 
 function validatePassword() {
-  return (password === confirm);
+  if(password != confirm) {
+    // TODO clear password and confirm text fields
+    // TODO change password text field style to error
+    return false;
+  }
+  return true;
 }
 
 function updateUsername(e) {
@@ -67,8 +78,11 @@ function makeForm() {
           type="password"
         />
       </div>
+      <div>
+        <Button type="submit">
+          submit
+        </Button>
+      </div>
     </form>
   );
 }
-
-export default makeForm;
