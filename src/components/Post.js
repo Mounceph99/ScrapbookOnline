@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import CommentList from "./CommentList";
+import Comment from "./Comment";
 
 const useStyles = makeStyles(theme => ({
   margin: {
@@ -12,13 +14,42 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Post(props) {
-  const classes = useStyles();
-  const handleClick = () => {
-    console.log("Post.onClick => " + props.post);
+
+  const [comments, setComments] = useState([
+
+  ]);
+
+  const renderComments = () => {
+    return comments.map((comment, index) => {
+      return <Comment comment={comment} key={index}></Comment>;
+    });
   };
+
+  const addComment = () => {
+    var message = document.getElementById("currentComment").value;
+    //if (message == "")
+    //  return;
+    //comments.unshift({message: message});
+    //renderComments();
+    //console.log(comments);
+
+    var listitem = document.createElement("li");
+    var comment = document.createTextNode(message);
+    listitem.appendChild(comment);
+    document.getElementById("startcomments").appendChild(listitem);
+    message = "";
+  }
+
+  const reload = () => {
+    var list = document.getElementById("commentlist");
+    console.log(list);
+  }
+
+  const classes = useStyles();
+  
   return (
     <div className="App">
-      <div style={postStyle} onClick={e => handleClick()}>
+      <div style={postStyle}>
         <div className="Post">
           <div className="Header">
             <span className="UserPic">O</span>
@@ -42,12 +73,27 @@ function Post(props) {
               size="large"
               color="primary"
               className={classes.margin}
+              onClick={reload}
             >
               LIKE
             </Button>
-            <input type="text" value="Leave a comment..."></input>
           </div>
-          <div className="CommentSection"></div>
+          <div className="CommentSection">
+            <form>
+              <input type="text" placeholder="Leave a Comment ..." id = "currentComment"></input>
+              <Button
+               variant="contained"
+               size="small"
+               color="primary"
+               onClick={addComment}
+              >
+                Comment
+              </Button>
+
+              <ul id = "startcomments" style={listStyle}></ul>
+              <CommentList renderComments={renderComments} id = "commentlist"/>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -64,5 +110,10 @@ const postStyle = {
 const pictureStyle = {
   width: "100%"
 };
+
+const listStyle = {
+  listStyleType: "none",
+  textAlign: "left"
+}
 
 export default Post;
