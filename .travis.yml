@@ -1,5 +1,8 @@
 language: node.js
 
-node_js:
+"os": [
+"windows"
+]
 
-    -12.16.0
+
+
