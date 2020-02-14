@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import CommentList from "./CommentList";
+import Comment from "./Comment";
 
 const useStyles = makeStyles(theme => ({
   margin: {
@@ -12,13 +14,28 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Post(props) {
-  const classes = useStyles();
-  const handleClick = () => {
-    console.log("Post.onClick => " + props.post);
+
+  const [comments, setComments] = useState([]);
+
+  const renderComments = () => {
+    return comments.map((comment, index) => {
+      return <Comment comment={comment} key={index}></Comment>;
+    });
   };
+
+  const addComment = () => {
+    var message = document.getElementById("currentComment").value;
+    if (message == "")
+      return;
+    setComments([{message: message},...comments]);
+    //console.log(comments);
+  }
+
+  const classes = useStyles();
+  
   return (
     <div className="App">
-      <div style={postStyle} onClick={e => handleClick()}>
+      <div style={postStyle}>
         <div className="Post">
           <div className="Header">
             <span className="UserPic">O</span>
@@ -45,9 +62,21 @@ function Post(props) {
             >
               LIKE
             </Button>
-            <input type="text" value="Leave a comment..."></input>
           </div>
-          <div className="CommentSection"></div>
+          <div className="CommentSection">
+            <form>
+              <input type="text" placeholder="Leave a Comment ..." id = "currentComment"></input>
+              <Button
+               variant="contained"
+               size="small"
+               color="primary"
+               onClick={addComment}
+              >
+                Comment
+              </Button>
+              <CommentList renderComments={renderComments} id = "commentlist"/>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -64,5 +93,10 @@ const postStyle = {
 const pictureStyle = {
   width: "100%"
 };
+
+const listStyle = {
+  listStyleType: "none",
+  textAlign: "left"
+}
 
 export default Post;
