@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import { Divider } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   margin: {
@@ -13,9 +14,25 @@ const useStyles = makeStyles(theme => ({
 
 function Post(props) {
   const classes = useStyles();
+
+
+  const renderComments = () => { 
+  }
+  
   const handleClick = () => {
     console.log("Post.onClick => " + props.post);
   };
+
+  const renderImage = () => {
+    if(props.post.picture=='pic1'){
+      return (<img
+        style={{ width: "500px" }}
+        src={require("../../samplefiles/pic1.jpg")}
+      />)
+    } else {
+    return <div> <img src={`data:image/jpeg;base64,${props.post.picture}`} /></div>
+    }
+  }
   return (
     <div className="App">
       <div style={postStyle} onClick={e => handleClick()}>
@@ -27,12 +44,9 @@ function Post(props) {
           </div>
           <div className="PostContent">
             <div className="PostPicture" style={pictureStyle}>
-              <div>FILE_NAME: {props.post.picture}</div>
-
-              <img
-                style={{ width: "500px" }}
-                src={require("../samplefiles/pic1.jpg")}
-              />
+              
+              {renderImage()}
+              
             </div>
             <div className="PostText">{props.post.text}</div>
           </div>
@@ -45,9 +59,13 @@ function Post(props) {
             >
               LIKE
             </Button>
-            <input type="text" value="Leave a comment..."></input>
+            <input type="text" defaultValue="Leave a comment..."></input>
           </div>
-          <div className="CommentSection"></div>
+          <div className="CommentSection"> 
+          {props.post.comments}
+        {renderComments()}
+          
+          </div>
         </div>
       </div>
     </div>
