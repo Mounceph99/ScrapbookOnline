@@ -7,10 +7,8 @@ import PostList from "./components/Post/PostList";
 import Post from "./components/Post/Post";
 import Header from "./components/Header";
 import UtilityFloat from "./components/UtilityFloat";
-import NewPostModal from "./components/Modal/NewPostModal";
-import { TextField } from "@material-ui/core";
-
-import FileBase64 from 'react-file-base64';
+import NewPostModal from "./components/Modal/NewPostModal"; 
+ 
 
 function App() {
 
