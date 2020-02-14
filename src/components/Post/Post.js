@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import CommentList from "./CommentList";
-import Comment from "./Comment";
+import Button from "@material-ui/core/Button";  
+import CommentList from "../CommentList";
+import Comment from "../Comment"; 
 
 const useStyles = makeStyles(theme => ({
   margin: {
@@ -13,7 +13,19 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Post(props) {
+function Post(props) {   
+
+  const renderImage = () => {
+    if(props.post.picture=='pic1'){
+      return (<img
+        style={{ width: "200px" }}
+        src={require("../../samplefiles/pic1.jpg")}
+      />)
+    } else {
+    return <div> <img  style={{ width: "200px" }} src={`data:image/jpeg;base64,${props.post.picture}`} /></div>
+    }
+  }
+ 
 
   const [comments, setComments] = useState([]);
 
@@ -32,7 +44,7 @@ function Post(props) {
   }
 
   const classes = useStyles();
-  
+   
   return (
     <div className="App">
       <div style={postStyle}>
@@ -44,12 +56,9 @@ function Post(props) {
           </div>
           <div className="PostContent">
             <div className="PostPicture" style={pictureStyle}>
-              <div>FILE_NAME: {props.post.picture}</div>
-
-              <img
-                style={{ width: "500px" }}
-                src={require("../samplefiles/pic1.jpg")}
-              />
+              
+              {renderImage()}
+              
             </div>
             <div className="PostText">{props.post.text}</div>
           </div>
@@ -61,7 +70,7 @@ function Post(props) {
               className={classes.margin}
             >
               LIKE
-            </Button>
+            </Button> 
           </div>
           <div className="CommentSection">
             <form>
@@ -76,7 +85,7 @@ function Post(props) {
               </Button>
               <CommentList renderComments={renderComments} id = "commentlist"/>
             </form>
-          </div>
+          </div> 
         </div>
       </div>
     </div>
