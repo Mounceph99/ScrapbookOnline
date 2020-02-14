@@ -7,8 +7,11 @@ import PostList from "./components/Post/PostList";
 import Post from "./components/Post/Post";
 import Header from "./components/Header";
 import UtilityFloat from "./components/UtilityFloat";
-import NewPostModal from "./components/Modal/NewPostModal"; 
+
  
+import NewPostModal from "./components/Modal/NewPostModal";
+import CommentList from "./components/CommentList";
+import Comment from "./components/Comment";
 
 function App() {
 

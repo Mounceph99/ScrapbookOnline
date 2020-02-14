@@ -34,12 +34,12 @@ Jeffey Wilgus      : jeffrey-w
 
 Tools, Languages and Techniques that are to be used:
 Language: JavaScript
-Tools:  ReactJS, NodeJS, Material UI, Visual Studio
-Database: TBD
-Server: TBD
-Techniques: TBD
+Tools:  ReactJS, NodeJS, Material UI, Visual Studio Code
+Database: SQL Local Database
+Server: SQL Server
+CI: TravisCI
 
-Core Features (See Wiki for User Stories of each feature):
+Core Features
 - Upload Picture to their ScrapBook
 - Follow other ScrapBookers
 - Leave comments to uploaded pictures
@@ -47,8 +47,7 @@ Core Features (See Wiki for User Stories of each feature):
 Tentative Features:
 - Search Users
 - Favoriting/Saving pictures from other users
-- Temporary chats
-
+- Two feeds (i.e. Global and a user feed)
 
 Objective: 
 For Sprint 1:
@@ -68,14 +67,25 @@ For Sprint 1:
 	- Leave comments to uploaded pictures
 - Discuss objectives for Sprint 2
 
+For Sprint 2:
+- Have at least 3-4 meetings before end of sprint
+	-Distribute issues and task
+	-Discuss databases
+	-Discuss implementation
+	- Discuss and Implement CI
+- Update README.md
+	- Update tools such as databases and CI
+	- Update object for sprint 2
+	- Mention dome objectives for sprint 3
+- Implement a main interface to build of of
+- Start implementation of register/login account
+- Start implementation of core feature
+	-Done implement core feature of uploading picture
+	-Started comment feature
+-Discuss objectives for Sprint 3
+	
+
 FUTURE_CODE
-- Create an easy-to-use web application
-- Easy-to-use navbar
 - Users will be able to safely create an account
 - Users will be able to login and logout
 - Users will have a personal and a discovery ScrapBook feed
-
-
-
-
-
