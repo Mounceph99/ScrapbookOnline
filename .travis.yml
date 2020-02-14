@@ -2,15 +2,7 @@ language: node_js
 
 node_js:
  - 12.16.0
- 
-cache: npm
 
-deploy:
- provider: pages
- skip-cleanup: true
- github-token: $GITHUB_TOKEN
- on:
-  branch: gh-pages
 
 "os": [
 "windows"
