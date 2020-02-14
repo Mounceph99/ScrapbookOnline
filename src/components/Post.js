@@ -15,9 +15,7 @@ const useStyles = makeStyles(theme => ({
 
 function Post(props) {
 
-  const [comments, setComments] = useState([
-
-  ]);
+  const [comments, setComments] = useState([]);
 
   const renderComments = () => {
     return comments.map((comment, index) => {
@@ -27,22 +25,10 @@ function Post(props) {
 
   const addComment = () => {
     var message = document.getElementById("currentComment").value;
-    //if (message == "")
-    //  return;
-    //comments.unshift({message: message});
-    //renderComments();
+    if (message == "")
+      return;
+    setComments([{message: message},...comments]);
     //console.log(comments);
-
-    var listitem = document.createElement("li");
-    var comment = document.createTextNode(message);
-    listitem.appendChild(comment);
-    document.getElementById("startcomments").appendChild(listitem);
-    message = "";
-  }
-
-  const reload = () => {
-    var list = document.getElementById("commentlist");
-    console.log(list);
   }
 
   const classes = useStyles();
@@ -73,7 +59,6 @@ function Post(props) {
               size="large"
               color="primary"
               className={classes.margin}
-              onClick={reload}
             >
               LIKE
             </Button>
@@ -89,8 +74,6 @@ function Post(props) {
               >
                 Comment
               </Button>
-
-              <ul id = "startcomments" style={listStyle}></ul>
               <CommentList renderComments={renderComments} id = "commentlist"/>
             </form>
           </div>
