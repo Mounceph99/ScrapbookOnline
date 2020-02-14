@@ -26,11 +26,11 @@ function Post(props) {
   const renderImage = () => {
     if(props.post.picture=='pic1'){
       return (<img
-        style={{ width: "500px" }}
+        style={{ width: "200px" }}
         src={require("../../samplefiles/pic1.jpg")}
       />)
     } else {
-    return <div> <img src={`data:image/jpeg;base64,${props.post.picture}`} /></div>
+    return <div> <img  style={{ width: "200px" }} src={`data:image/jpeg;base64,${props.post.picture}`} /></div>
     }
   }
   return (

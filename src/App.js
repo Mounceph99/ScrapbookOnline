@@ -70,14 +70,13 @@ function App() {
     const newPost = {userName: "newUser", picture: b64, date: "2020-01-01", comments: null}
     setPosts([newPost, ...posts])
   }
-
+ 
   const handleChange = (e) => {
     console.log("handleChange()") 
     console.log(URL.createObjectURL(e.target.files[0]))
     setFile(URL.createObjectURL(e.target.files[0]))  
   } 
-
-  
+ 
 
   return (
     <Router>
