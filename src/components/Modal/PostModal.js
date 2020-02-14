@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import { Dialog, Button, IconButton} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
@@ -9,7 +9,7 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import ImageIcon from '@material-ui/icons/Image';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Icon from '@material-ui/core/Icon';
-
+import Modal from "@material-ui/core/Modal";
 const styles = theme => ({
     root: {
       margin: 0,
@@ -51,13 +51,13 @@ const styles = theme => ({
       padding: theme.spacing(1),
     },
   }))(MuiDialogActions);
-export default function UploadPicModal()
+export default function UploadPicModal(props)
 {
-    const [open, setOpen] = React.useState(false);
-    const [maxWidth, setMaxWidth] = React.useState('xs');
-    const [fullWidth, setFullWidth] = React.useState(true);
-    const [image, setImage] =React.useState(null);
-    const [alt, setAlt] = React.useState("");
+    const [open, setOpen] =useState(false);
+    const [maxWidth, setMaxWidth] = useState('xs');
+    const [fullWidth, setFullWidth] = useState(true);
+    const [image, setImage] =useState(null);
+    const [alt, setAlt] = useState("");
 
     const handleClickOpen = () => {
       setOpen(true);
@@ -84,10 +84,16 @@ export default function UploadPicModal()
     
 
     return(
+      <Modal
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        open={props.open}
+        onClose={e => props.handleCloseNewPostModal()}
+      >
         <div>
-            <IconButton onClick={handleClickOpen}>
+            {/* <IconButton onClick={handleClickOpen}>
                 <AddCircleIcon style={{fontSize: 60}} color="primary"/>
-            </IconButton>
+            </IconButton> */}
  
       <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open} fullWidth={fullWidth} maxWidth= {maxWidth} style={{}}>
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
@@ -125,5 +131,6 @@ export default function UploadPicModal()
         </DialogActions>
       </Dialog>
         </div>
+        </Modal>
     );
 }

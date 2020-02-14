@@ -8,7 +8,7 @@ import Post from "./components/Post/Post";
 import Header from "./components/Header";
 import UtilityFloat from "./components/UtilityFloat";
 
- 
+// import PostModal from "./components/Modal/PostModal";
 import NewPostModal from "./components/Modal/NewPostModal";
 import CommentList from "./components/CommentList";
 import Comment from "./components/Comment";
@@ -55,6 +55,7 @@ function App() {
 
   const addPosts = () => { 
     console.log("App.addPosts()")  
+    console.log(file)
     /* converte image to base64 format */
     var img = new Image();
     img.src = file;
@@ -70,6 +71,7 @@ function App() {
     /* update post */
     const newPost = {userName: "newUser", picture: b64, date: "2020-01-01", comments: null}
     setPosts([newPost, ...posts])
+    handleCloseNewPostModal()
   }
  
   const handleChange = (e) => {
@@ -90,7 +92,7 @@ function App() {
 
         <div className="test" style={{border: "1px gray solid"}}>
           <input type="file" id="imageFile" name="imageFile" onChange={handleChange}></input>  
-          <div>Image preview: <div><img src={file}></img></div></div>
+          <div style={{hidden:"true"}}>Image preview: <div><img style={{width:"50px"}} src={file}></img></div></div>
           <div><button onClick={e => addPosts()}>POST</button></div>
         </div>
  
@@ -108,7 +110,12 @@ function App() {
             <NewPostModal
               open={openNewPostModal}
               handleCloseNewPostModal={handleCloseNewPostModal}
+              addPosts={addPosts}
+              setFile={setFile}
+              setPosts={setPosts}
+              posts={posts}
             ></NewPostModal>
+            {/* <PostModal open={openNewPostModal} addPosts={addPosts}></PostModal> */}
           </div>
           <div className="PostModal"></div>
         </div>

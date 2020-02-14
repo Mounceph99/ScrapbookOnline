@@ -36,6 +36,12 @@ function NewPostModal(props) {
 
   const [modalStyle] = useState(getModalStyle);
 
+  const handleChange = (e) => {
+    console.log("handleChange()") 
+    console.log(URL.createObjectURL(e.target.files[0]))
+    props.setFile(URL.createObjectURL(e.target.files[0]))  
+  } 
+
   return (
     <div>
       <Modal
@@ -60,6 +66,8 @@ function NewPostModal(props) {
             variant="outlined"
             style={{ width: "100%" }}
           />
+          <input type="file" id="imageFile" name="imageFile" onChange={handleChange}></input>   
+          <div><button onClick={e => props.addPosts()}>POST</button></div>
           <Button variant="contained" color="primary" component="label">
             Submit
             <input style={{ display: "none" }} />
