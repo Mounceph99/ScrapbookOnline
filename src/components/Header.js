@@ -8,10 +8,12 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import { green } from '@material-ui/core/colors';
+
 const useStyles = makeStyles(theme =>
   createStyles({
     root: {
-      flexGrow: 1
+      flexGrow: 1,
     },
     menuButton: {
       marginRight: theme.spacing(2)
@@ -25,8 +27,8 @@ function Header() {
   const classes = useStyles();
   return (
     <div className="App">
-      <div className={classes.root}>
-        <AppBar position="static">
+      <div className={classes.root} >
+        <AppBar position="static" style={{backgroundColor:green['A400']}}>
           <Toolbar>
             <IconButton
               edge="start"

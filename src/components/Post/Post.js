@@ -1,16 +1,29 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";  
+import {Avatar, Button, IconButton,Card, CardContent, CardMedia, CardActions, CardHeader, Typography} from "@material-ui/core";  
 import CommentList from "../CommentList";
 import Comment from "../Comment"; 
+import { green } from '@material-ui/core/colors';
+import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
+import ChatBubbleOutlineOutlined from '@material-ui/icons/ChatBubbleOutlineOutlined';
+
+
 
 const useStyles = makeStyles(theme => ({
-  margin: {
-    margin: theme.spacing(1)
+  card: {
+    maxWidth: 500,
+    marginBottom: 10,
+    marginTop: 10,
   },
-  extendedIcon: {
-    marginRight: theme.spacing(1)
-  }
+  // margin: {
+  //   margin: theme.spacing(1)
+  // },
+  // extendedIcon: {
+  //   marginRight: theme.spacing(1)
+  // },
+  avatar: {
+    backgroundColor: green['A400'],
+  },
 }));
 
 function Post(props) {   
@@ -18,11 +31,11 @@ function Post(props) {
   const renderImage = () => {
     if(props.post.picture=='pic1'){
       return (<img
-        style={{ width: "200px" }}
+        style={{ width: "500px" }}
         src={require("../../samplefiles/pic1.jpg")}
       />)
     } else {
-    return <div> <img  style={{ width: "200px" }} src={`data:image/jpeg;base64,${props.post.picture}`} /></div>
+    return <div> <img  style={{ width: "500px" }} src={`data:image/jpeg;base64,${props.post.picture}`} /></div>
     }
   }
  
@@ -43,11 +56,54 @@ function Post(props) {
     //console.log(comments);
   }
 
+  // const handleCommentDisplay = e =>{
+  //   props.setOpenNewPostModal(true);
+
+  // };
+
   const classes = useStyles();
    
   return (
     <div className="App">
-      <div style={postStyle}>
+      <Card className={classes.card}>
+        <CardHeader
+         avatar={
+          <Avatar className={classes.avatar}>
+            A
+          </Avatar>
+        }
+        title="Username"
+        subheader="Date of the post"
+        style={{textAlign:"left"}}
+        />
+        <CardContent style={{textAlign:"left"}}>
+          <Typography>
+            Description of the post
+            {/* <div className="PostText">{props.post.text}</div> */}
+          </Typography>
+        </CardContent>
+
+        <CardMedia>    
+        {renderImage()}
+        </CardMedia>
+
+        <CardActions disableSpacing>
+          <Button>
+            <ThumbUpOutlinedIcon/>
+          </Button>
+
+          <Button>
+
+            <ChatBubbleOutlineOutlined/>
+
+            {/* <ChatBubbleOutlineOutlined onClick={handleCommentDisplay}/> */}
+          </Button>
+
+
+        </CardActions>
+     
+      </Card>
+      {/* <div style={postStyle}>
         <div className="Post">
           <div className="Header">
             <span className="UserPic">O</span>
@@ -87,7 +143,7 @@ function Post(props) {
             </form>
           </div> 
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
