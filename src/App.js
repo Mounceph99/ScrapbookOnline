@@ -6,6 +6,7 @@ import CommentDrawer from "./components/commentDrawer";
 import PostList from "./components/Post/PostList";
 import Post from "./components/Post/Post";
 import Header from "./components/Header";
+import User from "./components/User/User";
 import UtilityFloat from "./components/UtilityFloat";
 
 // import PostModal from "./components/Modal/PostModal";
@@ -13,11 +14,14 @@ import NewPostModal from "./components/Modal/NewPostModal";
 import CommentList from "./components/CommentList";
 import Comment from "./components/Comment";
 
+var user; // TODO initialize from login
+
 function App() {
 
   /* 
    * DATA STATE
    */
+
   const [user] = useState([
     {  UID: 1, userName: "Jack" },
     { UID: 2, userName: "Rose" }
@@ -84,6 +88,10 @@ function App() {
   //   setFile(URL.createObjectURL(e.target.files[0]))  
   // } 
  
+
+  const follow = () =>{
+
+  }
 
   return (
     <Router>
