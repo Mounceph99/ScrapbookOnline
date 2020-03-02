@@ -6,6 +6,22 @@ const app = express();
 
 admin.initializeApp();
 
+app.get('/signup', (req, rest) =>{
+    firebase.auth()
+    .createUserWithEmailAndPassword(req.email, req.password)
+    .catch(function(error) {
+        var code = error.code;
+        var msg = error.messagel
+        if(code == 'auth/email-already-in-use') {
+            alert("Email address is associated with another account.");
+        }
+        else{
+            alert(msg);
+        }
+    })
+    // TODO will this put user into our db?
+});
+
 app.get('/users', (req, res) =>{
     admin
     .firestore()
