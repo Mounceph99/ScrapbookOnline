@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
-import TextField from "@material-ui/core/TextField";
-import { Dialog, Button, IconButton} from '@material-ui/core';
+import { Dialog, Button, IconButton, TextField} from '@material-ui/core';
 import ImageIcon from '@material-ui/icons/Image';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -11,6 +10,7 @@ import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import { green } from '@material-ui/core/colors';
+import axios from 'axios';
 
 const styles = theme => ({
   root: {
@@ -52,6 +52,28 @@ const DialogActions = withStyles(theme => ({
   },
 }))(MuiDialogActions);
 
+
+const PostDescription = withStyles({
+  root: {
+    "& label.Mui-focused": {
+      color:green['A400']
+    },
+    "& .MuiInput-underline:after": {
+      borderBottomColor: green['A400']
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "red"
+      },
+      "&:hover fieldset": {
+        borderColor: "yellow"
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: green['A400']
+      }
+    }
+  }
+})(TextField);
 
 // function rand() {
 //   return Math.round(Math.random() * 20) - 10;
@@ -96,6 +118,7 @@ function NewPostModal(props) {
   // const [modalStyle] = useState(getModalStyle);
   const [image, setImage] =React.useState(null);
   const [alt, setAlt] = React.useState("");
+  // const [description, setDescription] = React.useState(null);
 
 
   // const handleChange = (e) => {
@@ -104,6 +127,11 @@ function NewPostModal(props) {
   //   props.setFile(URL.createObjectURL(e.target.files[0]))  
   // } 
 
+  const userPostDescription = (e)=>{
+    props.setDescription(e.target.value);
+    console.log(props.description);
+
+  };
   
   const displayPreview = (e) =>{
 
@@ -119,6 +147,15 @@ function NewPostModal(props) {
     }
   };
 
+  // useEffect(()=>{
+
+  //   const newPostData ={
+
+  //   };
+  //   axios.post('https://us-central1-socialplatform-801be.cloudfunctions.net/api/newPost',newPostData);
+
+  // });
+
   return (
     <div>
       <Dialog
@@ -132,7 +169,11 @@ function NewPostModal(props) {
         <DialogTitle id="customized-dialog-title" onClose={e => props.handleCloseNewPostModal()}>
           SHARE A PICTURE
         </DialogTitle>
+     
         <DialogContent dividers>
+          <DialogActions >
+            <PostDescription fullWidth={true} label="Description"/>
+          </DialogActions>
           <img id="selectedImg" alt={alt} height={250}  maxWidth= {'xs'}  src={image}/>
     
         </DialogContent>

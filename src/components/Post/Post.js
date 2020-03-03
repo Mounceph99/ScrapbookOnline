@@ -35,7 +35,9 @@ function Post(props) {
         src={require("../../samplefiles/pic1.jpg")}
       />)
     } else {
-    return <div> <img  style={{ width: "500px" }} src={`data:image/jpeg;base64,${props.post.picture}`} /></div>
+      return <div> <img  style={{ width: "500px" }} src={props.post.picture} /></div>
+
+    // return <div> <img  style={{ width: "500px" }} src={`data:image/jpeg;base64,${props.post.picture}`} /></div>
     }
   }
  
