@@ -4,7 +4,6 @@ import { Button, Dialog, TextField, DialogTitle, DialogContent, DialogContentTex
 
 export default function LoginModal(props) {
 
-
     // State
     const [emial, setEmail] = useState("");
     const [password, setPassword] = useState("");
