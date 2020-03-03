@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import { green } from '@material-ui/core/colors';
+import LoginModal from "./Modal/LoginModal";
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -25,6 +26,13 @@ const useStyles = makeStyles(theme =>
 );
 function Header() {
   const classes = useStyles();
+  const [openLoginModal, setOpenLoginModal] = useState(false);
+  const handleOpenLoginModal = () => {
+    setOpenLoginModal(true);
+  }
+  const handleCloseLoginModal = () => {
+    setOpenLoginModal(false);
+  }
   return (
     <div className="App">
       <div className={classes.root} >
@@ -41,7 +49,7 @@ function Header() {
             <Typography variant="h6" className={classes.title}>
               APP
             </Typography>
-            <Button color="inherit">Login</Button>
+            <Button onClick={handleOpenLoginModal} color="inherit">Login</Button>
           </Toolbar>
         </AppBar>
       </div>
@@ -56,6 +64,12 @@ function Header() {
           </Link>
         </div>
       </header>
+      <div className="Login-Modal">
+        <LoginModal 
+          open={openLoginModal}
+          handleCloseLoginModal={handleCloseLoginModal}
+        />        
+      </div>
     </div>
   );
 }
