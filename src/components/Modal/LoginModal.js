@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Dialog, TextField, DialogTitle, DialogContent, DialogContentText, DialogActions }
     from '@material-ui/core';
 
-export default function newLoginModal(props) {
+export default function LoginModal(props) {
 
-    const [open, setOpen] = React.useState(true);
 
-    const handleClose = () => {
-        setOpen(false);
+    // State
+    const [emial, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    // Mutators
+    const handleChangeEmail = e => {
+        setEmail(e.target.value);
+    };
+
+    const handleChangePassword = e => {
+        setPassword(e.target.password);
     };
 
     return (
         <div>
-            <Dialog open={open} onClose={handleClose}>
+            <Dialog open={props.open} onClose={props.handleCloseLoginModal}>
                 <DialogTitle id='login-dialog'>Login</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -24,16 +32,18 @@ export default function newLoginModal(props) {
                         label='Email: '
                         type='email'
                         fullWidth
+                        onChange={handleChangeEmail}
                     />
                     <TextField
                         id='password-text-field'
                         label='Password: '
                         type='password'
                         fullWidth
+                        onChange={handleChangePassword}
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={send}>
+                    <Button>
                         Login
                     </Button>
                 </DialogActions>
