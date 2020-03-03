@@ -48,7 +48,14 @@ app.get('/getAllPosts',(req, res)=>{
     .then(data =>{
         let allPosts = [];
         data.forEach(doc =>{
-            allPosts.push(doc.data());
+            // allPosts.push(doc.data());
+            allPosts.push({
+                userName: "user1",
+                picture: doc.data().imageUrl,
+                date: doc.data().createdOn,
+                comments: doc.data().comments
+            });
+
         });
         return res.json(allPosts);
     })
@@ -60,7 +67,8 @@ app.post('/newPost', (req, res)=>{
         comments: req.body.comments,
         createdOn: new Date().toISOString(),
         description: req.body.description,
-        owner: req.body.owner
+        owner: req.body.owner,
+        imageUrl: req.body.imageUrl
     };
     admin
     .firestore()
@@ -74,6 +82,7 @@ app.post('/newPost', (req, res)=>{
         console.error(err);
     });
 });
+
 exports.helloWorld = functions.https.onRequest((request, response) => {
  response.send("Hello from Firebase!");
 });

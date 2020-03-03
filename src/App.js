@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 
 import { BrowserRouter as Router, Route } from "react-router-dom"; // [npm i react-router-dom]
@@ -13,6 +13,8 @@ import UtilityFloat from "./components/UtilityFloat";
 import NewPostModal from "./components/Modal/NewPostModal";
 import CommentList from "./components/CommentList";
 import Comment from "./components/Comment";
+import axios from 'axios';
+
 
 var user; // TODO initialize from login
 
@@ -27,14 +29,48 @@ function App() {
     { UID: 2, userName: "Rose" }
   ])
 
-  const [posts, setPosts] = useState([
-    { userName: "user1", picture: "pic1", date: "2019-01-01", comments: ["wow", "nice"] },
-    { userName: "user1", picture: "pic1", date: "2019-01-02", comments: null },
-    { userName: "user1", picture: "pic1", date: "2019-01-03", comments: null }
-  ]);
+
+  const getAllPosts = () =>{
+    axios
+    .get('/getAllPosts')
+    .then((res)=>{
+      console.log(res.data);
+      return res.data;
+    })
+    .catch((err)=>{
+      console.log("Cannot get the posts");
+    });
+
+  };
+
+  // const [posts, setPosts] = useState([
+  //   { userName: "user1", picture: "pic1", date: "2019-01-01", comments: ["wow", "nice"] },
+  //   { userName: "user1", picture: "pic1", date: "2019-01-02", comments: null },
+  //   { userName: "user1", picture: "pic1", date: "2019-01-03", comments: null }
+  // ]);
+
+  const [posts, setPosts] = useState([]);
+  const [update, setUpdate] = useState(true);
 
   const [openCommentDisplay, setOpenCommentDisplay] = useState(false);
 
+  useEffect(()=>{
+    if(update)
+    {
+      axios
+      .get('/getAllPosts')
+      .then((res)=>{
+        console.log(res.data);
+        setPosts(res.data);
+        setUpdate(false);
+      })
+      .catch((err)=>{
+        console.log("Cannot get the posts");
+      });
+
+    }
+  
+  });
 
   /* 
    * COMPONENT STATE 
@@ -44,6 +80,7 @@ function App() {
   const [openNewPostModal, setOpenNewPostModal] = useState(false);   
   /* uploaded file */
   const [file, setFile] = useState(null);
+  const [description, setDescription] = React.useState(null);
 
 
   /* FUNCTION */
@@ -62,8 +99,8 @@ function App() {
   }; 
 
   const addPosts = () => { 
-    console.log("App.addPosts()")  
-    console.log(file)
+    console.log("App.addPosts()");  
+    console.log(file);
     /* converte image to base64 format */
     var img = new Image();
     img.src = file;
@@ -74,12 +111,43 @@ function App() {
     canvas.width = img.naturalWidth;
     ctx.drawImage(img, 0, 0); 
     var b64 = canvas.toDataURL('image/png').replace(/^data:image.+;base64,/, '');
-    console.log("b64")
-    console.log(b64)  
+    console.log("b64");
+    console.log(b64); 
+    b64 = "data:image/jpeg;base64,"+b64; 
     /* update post */
-    const newPost = {userName: "newUser", picture: b64, date: "2020-01-01", comments: null}
-    setPosts([newPost, ...posts])
-    handleCloseNewPostModal()
+    // const newPost = {userName: "newUser", picture: b64, date: "2020-01-01", comments: null};
+    const newPost = {userName: "newUser", picture: b64, date: "2020-01-01", comments: null};
+
+    setPosts([newPost, ...posts]);
+    // setUpdate(true);
+    handleCloseNewPostModal();
+    const newPostData ={
+      comments: "eeee",
+      description: "description",
+      owner: "david100",
+      imageUrl: file
+
+    };
+  
+    axios
+    .post('/newPost', newPostData)
+    .then((res)=>{
+      console.log(res.data);
+    })
+    .catch((err)=>{
+      console.log("There is an error");
+    });
+    // axios
+    // .get('/users')
+    // .then((res)=>{
+    //   console.log(res.data);
+    // })
+    // .catch((err)=>{
+    //   console.log("There is an error");
+    // });
+
+
+    
   }
  
   // const handleChange = (e) => {
@@ -132,6 +200,7 @@ function App() {
               setFile={setFile}
               setPosts={setPosts}
               posts={posts}
+              // description={description}
             />
           </div>
           <div className="PostModal"></div>
