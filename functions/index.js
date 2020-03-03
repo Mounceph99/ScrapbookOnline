@@ -7,7 +7,7 @@ const app = express();
 admin.initializeApp();
 
 app.get('/signup', (req, res) =>{
-    var credentials = firebase.auth()
+    firebase.auth()
     .createUserWithEmailAndPassword(req.email, req.password)
     .catch(function(error) {
         var code = error.code;
@@ -18,8 +18,7 @@ app.get('/signup', (req, res) =>{
         else{
             alert(msg);
         }
-    })
-    // TODO put new user into our users collection
+    });
 });
 
 app.get('/users', (req, res) =>{
