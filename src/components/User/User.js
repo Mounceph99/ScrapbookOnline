@@ -14,9 +14,11 @@ class User extends React.Component {
         };
     }
 
-    addFollowed(user) {
-        this.setState({followed: push(user)})
-        user.notify(this);
+    addFollowed(props) {
+        this.setState((state, props) => {
+            return {follwed: state.followed.push(props.user)};
+        });
+        props.user.notify(this);
     }
 
     notify(user) {
