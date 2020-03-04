@@ -9,9 +9,9 @@ admin.initializeApp();
 app.get('/signup', (req, res) =>{
     firebase.auth()
     .createUserWithEmailAndPassword(req.email, req.password)
-    .catch(function(error) {
-        var code = error.code;
-        var msg = error.message;
+    .catch(err => {
+        var code = err.code;
+        var msg = err.message;
         if(code == 'auth/email-already-in-use') {
             alert('Email address is associated with another account.');
         }
@@ -24,9 +24,9 @@ app.get('/signup', (req, res) =>{
 app.get('/login', (req, res) =>{
     firebase.auth()
     .signInWithEmailAndPassword(req.email, req.password)
-    .catch(function(error) {
-        var code = error.code;
-        var msg = error.message;
+    .catch(err => {
+        var code = err.code;
+        var msg = err.message;
         if(code == 'auth/invalid-email' || code == 'auth/wrong-password') {
             alert('Invalid user credentials.')
         }
