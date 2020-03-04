@@ -7,7 +7,8 @@ const app = express();
 admin.initializeApp();
 
 app.get('/signup', (req, res) =>{
-    firebase.auth()
+    admin
+    .auth()
     .createUserWithEmailAndPassword(req.email, req.password)
     .catch(err => {
         var code = err.code;
@@ -22,7 +23,8 @@ app.get('/signup', (req, res) =>{
 });
 
 app.get('/login', (req, res) =>{
-    firebase.auth()
+    admin
+    .auth()
     .signInWithEmailAndPassword(req.email, req.password)
     .catch(err => {
         var code = err.code;
