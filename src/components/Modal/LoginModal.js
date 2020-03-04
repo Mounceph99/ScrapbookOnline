@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Button, Dialog, TextField, DialogTitle, DialogContent, DialogContentText, DialogActions }
     from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import axios from 'axios';
 
 export default function LoginModal(props) {
 
     // State
-    const [emial, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     // Mutators
     const handleChangeEmail = e => {
@@ -16,6 +18,27 @@ export default function LoginModal(props) {
     const handleChangePassword = e => {
         setPassword(e.target.password);
     };
+
+    // API
+    const handleSubmit = () => {
+        axios
+        .post('/login', {
+            email: email,
+            password: password
+        })
+        .then(res => {
+            console.log(res)
+        })
+        .catch(err => {
+            clearForm();
+            console.log(err)
+        });
+    };
+
+    const clearForm = () => {
+        document.getElementById('email-text-field').value = '';
+        document.getElementById('password-text-field').value = '';
+    }
 
     return (
         <div>
@@ -42,7 +65,7 @@ export default function LoginModal(props) {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button>
+                    <Button onClick={handleSubmit}>
                         Login
                     </Button>
                 </DialogActions>
