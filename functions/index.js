@@ -68,6 +68,44 @@ app.post('/newPost', (req, res)=>{
     });
 });
 
+app.get('/getComments', (req, res)=>{
+    admin
+    .firestore()
+    .collection(comments)
+    .then(data =>{
+        let allComments = [];
+        data.forEach(doc =>{
+            allComments.push({
+                message: doc.data().message,
+                date: doc.data().createdOn,
+                userName: doc.data().owner,
+                postID: doc.data().postID
+            });
+        return res.json(allComments);
+    })
+    .catch(err=>console.error(err));
+});
+
+app.post('/newComment', (req, res)=>{
+    var newComment = {
+        message: req.body.message,
+        createdOn: new Date().toISOString(),
+        postID: req.body.postID,
+        owner: req.body.owner,
+    };
+    admin
+    .firestore()
+    .collection('comments')
+    .add(newComment)
+    .then((doc) => {
+        res.json({message: 'created new comment succesfully'});
+    })
+    .catch((err) =>{
+        res.status(500).json({error: 'error in server'});
+        console.error(err);
+    });
+});
+
 exports.helloWorld = functions.https.onRequest((request, response) => {
  response.send("Hello from Firebase!");
 });
