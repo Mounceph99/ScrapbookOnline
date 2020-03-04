@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Dialog, TextField, DialogTitle, DialogContent, DialogContentText, DialogActions }
     from '@material-ui/core';
-import Box from '@material-ui/core/Box';
 import axios from 'axios';
 
 export default function LoginModal(props) {
