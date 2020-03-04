@@ -11,9 +11,24 @@ app.get('/signup', (req, res) =>{
     .createUserWithEmailAndPassword(req.email, req.password)
     .catch(function(error) {
         var code = error.code;
-        var msg = error.messagel
+        var msg = error.message;
         if(code == 'auth/email-already-in-use') {
-            alert("Email address is associated with another account.");
+            alert('Email address is associated with another account.');
+        }
+        else{
+            alert(msg);
+        }
+    });
+});
+
+app.get('/login', (req, res) =>{
+    firebase.auth()
+    .signInWithEmailAndPassword(req.email, req.password)
+    .catch(function(error) {
+        var code = error.code;
+        var msg = error.message;
+        if(code == 'auth/invalid-email' || code == 'auth/wrong-password') {
+            alert('Invalid user credentials.')
         }
         else{
             alert(msg);
