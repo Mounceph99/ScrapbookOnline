@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {Avatar, Button, IconButton,Card, CardContent, CardMedia, CardActions, CardHeader, Typography} from "@material-ui/core";  
 import CommentList from "../CommentList";
-import Comment from "../Comment"; 
+import Comment from "../Comment";
 import { green } from '@material-ui/core/colors';
 import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 import ChatBubbleOutlineOutlined from '@material-ui/icons/ChatBubbleOutlineOutlined';
 
+
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import axios from 'axios';
 
 
 const useStyles = makeStyles(theme => ({
@@ -35,10 +38,11 @@ function Post(props) {
         src={require("../../samplefiles/pic1.jpg")}
       />)
     } else {
-    return <div> <img  style={{ width: "500px" }} src={`data:image/jpeg;base64,${props.post.picture}`} /></div>
+      return <div> <img  style={{ width: "500px" }} src={props.post.picture} /></div>
+
+    // return <div> <img  style={{ width: "500px" }} src={`data:image/jpeg;base64,${props.post.picture}`} /></div>
     }
   }
- 
 
   const [comments, setComments] = useState([]);
 
@@ -53,7 +57,6 @@ function Post(props) {
     if (message == "")
       return;
     setComments([{message: message},...comments]);
-    //console.log(comments);
   }
 
   // const handleCommentDisplay = e =>{
@@ -61,19 +64,59 @@ function Post(props) {
 
   // };
 
+  const followAction = () =>{
+    //testing axios
+    const name = "itsMounceph";
+    const array = axios.get('/user').then((res) => {console.log(res.data)})
+    .catch((err)=>{console.log("welpidoo")})
+
+    
+
+    
+    //If; logged-in user has already followed the another user and
+    // is trying to follow them again, simply display that "You have already followed 'Username!'"
+    //Insert code here
+    if(name === "itsMounceph")
+      axios.post('/newUser',"itsMounceph").then((res) => {console.log("works")})
+      .catch((err)=>{
+        console.log("There is an error");
+    });
+    //Else if; Logged-in user cannot follow himself, simply display that "You cannot follow yourself!'"
+    //Insert code here
+    else if (!false){
+      console.log("Entered the else if")
+    }
+    //Else; Logged-in user is trying to follow a user that is not themselves nor that they are
+    //already following, simply proceed and display a success message "You have succesfully followed 'Username'" 
+    else{
+      console.log("Entered the ELSE")
+      
+
+    }
+  }
+
   const classes = useStyles();
    
   return (
     <div className="App">
       <Card className={classes.card}>
+        
         <CardHeader
          avatar={
           <Avatar className={classes.avatar}>
             A
           </Avatar>
         }
+
+        action = {
+          <IconButton>
+          <PersonAddIcon onClick = {followAction}/>
+          </IconButton>
+        }
+
         title="Username"
         subheader="Date of the post"
+
         style={{textAlign:"left"}}
         />
         <CardContent style={{textAlign:"left"}}>
@@ -93,10 +136,7 @@ function Post(props) {
           </Button>
 
           <Button>
-
             <ChatBubbleOutlineOutlined/>
-
-            {/* <ChatBubbleOutlineOutlined onClick={handleCommentDisplay}/> */}
           </Button>
 
 
