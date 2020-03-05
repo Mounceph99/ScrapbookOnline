@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {Avatar, Button, IconButton,Card, CardContent, CardMedia, CardActions, CardHeader, Typography} from "@material-ui/core";  
 import CommentList from "../CommentList";
-import Comment from "../Comment"; 
+import Comment from "../Comment";
 import { green } from '@material-ui/core/colors';
 import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 import ChatBubbleOutlineOutlined from '@material-ui/icons/ChatBubbleOutlineOutlined';
-
 
 
 const useStyles = makeStyles(theme => ({
@@ -55,13 +54,7 @@ function Post(props) {
     if (message == "")
       return;
     setComments([{message: message},...comments]);
-    //console.log(comments);
   }
-
-  // const handleCommentDisplay = e =>{
-  //   props.setOpenNewPostModal(true);
-
-  // };
 
   const classes = useStyles();
    
@@ -95,10 +88,7 @@ function Post(props) {
           </Button>
 
           <Button>
-
             <ChatBubbleOutlineOutlined/>
-
-            {/* <ChatBubbleOutlineOutlined onClick={handleCommentDisplay}/> */}
           </Button>
 
 

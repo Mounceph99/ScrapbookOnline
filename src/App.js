@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 
 import { BrowserRouter as Router, Route } from "react-router-dom"; // [npm i react-router-dom]
-import CommentDrawer from "./components/commentDrawer";
 import PostList from "./components/Post/PostList";
 import Post from "./components/Post/Post";
 import Header from "./components/Header";
@@ -176,12 +175,6 @@ function App() {
         <div className="FloatButton" onClick={e => handleOpenNewPostModal()}>
           <UtilityFloat></UtilityFloat>
         </div>
-        <div className="CommentDrawer">
-          <CommentDrawer ></CommentDrawer>
-
-        </div>
-
-
 
         <div className="Modal">
           <div className="NewPostModal">
