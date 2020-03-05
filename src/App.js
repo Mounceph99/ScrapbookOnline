@@ -13,7 +13,6 @@ import CommentList from "./components/CommentList";
 import Comment from "./components/Comment";
 import axios from 'axios';
 
-
 function App() {
 
   /* 
@@ -37,12 +36,6 @@ function App() {
     });
 
   };
-
-  // const [posts, setPosts] = useState([
-  //   { userName: "user1", picture: "pic1", date: "2019-01-01", comments: ["wow", "nice"] },
-  //   { userName: "user1", picture: "pic1", date: "2019-01-02", comments: null },
-  //   { userName: "user1", picture: "pic1", date: "2019-01-03", comments: null }
-  // ]);
 
   const [posts, setPosts] = useState([]);
   const [update, setUpdate] = useState(true);

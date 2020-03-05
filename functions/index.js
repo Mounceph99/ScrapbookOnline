@@ -1,3 +1,5 @@
+import uuid from "uuid";
+
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const express =require('express');
@@ -21,8 +23,26 @@ app.get('/users', (req, res) =>{
     })
     .catch(err=>console.error(err));
     
-
 });
+
+/*
+app.get('/moun', (req, res) =>{
+    admin
+    .firestore()
+    .collection('users')
+    .get()
+    .then(data =>{
+        let users =[];
+        data.forEach(doc=>{
+            users.push(doc.data());
+        });
+        return res.json(users);
+        
+    })
+    .catch(err=>console.error(err));
+    
+});
+*/
 
 app.get('/getAllPosts',(req, res)=>{
     admin
@@ -85,6 +105,7 @@ app.get('/getComments', (req, res)=>{
     })
     .catch(err=>console.error(err));
 });
+});
 
 app.post('/newComment', (req, res)=>{
     var newComment = {
@@ -110,6 +131,43 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
  response.send("Hello from Firebase!");
 });
 
+/*
+app.post('/newFollow', (req, res)=>{
+     
+    const promise = admin.firestore().doc('users/eNdmj6uJUsY3tHanigwI').get();
+    promise.then(snapshot => {
+    req.body.Following.push("ITWORKED")
+    }).catch((err) =>{
+        
+        res.status(500).json({error: 'error in server'});
+        console.error(err);
+    });
+    
+});
+*/
+
+/*
+app.post('/newUser', (req, res)=>{
+
+    const db = admin.firestore();
+    const userRef = db.collection('users');
+    
+    let newUserData = {
+    username: "Chelsea",
+    pwd: "1234",
+    Following: new Array()
+    }
+    
+    let setDoc = db.collection('user').doc("17").set(data);
+    
+    return setDoc.then(res => {
+        console.log('Set: ', res);
+      });
+    
+    });
+
+    */
+
 // exports.getUsers = functions.https.onRequest((req, res) => {
 //     admin.firestore().collection('users').get()
 //     .then(data =>{
@@ -131,4 +189,5 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 
 //        };
 //    });
+
 exports.api = functions.https.onRequest(app);
