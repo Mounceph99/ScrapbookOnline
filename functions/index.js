@@ -8,6 +8,38 @@ const app = express();
 
 admin.initializeApp();
 
+app.get('/signup', (req, res) =>{
+    admin
+    .auth()
+    .createUserWithEmailAndPassword(req.email, req.password)
+    .catch(err => {
+        var code = err.code;
+        var msg = err.message;
+        if(code == 'auth/email-already-in-use') {
+            alert('Email address is associated with another account.');
+        }
+        else{
+            alert(msg);
+        }
+    });
+});
+
+app.get('/login', (req, res) =>{
+    admin
+    .auth()
+    .signInWithEmailAndPassword(req.email, req.password)
+    .catch(err => {
+        var code = err.code;
+        var msg = err.message;
+        if(code == 'auth/invalid-email' || code == 'auth/wrong-password') {
+            alert('Invalid user credentials.')
+        }
+        else{
+            alert(msg);
+        }
+    });
+});
+
 app.get('/users', (req, res) =>{
     admin
     .firestore()
