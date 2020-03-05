@@ -301,7 +301,8 @@ async function initDB() {
     user: "root",
     password: "test123", // corresponding password
     database: "scrapbook_db", // use the specified database
-    acquireTimeout:100000
+    acquireTimeout:100000,
+    port: 8080
   });
 
   con.connect(function(err) {
