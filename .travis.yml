@@ -10,3 +10,6 @@ node_js:
 
 script:
   - npm run test
+
+services:
+  - mysql
