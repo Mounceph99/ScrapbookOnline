@@ -316,3 +316,5 @@ initDB()
   .then( con_instance => {
     initialize_server(con_instance)
 })
+
+module.exports = 'Main';
