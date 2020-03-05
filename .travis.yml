@@ -8,10 +8,5 @@ node_js:
 "windows"
 ]
 
-
-
-
-
-
-
-
+script:
+  - npm run test
