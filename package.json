@@ -48,4 +48,5 @@
     ]
   },
   "proxy": "https://us-central1-socialplatform-801be.cloudfunctions.net/api"
+  
 }
