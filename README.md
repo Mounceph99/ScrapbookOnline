@@ -31,11 +31,12 @@ Joseph Loiselle    : JoeLoiselle
 TianMing Chen      : Ming424
 David Liang        : DavidLiang01
 Jeffey Wilgus      : jeffrey-w
+Yan Kassab	   : iyado1
 
 Tools, Languages and Techniques that are to be used:
 Language: JavaScript
-Tools:  ReactJS, NodeJS, Material UI, Visual Studio Code
-Database: SQL Local Database
+Tools:  HTML, CSS, jQuerey NodeJS, Material UI, Visual Studio Code
+Database: MySQL
 Server: SQL Server
 CI: TravisCI
 
@@ -45,9 +46,9 @@ Core Features
 - Leave comments to uploaded pictures
 
 Tentative Features:
-- Search Users
-- Favoriting/Saving pictures from other users
-- Two feeds (i.e. Global and a user feed)
+- Dark mode
+- Like posts
+- Show post history
 
 Objective: 
 For Sprint 1:
@@ -83,9 +84,10 @@ For Sprint 2:
 	-Done implement core feature of uploading picture
 	-Started comment feature
 -Discuss objectives for Sprint 3
-	
 
-FUTURE_CODE
-- Users will be able to safely create an account
-- Users will be able to login and logout
-- Users will have a personal and a discovery ScrapBook feed
+For Sprint 3:
+- Implement a backend
+- Continue developing and finalized core features
+- Implement user accounts (facilitating core features)
+- Write a robust test suite and connect to CI tool
+- Develop high level concepts/prototype for additional features
