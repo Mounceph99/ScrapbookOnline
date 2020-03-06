@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 var assert = require('assert');
 
 // TESTING FILE
@@ -9,18 +8,8 @@ var assert = require('assert');
 //
 describe('upload', () => {
     it('should not upload', () => {
-=======
-const assert = require('assert');
-//const main = require('../main');
->>>>>>> e2dc71813d70defe97b283fc881f40f7dd8d8832
 
-describe('Array', function() {
-    describe('#indexOf()', function() {
-      it('should return -1 when the value is not present', function() {
-        assert.equal([1, 2, 3].indexOf(4), -1);
-      });
     });
-<<<<<<< HEAD
 });
 
 describe('storage', () => {
@@ -106,6 +95,3 @@ describe('/fetch_feed', () => {
 
     });
 });
-=======
-  });
->>>>>>> e2dc71813d70defe97b283fc881f40f7dd8d8832
