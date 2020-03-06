@@ -12,11 +12,12 @@
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
-    "firebase": "^7.9.1",
+    "firebase": "^7.9.3",
     "firebase-admin": "^8.9.2",
     "firebase-functions": "^3.3.0",
     "firebase-tools": "^7.14.0",
     "md5": "^2.2.1",
+    "mocha": "^7.1.0",
     "multer": "^1.4.2",
     "mysql": "^2.18.1",
     "react": "^16.12.0",
@@ -28,7 +29,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "mocha || true",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -47,4 +48,5 @@
     ]
   },
   "proxy": "https://us-central1-socialplatform-801be.cloudfunctions.net/api"
+  
 }

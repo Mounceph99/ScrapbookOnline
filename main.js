@@ -615,9 +615,10 @@ async function initDB() {
   var con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "test123", // corresponding password
-    database: "scrapbook_db", // use the specified database
-    acquireTimeout:100000
+    password: "", // corresponding password
+    database: "scrapbook", // use the specified database
+    acquireTimeout:100000,
+    port: 3306
   });
 
   con.connect(function(err) {
@@ -632,3 +633,5 @@ initDB()
   .then( con_instance => {
     initialize_server(con_instance)
 })
+
+module.exports = 'Main';

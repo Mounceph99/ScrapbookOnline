@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 
 import { BrowserRouter as Router, Route } from "react-router-dom"; // [npm i react-router-dom]
-import CommentDrawer from "./components/commentDrawer";
 import PostList from "./components/Post/PostList";
 import Post from "./components/Post/Post";
 import Header from "./components/Header";
+import User from "./components/User/User";
 import UtilityFloat from "./components/UtilityFloat";
 
 // import PostModal from "./components/Modal/PostModal";
@@ -15,11 +15,14 @@ import Comment from "./components/Comment";
 import axios from 'axios';
 
 
+var user; // TODO initialize from login
+
 function App() {
 
   /* 
    * DATA STATE
    */
+
   const [user] = useState([
     {  UID: 1, userName: "Jack" },
     { UID: 2, userName: "Rose" }
@@ -38,12 +41,6 @@ function App() {
     });
 
   };
-
-  // const [posts, setPosts] = useState([
-  //   { userName: "user1", picture: "pic1", date: "2019-01-01", comments: ["wow", "nice"] },
-  //   { userName: "user1", picture: "pic1", date: "2019-01-02", comments: null },
-  //   { userName: "user1", picture: "pic1", date: "2019-01-03", comments: null }
-  // ]);
 
   const [posts, setPosts] = useState([]);
   const [update, setUpdate] = useState(true);
@@ -153,6 +150,10 @@ function App() {
   // } 
  
 
+  const follow = () =>{
+
+  }
+
   return (
     <Router>
       <div className="App">
@@ -176,12 +177,6 @@ function App() {
         <div className="FloatButton" onClick={e => handleOpenNewPostModal()}>
           <UtilityFloat></UtilityFloat>
         </div>
-        <div className="CommentDrawer">
-          <CommentDrawer ></CommentDrawer>
-
-        </div>
-
-
 
         <div className="Modal">
           <div className="NewPostModal">
