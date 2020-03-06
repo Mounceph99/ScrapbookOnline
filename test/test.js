@@ -1,5 +1,5 @@
-Main = require('../main.js');
-var assert = require('assert');
+const assert = require('assert');
+//const main = require('../main');
 
 describe('Array', function() {
     describe('#indexOf()', function() {
