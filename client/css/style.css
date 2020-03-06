@@ -294,35 +294,35 @@ body, input, button {
 }
 
 #menu_item_1 {
-    background-image:url('../assets/dashboard.png');
+    background-image:url('../assets/dashboard_30.png');
 }
 
 #menu_item_2{
-    background-image:url('../assets/camera.png');
+    background-image:url('../assets/camera_30.png');
 }
 
 #menu_item_3 {
-    background-image:url('../assets/gear.png');
+    background-image:url('../assets/gear_30.png');
 }
 
 #menu_item_4 {
-    background-image:url('../assets/shutdown.png');
+    background-image:url('../assets/shutdown_30.png');
 }
 
 #menu_item_1:hover {
-    background-image:url('../assets/dashboard_hover.png');
+    background-image:url('../assets/dashboard_hover_30.png');
 }
 
 #menu_item_2:hover {
-    background-image:url('../assets/camera_hover.png');
+    background-image:url('../assets/camera_hover_30.png');
 }
 
 #menu_item_3:hover {
-    background-image:url('../assets/settings_hover.png');
+    background-image:url('../assets/settings_hover_30.png');
 }
 
 #menu_item_4:hover {
-    background-image:url('../assets/shutdown_hover.png');
+    background-image:url('../assets/shutdown_hover_30.png');
 }
 
 #indafeed {
@@ -724,4 +724,133 @@ display: table;
   50% {
     transform: scale(1.5);
   }
+}
+
+/*
+*
+* userboard
+*
+*/
+#user_col {
+  width:325px;
+}
+
+#gallery_col {
+  width:625px;
+}
+
+/*.grid-item {
+  width:200px;
+  overflow: hidden;
+}*/
+
+/* clearfix */
+.grid:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+/* fluid 5 columns */
+.grid-sizer {
+  overflow: hidden;
+}
+
+.grid-item {
+  overflow:hidden;
+  /*min-height: 200px;
+  max-height: 300px;*/
+  height:400px;
+  /*float:left;*/
+}
+
+.grid-sizer,
+.grid-item { width: 25%; }
+/* 2 columns */
+.grid-item--width2 { width: 50%; }
+
+.m_image {
+  width: 100%;
+  height:100%;
+  box-shadow: inset -1px 2px 20px 1px #0a0a0a;
+}
+
+
+.user_avatar_container {
+  width:100%;
+  height:300px;
+}
+
+.avatar_img {
+  height:300px;
+  width: 305px;
+}
+
+#id_button_follow {
+  display: block;
+  margin: 0 auto;
+  margin-bottom:20px;
+}
+
+.follow_or_scrap {
+  text-align: center;
+  margin-top:40px;
+}
+
+.unfollow_button_user {
+  margin-top: 20px;
+  padding: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  background: #9c88c3;
+  border: none;
+  box-shadow: 1px 1px 4px 1px black;
+  font-size: 20px;
+  color: #c7c7c7;
+  letter-spacing: 3px;
+  margin-bottom:20px;
+  font-family: Times, Times New Roman, serif;
+  border-radius:10px;
+}
+
+.button_user {
+  margin-bottom: 20px;
+  padding: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  background: #6935d0;
+  border: none;
+  box-shadow: 1px 1px 4px 1px black;
+  font-size: 20px;
+  color: white;
+  letter-spacing: 3px;
+  margin-bottom:20px;
+  font-family: Times, Times New Roman, serif;
+  border-radius:10px;
+  width:100px;
+}
+
+.unfollow_button_user:hover {
+  cursor:pointer;
+  background: #888;
+}
+
+.button_user:hover {
+  background:#8a64d4;
+  cursor: pointer;
+}
+
+.username {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.numba_followers {
+  margin-bottom: 40px;
+}
+
+#id_scrap_button_user {
+  /*margin-top:20px;*/
 }
