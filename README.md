@@ -12,10 +12,15 @@
 
 1. Open VS Code and open the folder of codebase.
 2. Open XAMPP Control Panel and START 'Apache' and 'mySQL' then select "Admin" for "mySQL"
-3. On the redirect that just has happened, enter the database tables as follows:
-	-Table 1: "users" Fields: "uid", "email", "password"
-	-
-
+3. On the redirect web tab that just happened, create a database and name it "scrapbook" 
+4. Then on that database, create tables as follows:
+	-Table 1: "users" Fields: "uid" as INT and PRIMARY KEY, "email" as VARCHAR(256), "password" as VARCHAR(256), "avatar_fn" as VARCHAR(256)
+	-Table 2: "comments" Fields: "id" as INT and PRIMARY KEY, "userid" as INT, "postid" as INT, "comment" as VARCHAR(256)
+	-Table 3: "posts" Fields: "id" as INT and PRIMARY KEY, "userid" as INT, "filename" as VARCHAR(256), "description" as VARCHAR(256)
+	-Table 4: "followers" Fields: "id" as INT and PRIMARY KEY, "userid" as INT, "followerid" as INT
+5. In order to run the server, open VSC and enter command on terminal "node main.js" which will open the server.
+6. Open a browser and go to "localhost:8080".
+ 
 
 Project Description:
 
