@@ -20,6 +20,7 @@
 </head>
 
 <body>
+  <input type="button" id="btnDarkMode" value="Dark Mode" />
   <div id="post_image_modal" data-micromodal-close="post_image_modal">
     <div class="middle_pane" data-micromodal-close="post_image_modal">
       <div class="add_post_pane">
@@ -88,6 +89,12 @@
   </div>
 
    <script>
+
+    var btnDarkMode = document.getElementById('btnDarkMode');
+    btnDarkMode.addEventListener('click',function() {
+        document.body.classList.toggle('DarkMode');
+    });
+
    MicroModal.init({
      disableScroll: true, // [5]
      disableFocus: false, // [6]
