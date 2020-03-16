@@ -29,7 +29,7 @@
           <form id="senda" enctype="multipart/form-data" method="POST" action="/post_image">
             <div class="input_group">
               <span class="input-group-addon"><i class="far fa-sticky-note"></i></span>
-              <input id="image_desc" name="imagioyoyo" type="text" class="form-control" placeholder="Waht is this">
+              <input id="image_desc" name="imagioyoyo" type="text" class="form-control" placeholder="Description">
             </div>
             <div class="input_group">
               <span class="input-group-addon"><i class="far fa-folder"></i></span>
@@ -81,7 +81,7 @@
     <div class="middle_pane" data-micromodal-close="image_success_modal">
       <div class="add_post_pane">
         <div class="post_image_form">
-          <span id="changethistext" class="title_post_modal_form">Image uploaded successfully! Whooho biatch</span>
+          <span id="changethistext" class="title_post_modal_form">Image uploaded successfully!</span>
       </div>
       </div>
     </div>
@@ -112,7 +112,6 @@
          }
          xhttp.open("POST", "/fetch_feed");
 
-         //if u press the plus button u get 10 extra post. BIATCH!
          data = new FormData()
          data.append("numba", how_much_u_need)
 
@@ -160,6 +159,24 @@
      }
 
      xhttp.send(data);
+   }
+
+   function likario(postid){
+    var xhttp = new XMLHttpRequest();
+     xhttp.onreadystatechange = function() {
+       if (this.readyState == 4 && this.status == 200) {
+         document.getElementById(postid.toString()).innerText = "+"+likeCount;
+       }
+     }
+     xhttp.open("POST", "/post_likes");
+
+    var likeCount= document.getElementById(postid.toString()).innerText;
+    likeCount= parseInt(likeCount.substring(1, likeCount.length));
+    likeCount++;
+
+     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+     xhttp.send(JSON.stringify({ "likes": likeCount, "zpostid": postid }));
+
    }
 
    function commentario(postid) {
