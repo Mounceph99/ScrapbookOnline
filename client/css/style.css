@@ -92,6 +92,9 @@ body, input, button {
 #register_click:hover {
   color:#1490b7;
 }
+#error_message{
+  color: red;
+}
 
 .input_group {
 
@@ -479,7 +482,15 @@ body, input, button {
   height:30px;
   margin-top:15px;
 }
+.likes{
+  display:inline-block;
+  margin-right:15px;
+  position: relative;
+  bottom: 10px;
+  font-size: large;
 
+
+}
 .like_button{
   background-image:url("../assets/heart.png");
   width:30px;
@@ -487,7 +498,7 @@ body, input, button {
   background-size: 30px;
   display:inline-block;
 
-  margin-right:10px;
+  margin-right:5px;
 
 }
 
