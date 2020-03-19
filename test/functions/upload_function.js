@@ -70,8 +70,6 @@ function login_feature() {
   };
 }
 
-
-
 //ALL FUNCTIONS RELATED TO REGISTERING
 function register_feature() {
   function registerNewUser(req, res, next) {
@@ -97,45 +95,12 @@ function register_feature() {
     //CHECK EVERYTHING CORRECT
     //if ()
     //verify if account is not already in DB
-    var hash = md5(register_password);
+    //var hash = md5(register_password); Don't test library code
 
     if (email_correct && password_correct) {
-      con.query(
-        "SELECT * FROM users WHERE email = ?",
-        [register_email],
-        function(err, result) {
-          if (err) throw err;
-          //console.log(result)
-          if (result.length >= 1) {
-            //failsafe
-            console.log("Someone tried to create an already existing user...");
-            res.end();
-          } else {
-            con.query(
-              "INSERT INTO users VALUES (0,?,?,?)",
-              [register_email, hash, "default_avatar.png"],
-              function(err, resulta) {
-                if (err) {
-                  res.send("FAIL");
-                  throw err;
-                } else {
-                  console.log(
-                    "A new user : " +
-                      register_email +
-                      " has just registered with user id : " +
-                      resulta["insertId"]
-                  );
-                  req.session.email = register_email;
-                  req.session.userid = resulta["insertId"];
-                  res.send("SUCCESS"); //redirect in client browser
-                }
-              }
-            );
-          }
-        }
-      );
+      return next(true);
     } else {
-      res.send("FAIL");
+      return next(false);
     }
   }
 
