@@ -1,5 +1,59 @@
-var assert = require('assert');
+const assert = require('assert');
+const request = require('request');
+const functions = require('../test/functions/upload_function');
 
+
+describe("Testing Login", function(){
+it("User is already logged in, should follow through", function(){
+
+    
+    var req = {session:{email:"mounceph99@hotmail.com"}};
+    var res = {};
+    function nextStub(){
+        return "I'm already logged in";
+
+    };
+    var result = functions.require_login(req,res,nextStub);
+
+    assert.equal(result,"I'm already logged in")
+
+})
+
+it("User is NOT logged in, redirect to login page", function(){
+
+    
+    var req = {session:{email:""}};
+    
+    function nextStub(){
+        return "I'm already logged in";
+
+    };
+    var result = functions.require_login(req,res,nextStub);
+
+    assert.equal(result,"I'm already logged in")
+
+})
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 // TESTING FILE
 // ALL TESTS REGARDING THE SCRAPBOOK ONLINE WEB APP ARE WRITTEN HERE
 
@@ -94,4 +148,4 @@ describe('/fetch_feed', () => {
     it('temp', () => {
 
     });
-});
+});*/
