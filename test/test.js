@@ -1,10 +1,12 @@
 const assert = require('assert');
-const request = require('request');
+//const request = require('request');
+const express = require('express');
+const router = express.Router();
 const functions = require('../test/functions/upload_function');
 
 
 describe("Testing Login", function(){
-it("User is already logged in, should follow through", function(){
+it("User is already logged in, should follow through next action", function(){
 
     
     var req = {session:{email:"mounceph99@hotmail.com"}};
@@ -21,16 +23,18 @@ it("User is already logged in, should follow through", function(){
 
 it("User is NOT logged in, redirect to login page", function(){
 
-    
+    function redirect(){
+        return "/?e=1";
+    }
     var req = {session:{email:""}};
-    
+    var res = {redirect};
     function nextStub(){
         return "I'm already logged in";
 
     };
     var result = functions.require_login(req,res,nextStub);
 
-    assert.equal(result,"I'm already logged in")
+    assert.equal(result,"/?e=1")
 
 })
 
