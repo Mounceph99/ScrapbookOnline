@@ -64,6 +64,8 @@ async function initialize_server(con) {
 
 
       //prepare the GET response to return main index
+      //General feature
+      //Function Name: openDashboard
       router.get('/',function(req,res){
         if (req.session && req.session.email) {
           res.redirect('/dashboard')
@@ -84,7 +86,8 @@ async function initialize_server(con) {
         }
       }
 
-      //login
+      //Login feature
+      //Function name: loginUser
       app.use(express.json()) //can parse json
       router.post('/login', function(req, res, next) {
         var email = req.body.email
@@ -108,6 +111,8 @@ async function initialize_server(con) {
         });
       });
 
+      //Register Feature
+      //Function Name: registerNewUser
       router.post('/register', function(req, res, next) {
         var register_email = req.body.register_email
         var register_password = req.body.register_password
@@ -165,15 +170,16 @@ async function initialize_server(con) {
       }
       
       });
-
-      //profile page
+      //General feature
+      //Function name: loadDashboardPage
       router.get('/dashboard', require_login, function(req, res, next) {
         //...
         res.sendFile(path.join(__dirname + '/client/dashboard.html'))
       });
 
 
-      //post image
+      //Posting Picture Feature
+      //Function Name: postPicture
       router.post('/post_image', upload.single('data_filez'), function(req, res, next) {
         if (req.session && req.session.email) {
 
@@ -207,6 +213,9 @@ async function initialize_server(con) {
         }
       });
 
+
+      //General feature
+      //Function name: fetchFeed
       router.post('/fetch_feed', function(req,res,next) {
         if (req.session && req.session.email) {
           con.query("SELECT * FROM posts LEFT JOIN users ON posts.userid=users.uid ORDER BY posts.id DESC LIMIT 10", [], function (err, result) {
@@ -228,6 +237,8 @@ async function initialize_server(con) {
 
       })
 
+      //Like feature
+      //Function name: likePicture
       router.post('/post_likes', function(req,res,next){
         if (req.session && req.session.email){
           con.query("UPDATE posts SET likeCount = ? WHERE id = ? AND userid =?", [req.body.likes, req.body.zpostid, req.session.userid], function(err, result){
@@ -240,6 +251,8 @@ async function initialize_server(con) {
         }
       })
 
+      //Comments feature
+      //Function name: fetchComments
       router.post('/fetch_comments', function(req,res,next) {
         if (req.session && req.session.email) {
           console.log(req.body)
@@ -264,6 +277,8 @@ async function initialize_server(con) {
 
       })
 
+      //Comments feature
+      //Function name: sendComments
       router.post('/send_comment', function(req,res,next) {
         if (req.session && req.session.email) {
           console.log(req.body)
@@ -280,12 +295,17 @@ async function initialize_server(con) {
 
       })
 
-      //profile page
+      //General feature
+      //Profile page
+      //Function name: loadProfilePage
       router.get('/user', require_login, function(req, res, next) {
         //...
         res.sendFile(path.join(__dirname + '/client/user.html'))
       });
 
+      //General feature
+      //Profile page
+      //Function name: loadGallery
       router.post('/fetch_gallery', function(req,res,next) {
         console.log(req.body.uid)
         if (typeof req.body.uid == 'undefined' || req.body.uid == null) {
@@ -337,6 +357,8 @@ async function initialize_server(con) {
 
       })
 
+      //General feature
+      //Functions name: fetchUsers
       router.post('/fetch_user', function(req,res,next) {
         console.log(req.body.uid)
         if (typeof req.body.uid == 'undefined' || req.body.uid == null) {
@@ -422,6 +444,8 @@ async function initialize_server(con) {
 
       })
 
+      //Follow Feature
+      //Function name: unfollowUser
       router.post('/unfollow_user', function(req,res,next) {
         console.log(req.body.uid)
         if (typeof req.body.uid == 'undefined' || req.body.uid == null) {
@@ -509,6 +533,8 @@ async function initialize_server(con) {
 
       })
 
+      //Follow feature
+      //Function name: followUser
       router.post('/follow_user', function(req,res,next) {
         console.log(req.body.uid)
         if (typeof req.body.uid == 'undefined' || req.body.uid == null) {
@@ -596,6 +622,8 @@ async function initialize_server(con) {
       })
 
       // GET /logout
+      //Login feature
+      //Function name: logoutUser
       router.get('/logout', function(req, res, next) {
         if (req.session) {
           //delete session object
