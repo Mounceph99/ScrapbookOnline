@@ -37,4 +37,22 @@ it("User is NOT logged in, redirect to login page", function(){
 
 });
 
+describe("Testing register", () => {
+    it("User successfully registers", () => {
+        const nextStub = (isPassed) => { return isPassed }
+        const req = {
+            body: {
+                register_email: "user@gmail.com", 
+                register_password: "password", 
+                register_confirm_password: "password"
+            }
+        };
+        const res = {};
+        assert.equal(functions.register_feature().registerNewUser(req, res, nextStub), true);
+    });
+    it("Incorrect email prevents registration", () => {
+
+    });
+});
+
 
