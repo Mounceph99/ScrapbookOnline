@@ -136,3 +136,79 @@ describe("Testing Comments", function(){
         assert.equal(result,false);
     })
 });
+
+describe("Testing Follow", function(){
+    it ("User is undefined, should NOT unfollow user", function(){
+        var req = {body:{uid:null}};
+        var res = {};
+        const nextStub = (isPassed) => { return isPassed }
+
+        var result = functions.follow_feature().unfollowUser(req,res,nextStub);
+        assert.equal(result,"Undefined uid");
+    })
+
+    it ("User is less than zero, should NOT unfollow user", function(){
+        var req = {body:{uid:-1}};
+        var res = {};
+        const nextStub = (isPassed) => { return isPassed }
+
+        var result = functions.follow_feature().unfollowUser(req,res,nextStub);
+        assert.equal(result,"uid less than zero");
+    })
+
+    it ("User is logged in, should unfollow user", function(){
+        var req = {session:{email:"mounceph99@hotmail.com"},
+                body:{uid:1}};
+        var res = {};
+        const nextStub = (isPassed) => { return isPassed }
+
+        var result = functions.follow_feature().unfollowUser(req,res,nextStub);
+        assert.equal(result,true);
+    })
+
+    it ("User is NOT logged in, should NOT unfollow user", function(){
+        var req = {body:{uid:1}};
+        var res = {};
+        const nextStub = (isPassed) => { return isPassed }
+
+        var result = functions.follow_feature().unfollowUser(req,res,nextStub);
+        assert.equal(result,false);
+    })
+
+    it ("User is undefined, should NOT follow user", function(){
+        var req = {body:{uid:null}};
+        var res = {};
+        const nextStub = (isPassed) => { return isPassed }
+
+        var result = functions.follow_feature().followUser(req,res,nextStub);
+        assert.equal(result,"Undefined uid");
+    })
+
+    it ("User is less than zero, should NOT follow user", function(){
+        var req = {body:{uid:-1}};
+        var res = {};
+        const nextStub = (isPassed) => { return isPassed }
+
+        var result = functions.follow_feature().followUser(req,res,nextStub);
+        assert.equal(result,"uid less than zero");
+    })
+
+    it ("User is logged in, should follow user", function(){
+        var req = {session:{email:"mounceph99@hotmail.com"},
+                body:{uid:1}};
+        var res = {};
+        const nextStub = (isPassed) => { return isPassed }
+
+        var result = functions.follow_feature().followUser(req,res,nextStub);
+        assert.equal(result,true);
+    })
+
+    it ("User is NOT logged in, should NOT follow user", function(){
+        var req = {body:{uid:1}};
+        var res = {};
+        const nextStub = (isPassed) => { return isPassed }
+
+        var result = functions.follow_feature().followUser(req,res,nextStub);
+        assert.equal(result,false);
+    })
+})
