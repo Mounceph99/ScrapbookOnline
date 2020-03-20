@@ -38,8 +38,9 @@ it("User is NOT logged in, redirect to login page", function(){
 });
 
 describe("Testing register", () => {
+    const nextStub = (isPassed) => { return isPassed }
+    const register = functions.register_feature().registerNewUser;
     it("User successfully registers", () => {
-        const nextStub = (isPassed) => { return isPassed }
         const req = {
             body: {
                 register_email: "user@gmail.com", 
@@ -48,10 +49,29 @@ describe("Testing register", () => {
             }
         };
         const res = {};
-        assert.equal(functions.register_feature().registerNewUser(req, res, nextStub), true);
+        assert.equal(register(req, res, nextStub), true);
     });
-    it("Incorrect email prevents registration", () => {
-
+    it("Invalid email prevents registration", () => {
+        const req = {
+            body: {
+                register_email: "user@yahoo.com",
+                register_password: "password",
+                register_confirm_password: "password"
+            }
+        };
+        const res = {};
+        assert.equal(register(req, res, nextStub), false);
+    });
+    it("Mismatched passwords prevents registration", () => {
+        const req = {
+            body: {
+                register_email: "user@gmail.com",
+                register_password: "password",
+                register_confirm_password: "passwrod"
+            }
+        };
+        const res = {};
+        assert.equal(register(req, res, nextStub), false);
     });
 });
 
