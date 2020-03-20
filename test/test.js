@@ -368,6 +368,7 @@ describe("Testing General Feature", () => {
     const openDashboard = functions.general_feature().openDashboard;
     const loadDashboard = functions.general_feature().loadDashboardPage;
     const fetchFeed = functions.general_feature().fetchFeed;
+    const loadProfile = functions.general_feature().loadProfilePage;
     const identity = (x) => { return x; }
     const logged_in = {
         session: {
@@ -392,6 +393,9 @@ describe("Testing General Feature", () => {
     it("User logged in, should fetch feed", () => {
         assert.equal(fetchFeed(logged_in, null, null), "User : user@gmail.com is fetching the feed!");
     });
+    it("user is logged in, should load profile page", () => {
+        assert.equal(loadProfile(logged_in, res, null), "/client/user.html");
+    })
 
     it ("User is undefined, should NOT load gallery", function(){
         var req = {body:{uid:null}};
