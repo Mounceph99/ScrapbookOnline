@@ -75,7 +75,7 @@ describe("Testing register", () => {
     });
 });
 
-describe("Testing Like Feature", function(){
+describe("Testing Like", function(){
     it("User is logged in, should like post", function(){
         var req = {session:{email:"mounceph99@hotmail.com", userid:1234},
                   body:{likes:12, zpostid:111}};
@@ -97,7 +97,7 @@ describe("Testing Like Feature", function(){
 
 });
 
-describe("Testing Comments Feature", function(){
+describe("Testing Comments", function(){
     it("User is logged in, should fetch comments on post", function(){
         var req = {session:{email:"mounceph99@hotmail.com"},
                 body:{zpostid:111}};

@@ -115,8 +115,8 @@ function register_feature() {
 function comment_feature() {
   function fetchComments(req, res, next) {
     if (req.session && req.session.email) {
-      console.log(req.body);
-      console.log(req.body.zpostid);
+      // console.log(req.body);
+      // console.log(req.body.zpostid);
       // con.query(
       //   "SELECT * FROM comments JOIN users ON comments.userid=users.uid WHERE postid = ? ORDER BY comments.id",
       //   [req.body.zpostid],
@@ -147,9 +147,9 @@ function comment_feature() {
       //     res.end();
       //   }
       // );
-      console.log(
-        "User : " + req.session.email + " is fetching comments from a post!"
-      );
+      // console.log(
+      //   "User : " + req.session.email + " is fetching comments from a post!"
+      // );
       return next(true);
     } else {
       // res.send("Error :( log back again"); //Make if receive that redirect to main...
@@ -159,9 +159,9 @@ function comment_feature() {
 
   function sendComments(req, res, next) {
     if (req.session && req.session.email) {
-      console.log(req.body);
-      console.log(req.body.comment);
-      console.log(req.body.zpostid);
+      // console.log(req.body);
+      // console.log(req.body.comment);
+      // console.log(req.body.zpostid);
       // con.query(
       //   "INSERT INTO comments VALUES (0,?,?,?)",
       //   [req.session.userid, req.body.zpostid, req.body.comment],
@@ -169,8 +169,8 @@ function comment_feature() {
       //     if (err) throw err;
       //   }
       // );
-      console.log("User : " + req.session.email + " posted a comment!");
-      //res.end();
+      // console.log("User : " + req.session.email + " posted a comment!");
+      // res.end();
       return next(true);
     } else {
       //res.send("Error :( log back again"); //Make if receive that redirect to main...
