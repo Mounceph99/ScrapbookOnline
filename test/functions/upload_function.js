@@ -115,62 +115,66 @@ function register_feature() {
 function comment_feature() {
   function fetchComments(req, res, next) {
     if (req.session && req.session.email) {
-      console.log(req.body);
-      console.log(req.body.zpostid);
-      con.query(
-        "SELECT * FROM comments JOIN users ON comments.userid=users.uid WHERE postid = ? ORDER BY comments.id",
-        [req.body.zpostid],
-        function(err, result) {
-          if (err) throw err;
-          var numbaya = result.length;
-          res.write(
-            "<div class='numba_commentos'>" +
-              numbaya +
-              " comments on this post</div>"
-          );
-          for (var i = 0; i < numbaya; i++) {
-            var html_comments =
-              "<div class='comment'><div class='commenter_user'>" +
-              result[i].email +
-              "</div><div class='zawords'>" +
-              result[i].comment +
-              "</div></div>";
-            res.write(html_comments);
-          }
-          //write input for comments
-          res.write(
-            "<div class='input_container_send_message'><input type='text' id='comment_input' name='comment_input' placeholder='Your comment here...'/><button id='sendacomment' onclick='send_comment(" +
-              req.body.zpostid +
-              ")'>Send</button></div>"
-          );
-          //console.log(result)
-          res.end();
-        }
-      );
-      console.log(
-        "User : " + req.session.email + " is fetching comments from a post!"
-      );
+      // console.log(req.body);
+      // console.log(req.body.zpostid);
+      // con.query(
+      //   "SELECT * FROM comments JOIN users ON comments.userid=users.uid WHERE postid = ? ORDER BY comments.id",
+      //   [req.body.zpostid],
+      //   function(err, result) {
+      //     if (err) throw err;
+      //     var numbaya = result.length;
+      //     res.write(
+      //       "<div class='numba_commentos'>" +
+      //         numbaya +
+      //         " comments on this post</div>"
+      //     );
+      //     for (var i = 0; i < numbaya; i++) {
+      //       var html_comments =
+      //         "<div class='comment'><div class='commenter_user'>" +
+      //         result[i].email +
+      //         "</div><div class='zawords'>" +
+      //         result[i].comment +
+      //         "</div></div>";
+      //       res.write(html_comments);
+      //     }
+      //     //write input for comments
+      //     res.write(
+      //       "<div class='input_container_send_message'><input type='text' id='comment_input' name='comment_input' placeholder='Your comment here...'/><button id='sendacomment' onclick='send_comment(" +
+      //         req.body.zpostid +
+      //         ")'>Send</button></div>"
+      //     );
+      //     //console.log(result)
+      //     res.end();
+      //   }
+      // );
+      // console.log(
+      //   "User : " + req.session.email + " is fetching comments from a post!"
+      // );
+      return next(true);
     } else {
-      res.send("Error :( log back again"); //Make if receive that redirect to main...
+      // res.send("Error :( log back again"); //Make if receive that redirect to main...
+      return next(false);
     }
   }
 
   function sendComments(req, res, next) {
     if (req.session && req.session.email) {
-      console.log(req.body);
-      console.log(req.body.comment);
-      console.log(req.body.zpostid);
-      con.query(
-        "INSERT INTO comments VALUES (0,?,?,?)",
-        [req.session.userid, req.body.zpostid, req.body.comment],
-        function(err, result) {
-          if (err) throw err;
-        }
-      );
-      console.log("User : " + req.session.email + " posted a comment!");
-      res.end();
+      // console.log(req.body);
+      // console.log(req.body.comment);
+      // console.log(req.body.zpostid);
+      // con.query(
+      //   "INSERT INTO comments VALUES (0,?,?,?)",
+      //   [req.session.userid, req.body.zpostid, req.body.comment],
+      //   function(err, result) {
+      //     if (err) throw err;
+      //   }
+      // );
+      // console.log("User : " + req.session.email + " posted a comment!");
+      // res.end();
+      return next(true);
     } else {
-      res.send("Error :( log back again"); //Make if receive that redirect to main...
+      //res.send("Error :( log back again"); //Make if receive that redirect to main...
+      return next(false);
     }
   }
 
@@ -239,249 +243,253 @@ function posting_feature() {
 //ALL FUNCTIONS RELATED TO FOLLOWING
 function follow_feature() {
   function unfollowUser(req, res, next) {
-    console.log(req.body.uid);
+    // console.log(req.body.uid);
     if (typeof req.body.uid == "undefined" || req.body.uid == null) {
-      res.send("Error :( try again...");
-      res.end();
-      return;
+      // res.send("Error :( try again...");
+      // res.end();
+      return next("Undefined uid");
     } else {
       if (req.body.uid < 0) {
-        res.send("Error :( What are you trying to do? ...");
-        res.end();
-        return;
+        // res.send("Error :( What are you trying to do? ...");
+        // res.end();
+        return next("uid less than zero");
       }
     }
     if (req.session && req.session.email) {
-      console.log(req.body.uid);
-      con.query(
-        "SELECT * FROM users WHERE users.uid = ? LIMIT 1",
-        [req.body.uid],
-        function(err, result) {
-          if (err) throw err;
+      // console.log(req.body.uid);
+      // con.query(
+      //   "SELECT * FROM users WHERE users.uid = ? LIMIT 1",
+      //   [req.body.uid],
+      //   function(err, result) {
+      //     if (err) throw err;
 
-          if (result.lenght <= 0) {
-            res.send("Error :( This user this not exist... yet!");
-            res.end();
-            return;
-          }
+      //     if (result.lenght <= 0) {
+      //       res.send("Error :( This user this not exist... yet!");
+      //       res.end();
+      //       return;
+      //     }
 
-          console.log(
-            "User : " +
-              req.session.email +
-              " wanna unfollow user " +
-              req.body.uid
-          );
-          var same_user = 0;
-          if (req.session.userid == req.body.uid) {
-            same_user = 1;
-            res.send("Error :{ You can't unfollow yourself!");
-            res.end();
-            return;
-          }
+      //     console.log(
+      //       "User : " +
+      //         req.session.email +
+      //         " wanna unfollow user " +
+      //         req.body.uid
+      //     );
+      //     var same_user = 0;
+      //     if (req.session.userid == req.body.uid) {
+      //       same_user = 1;
+      //       res.send("Error :{ You can't unfollow yourself!");
+      //       res.end();
+      //       return;
+      //     }
 
-          console.log(result);
-          var avatar_filename = result[0].avatar_fn;
-          if (
-            typeof avatar_filename == "undefined" ||
-            avatar_filename === null ||
-            avatar_filename == "null" ||
-            avatar_filename == "" ||
-            avatar_filename == " "
-          ) {
-            avatar_filename = "default_avatar.png";
-          }
-          console.log(avatar_filename);
-          var html_to_send = "<div class='user_avatar_container'>";
-          html_to_send +=
-            "<div class='user_avatar'><img class='avatar_img' src='/avatar/" +
-            avatar_filename +
-            "'></div>";
-          html_to_send += "</div>";
+      //     console.log(result);
+      //     var avatar_filename = result[0].avatar_fn;
+      //     if (
+      //       typeof avatar_filename == "undefined" ||
+      //       avatar_filename === null ||
+      //       avatar_filename == "null" ||
+      //       avatar_filename == "" ||
+      //       avatar_filename == " "
+      //     ) {
+      //       avatar_filename = "default_avatar.png";
+      //     }
+      //     console.log(avatar_filename);
+      //     var html_to_send = "<div class='user_avatar_container'>";
+      //     html_to_send +=
+      //       "<div class='user_avatar'><img class='avatar_img' src='/avatar/" +
+      //       avatar_filename +
+      //       "'></div>";
+      //     html_to_send += "</div>";
 
-          //show username
-          var username = result[0].email;
-          html_to_send += "<div class='username'>" + username + "</div>";
+      //     //show username
+      //     var username = result[0].email;
+      //     html_to_send += "<div class='username'>" + username + "</div>";
 
-          html_to_send += "<div class='follow_or_scrap'>";
-          con.query(
-            "SELECT * FROM followers WHERE followers.followerid = ? AND followers.userid = ? LIMIT 1",
-            [req.session.userid, req.body.uid],
-            function(err, result) {
-              if (err) throw err;
+      //     html_to_send += "<div class='follow_or_scrap'>";
+      //     con.query(
+      //       "SELECT * FROM followers WHERE followers.followerid = ? AND followers.userid = ? LIMIT 1",
+      //       [req.session.userid, req.body.uid],
+      //       function(err, result) {
+      //         if (err) throw err;
 
-              var is_following = parseInt(result.length);
+      //         var is_following = parseInt(result.length);
 
-              //here is a query to count all of them
-              con.query(
-                "SELECT * FROM followers WHERE followers.userid = ?",
-                [req.body.uid],
-                function(err, result) {
-                  if (err) throw err;
+      //         //here is a query to count all of them
+      //         con.query(
+      //           "SELECT * FROM followers WHERE followers.userid = ?",
+      //           [req.body.uid],
+      //           function(err, result) {
+      //             if (err) throw err;
 
-                  var follower_count = 0; //init
-                  follower_count = result.length;
+      //             var follower_count = 0; //init
+      //             follower_count = result.length;
 
-                  if (is_following > 0) {
-                    con.query(
-                      "DELETE FROM followers WHERE followers.followerid = ? AND followers.userid = ?",
-                      [req.session.userid, req.body.uid],
-                      function(err, result) {
-                        html_to_send +=
-                          "<div class='numba_followers'>" +
-                          parseInt(follower_count - 1) +
-                          " Follower(s)</div>";
-                        html_to_send +=
-                          "<button class='button_user' id='id_button_follow' onclick='follow_user()'>Follow</button>";
-                        html_to_send +=
-                          "<button class='button_user' id='id_scrap_button_user' onclick='scrap_user()'>Scrap</button>";
-                        html_to_send += "</div>";
-                        res.write(html_to_send);
-                        res.end();
-                      }
-                    );
-                  } else {
-                    html_to_send +=
-                      "<div class='numba_followers'>" +
-                      follower_count +
-                      " Follower(s)</div>";
-                    html_to_send +=
-                      "<button class='button_user' id='id_button_follow' onclick='follow_user()'>Follow</button>";
-                    html_to_send +=
-                      "<button class='button_user' id='id_scrap_button_user' onclick='scrap_user()'>Scrap</button>";
-                    html_to_send += "</div>";
-                    res.write(html_to_send);
-                    res.end();
-                  }
-                }
-              );
-            }
-          );
-        }
-      );
+      //             if (is_following > 0) {
+      //               con.query(
+      //                 "DELETE FROM followers WHERE followers.followerid = ? AND followers.userid = ?",
+      //                 [req.session.userid, req.body.uid],
+      //                 function(err, result) {
+      //                   html_to_send +=
+      //                     "<div class='numba_followers'>" +
+      //                     parseInt(follower_count - 1) +
+      //                     " Follower(s)</div>";
+      //                   html_to_send +=
+      //                     "<button class='button_user' id='id_button_follow' onclick='follow_user()'>Follow</button>";
+      //                   html_to_send +=
+      //                     "<button class='button_user' id='id_scrap_button_user' onclick='scrap_user()'>Scrap</button>";
+      //                   html_to_send += "</div>";
+      //                   res.write(html_to_send);
+      //                   res.end();
+      //                 }
+      //               );
+      //             } else {
+      //               html_to_send +=
+      //                 "<div class='numba_followers'>" +
+      //                 follower_count +
+      //                 " Follower(s)</div>";
+      //               html_to_send +=
+      //                 "<button class='button_user' id='id_button_follow' onclick='follow_user()'>Follow</button>";
+      //               html_to_send +=
+      //                 "<button class='button_user' id='id_scrap_button_user' onclick='scrap_user()'>Scrap</button>";
+      //               html_to_send += "</div>";
+      //               res.write(html_to_send);
+      //               res.end();
+      //             }
+      //           }
+      //         );
+      //       }
+      //     );
+      //   }
+      // );
+      return next(true);
     } else {
-      res.send("Error :( log back again"); //Make if receive that redirect to main...
+      // res.send("Error :( log back again"); //Make if receive that redirect to main...
+      return next(false);
     }
   }
 
   function followUser(req, res, next) {
-    console.log(req.body.uid);
+    // console.log(req.body.uid);
     if (typeof req.body.uid == "undefined" || req.body.uid == null) {
-      res.send("Error :( try again...");
-      res.end();
-      return;
+      // res.send("Error :( try again...");
+      // res.end();
+      return next("Undefined uid");
     } else {
       if (req.body.uid < 0) {
-        res.send("Error :( What are you trying to do? ...");
-        res.end();
-        return;
+        // res.send("Error :( What are you trying to do? ...");
+        // res.end();
+        return next("uid less than zero");
       }
     }
     if (req.session && req.session.email) {
-      console.log(req.body.uid);
-      con.query(
-        "SELECT * FROM users WHERE users.uid = ? LIMIT 1",
-        [req.body.uid],
-        function(err, result) {
-          if (err) throw err;
+      // console.log(req.body.uid);
+      // con.query(
+      //   "SELECT * FROM users WHERE users.uid = ? LIMIT 1",
+      //   [req.body.uid],
+      //   function(err, result) {
+      //     if (err) throw err;
 
-          if (result.lenght <= 0) {
-            res.send("Error :( This user this not exist... yet!");
-            res.end();
-            return;
-          }
+      //     if (result.lenght <= 0) {
+      //       res.send("Error :( This user this not exist... yet!");
+      //       res.end();
+      //       return;
+      //     }
 
-          console.log(
-            "User : " + req.session.email + " wanna follow user " + req.body.uid
-          );
-          var same_user = 0;
-          if (req.session.userid == req.body.uid) {
-            same_user = 1;
-            res.send("Error :{ You can't follow yourself!");
-            res.end();
-            return;
-          }
+      //     console.log(
+      //       "User : " + req.session.email + " wanna follow user " + req.body.uid
+      //     );
+      //     var same_user = 0;
+      //     if (req.session.userid == req.body.uid) {
+      //       same_user = 1;
+      //       res.send("Error :{ You can't follow yourself!");
+      //       res.end();
+      //       return;
+      //     }
 
-          console.log(result);
-          var avatar_filename = result[0].avatar_fn;
-          if (
-            typeof avatar_filename == "undefined" ||
-            avatar_filename === null ||
-            avatar_filename == "null" ||
-            avatar_filename == "" ||
-            avatar_filename == " "
-          ) {
-            avatar_filename = "default_avatar.png";
-          }
-          console.log(avatar_filename);
-          var html_to_send = "<div class='user_avatar_container'>";
-          html_to_send +=
-            "<div class='user_avatar'><img class='avatar_img' src='/avatar/" +
-            avatar_filename +
-            "'></div>";
-          html_to_send += "</div>";
+      //     console.log(result);
+      //     var avatar_filename = result[0].avatar_fn;
+      //     if (
+      //       typeof avatar_filename == "undefined" ||
+      //       avatar_filename === null ||
+      //       avatar_filename == "null" ||
+      //       avatar_filename == "" ||
+      //       avatar_filename == " "
+      //     ) {
+      //       avatar_filename = "default_avatar.png";
+      //     }
+      //     console.log(avatar_filename);
+      //     var html_to_send = "<div class='user_avatar_container'>";
+      //     html_to_send +=
+      //       "<div class='user_avatar'><img class='avatar_img' src='/avatar/" +
+      //       avatar_filename +
+      //       "'></div>";
+      //     html_to_send += "</div>";
 
-          //show username
-          var username = result[0].email;
-          html_to_send += "<div class='username'>" + username + "</div>";
+      //     //show username
+      //     var username = result[0].email;
+      //     html_to_send += "<div class='username'>" + username + "</div>";
 
-          html_to_send += "<div class='follow_or_scrap'>";
-          con.query(
-            "SELECT * FROM followers WHERE followers.followerid = ? AND followers.userid = ? LIMIT 1",
-            [req.session.userid, req.body.uid],
-            function(err, result) {
-              if (err) throw err;
+      //     html_to_send += "<div class='follow_or_scrap'>";
+      //     con.query(
+      //       "SELECT * FROM followers WHERE followers.followerid = ? AND followers.userid = ? LIMIT 1",
+      //       [req.session.userid, req.body.uid],
+      //       function(err, result) {
+      //         if (err) throw err;
 
-              var is_following = parseInt(result.length);
+      //         var is_following = parseInt(result.length);
 
-              //here is a query to count all of them
-              con.query(
-                "SELECT * FROM followers WHERE followers.userid = ?",
-                [req.body.uid],
-                function(err, result) {
-                  if (err) throw err;
+      //         //here is a query to count all of them
+      //         con.query(
+      //           "SELECT * FROM followers WHERE followers.userid = ?",
+      //           [req.body.uid],
+      //           function(err, result) {
+      //             if (err) throw err;
 
-                  var follower_count = 0; //init
-                  follower_count = result.length;
+      //             var follower_count = 0; //init
+      //             follower_count = result.length;
 
-                  if (is_following <= 0) {
-                    con.query(
-                      "INSERT INTO followers VALUES (0,?,?)",
-                      [req.body.uid, req.session.userid],
-                      function(err, result) {
-                        html_to_send +=
-                          "<div class='numba_followers'>" +
-                          parseInt(follower_count + 1) +
-                          " Follower(s)</div>";
-                        html_to_send +=
-                          "<button class='unfollow_button_user' id='id_button_follow' onclick='unfollow_user()'>Unfollow</button>";
-                        html_to_send +=
-                          "<button class='button_user' id='id_scrap_button_user' onclick='scrap_user()'>Scrap</button>";
-                        html_to_send += "</div>";
-                        res.write(html_to_send);
-                        res.end();
-                      }
-                    );
-                  } else {
-                    html_to_send +=
-                      "<div class='numba_followers'>" +
-                      follower_count +
-                      " Follower(s)</div>";
-                    html_to_send +=
-                      "<button class='unfollow_button_user' id='id_button_follow' onclick='unfollow_user()'>Unfollow</button>";
-                    html_to_send +=
-                      "<button class='button_user' id='id_scrap_button_user' onclick='scrap_user()'>Scrap</button>";
-                    html_to_send += "</div>";
-                    res.write(html_to_send);
-                    res.end();
-                  }
-                }
-              );
-            }
-          );
-        }
-      );
+      //             if (is_following <= 0) {
+      //               con.query(
+      //                 "INSERT INTO followers VALUES (0,?,?)",
+      //                 [req.body.uid, req.session.userid],
+      //                 function(err, result) {
+      //                   html_to_send +=
+      //                     "<div class='numba_followers'>" +
+      //                     parseInt(follower_count + 1) +
+      //                     " Follower(s)</div>";
+      //                   html_to_send +=
+      //                     "<button class='unfollow_button_user' id='id_button_follow' onclick='unfollow_user()'>Unfollow</button>";
+      //                   html_to_send +=
+      //                     "<button class='button_user' id='id_scrap_button_user' onclick='scrap_user()'>Scrap</button>";
+      //                   html_to_send += "</div>";
+      //                   res.write(html_to_send);
+      //                   res.end();
+      //                 }
+      //               );
+      //             } else {
+      //               html_to_send +=
+      //                 "<div class='numba_followers'>" +
+      //                 follower_count +
+      //                 " Follower(s)</div>";
+      //               html_to_send +=
+      //                 "<button class='unfollow_button_user' id='id_button_follow' onclick='unfollow_user()'>Unfollow</button>";
+      //               html_to_send +=
+      //                 "<button class='button_user' id='id_scrap_button_user' onclick='scrap_user()'>Scrap</button>";
+      //               html_to_send += "</div>";
+      //               res.write(html_to_send);
+      //               res.end();
+      //             }
+      //           }
+      //         );
+      //       }
+      //     );
+      //   }
+      // );
+      return next(true);
     } else {
-      res.send("Error :( log back again"); //Make if receive that redirect to main...
+      // res.send("Error :( log back again"); //Make if receive that redirect to main...
+      return next(false);
     }
   }
 
