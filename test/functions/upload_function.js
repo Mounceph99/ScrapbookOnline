@@ -497,16 +497,18 @@ function follow_feature() {
 function like_feature() {
   function likePicture(req, res, next) {
     if (req.session && req.session.email) {
-      con.query(
-        "UPDATE posts SET likeCount = ? WHERE id = ? AND userid =?",
-        [req.body.likes, req.body.zpostid, req.session.userid],
-        function(err, result) {
-          if (err) throw err;
-          res.end();
-        }
-      );
+      // con.query(
+      //   "UPDATE posts SET likeCount = ? WHERE id = ? AND userid =?",
+      //   [req.body.likes, req.body.zpostid, req.session.userid],
+      //   function(err, result) {
+      //     if (err) throw err;
+      //     res.end();
+      //   }
+      // );
+      return next(true);
     } else {
-      res.send("Error :( log back again"); //Make if receive that redirect to main...
+      //res.send("Error :( log back again"); //Make if receive that redirect to main...
+      return next(false);
     }
   }
 

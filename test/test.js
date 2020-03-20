@@ -53,6 +53,28 @@ describe("Testing register", () => {
     it("Incorrect email prevents registration", () => {
 
     });
+
+describe("Testing Like Feature", function(){
+    it("User is logged in, should like post", function(){
+        var req = {session:{email:"mounceph99@hotmail.com", userid:1234},
+                  body:{likes:12, zpostid:111}
+                };
+        var res = {};
+        const nextStub = (isPassed) => { return isPassed }
+
+        var result = functions.like_feature().likePicture(req,res,nextStub);
+        assert.equal(result,true);
+    })
+
+    it("User is NOT logged in, should NOT like post", function(){
+        var req = {};
+        var res = {};
+        const nextStub = (isPassed) => { return isPassed }
+
+        var result = functions.like_feature().likePicture(req,res,nextStub);
+        assert.equal(result,false);
+    })
+
 });
 
-
+});
