@@ -73,6 +73,7 @@ describe("Testing register", () => {
         const res = {};
         assert.equal(register(req, res, nextStub), false);
     });
+});
 
 describe("Testing Like Feature", function(){
     it("User is logged in, should like post", function(){
@@ -95,6 +96,27 @@ describe("Testing Like Feature", function(){
         assert.equal(result,false);
     })
 
+
 });
 
+describe("Testing General Feature", () => {
+    const openDashboard = functions.general_feature().openDashboard;
+    it("User logged in, should open dashboard", () => {
+        const req = {
+            session: {
+                email: "user@gamil.com"
+            }
+        };
+        const res = {
+            redirect: (path) => { return path; }
+        };
+        assert.equal(openDashboard(req, res, null), "/dashboard");
+    });
+    it("User is NOT logged in, should not open dashboard", () => {
+        const req = {};
+        const res = {
+            sendFile: (path) => { return path; }
+        };
+        assert.equal(openDashboard(req, res, null), "/client/index.html");
+    });
 });
