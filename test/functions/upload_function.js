@@ -517,14 +517,13 @@ function like_feature() {
   };
 }
 
-
 //ALL FUNCTIONS RELATED TO GENERAL USE OF WEB APP
 function general_feature() {
   function openDashboard(req, res) {
     if (req.session && req.session.email) {
-      res.redirect("/dashboard");
+      return res.redirect("/dashboard");
     } else {
-      res.sendFile(path.join(__dirname + "/client/index.html"));
+      return res.sendFile("/client/index.html");
     }
   }
   function loadDashboardPage(req, res, next) {
