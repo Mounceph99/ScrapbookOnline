@@ -366,24 +366,31 @@ describe("Testing Posting", function(){
 })
 describe("Testing General Feature", () => {
     const openDashboard = functions.general_feature().openDashboard;
+    const loadDashboard = functions.general_feature().loadDashboardPage;
+    const fetchFeed = functions.general_feature().fetchFeed;
+    const identity = (x) => { return x; }
+    const logged_in = {
+        session: {
+            email: "user@gmail.com"
+        }
+    };
+    const empty = {};
+    const res = {
+        redirect: identity,
+        sendFile: identity
+    };
     it("User logged in, should open dashboard", () => {
-        const req = {
-            session: {
-                email: "user@gamil.com"
-            }
-        };
-        const res = {
-            redirect: (path) => { return path; }
-        };
-        assert.equal(openDashboard(req, res, null), "/dashboard");
+        assert.equal(openDashboard(logged_in, res, null), "/dashboard");
     });
 
     it("User is NOT logged in, should not open dashboard", () => {
-        const req = {};
-        const res = {
-            sendFile: (path) => { return path; }
-        };
-        assert.equal(openDashboard(req, res, null), "/client/index.html");
+        assert.equal(openDashboard(empty, res, null), "/client/index.html");
+    });
+    it("User is logged in, should load dashboard", () => {
+        assert.equal(loadDashboard(logged_in, res, null), "/client/dashboard.html");
+    });
+    it("User logged in, should fetch feed", () => {
+        assert.equal(fetchFeed(logged_in, null, null), "User : user@gmail.com is fetching the feed!");
     });
 
     it ("User is undefined, should NOT load gallery", function(){
