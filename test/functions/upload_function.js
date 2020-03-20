@@ -559,7 +559,7 @@ function general_feature() {
 
   function loadProfilePage(req, res, next) {
     //...
-    res.sendFile(path.join(__dirname + "/client/user.html"));
+    return res.sendFile("/client/user.html");
   }
 
   function loadGallery(req, res, next) {
