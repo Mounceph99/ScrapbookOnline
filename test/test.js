@@ -1,5 +1,5 @@
 const assert = require('assert');
-const functions = require('../test/functions/upload_function');
+const functions = require('./functions/TestingFunction');
 
 
 describe("Testing Login", function(){
