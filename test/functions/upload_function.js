@@ -546,48 +546,14 @@ function general_feature() {
     }
   }
   function loadDashboardPage(req, res, next) {
-    res.sendFile(path.join(__dirname + "/client/dashboard.html"));
+    return res.sendFile("/client/dashboard.html");
   }
 
   function fetchFeed(req, res, next) {
     if (req.session && req.session.email) {
-      con.query(
-        "SELECT * FROM posts LEFT JOIN users ON posts.userid=users.uid ORDER BY posts.id DESC LIMIT 10",
-        [],
-        function(err, result) {
-          if (err) throw err;
-          //console.log(result)
-          var numbaya = result.length;
-          for (var i = 0; i < numbaya; i++) {
-            var html_post =
-              "<div class='post'><div class='post_description'><span style='font-weight:bold;margin-right:20px;'><a href='/user?uid=" +
-              result[i].userid +
-              "'>" +
-              result[i].email +
-              "</a></span>" +
-              result[i].description +
-              "</div><div class='image_container'><img style='max-height:400px;' src='/uploads/" +
-              result[i].filename +
-              "'/></div>";
-            html_post +=
-              "<div class='buttons_containah'><div class='like_button' onclick='likario(" +
-              result[i].id +
-              ")'></div><div id='" +
-              result[i].id +
-              "'class='likes'>+" +
-              result[i].likeCount +
-              "</div><div class='commentario' onclick='commentario(" +
-              result[i].id +
-              ")'></div></div></div>";
-            res.write(html_post);
-          }
-          //console.log(result)
-          res.end();
-        }
-      );
-      console.log("User : " + req.session.email + " is fetching the feed!");
+      return "User : " + req.session.email + " is fetching the feed!";
     } else {
-      res.send("Error :( log back again"); //Make if receive that redirect to main...
+      res.send("Error :( log back again");
     }
   }
 
