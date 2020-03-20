@@ -385,7 +385,6 @@ describe("Testing General Feature", () => {
         };
         assert.equal(openDashboard(req, res, null), "/client/index.html");
     });
-<<<<<<< HEAD
 
     it ("User is undefined, should NOT load gallery", function(){
         var req = {body:{uid:null}};
@@ -462,6 +461,3 @@ describe("Testing General Feature", () => {
     })
     
 });
-=======
-});
->>>>>>> 070905688c2495de458e3d3cc57ba247f1260368
