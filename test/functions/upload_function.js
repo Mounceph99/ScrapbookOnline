@@ -117,41 +117,43 @@ function comment_feature() {
     if (req.session && req.session.email) {
       console.log(req.body);
       console.log(req.body.zpostid);
-      con.query(
-        "SELECT * FROM comments JOIN users ON comments.userid=users.uid WHERE postid = ? ORDER BY comments.id",
-        [req.body.zpostid],
-        function(err, result) {
-          if (err) throw err;
-          var numbaya = result.length;
-          res.write(
-            "<div class='numba_commentos'>" +
-              numbaya +
-              " comments on this post</div>"
-          );
-          for (var i = 0; i < numbaya; i++) {
-            var html_comments =
-              "<div class='comment'><div class='commenter_user'>" +
-              result[i].email +
-              "</div><div class='zawords'>" +
-              result[i].comment +
-              "</div></div>";
-            res.write(html_comments);
-          }
-          //write input for comments
-          res.write(
-            "<div class='input_container_send_message'><input type='text' id='comment_input' name='comment_input' placeholder='Your comment here...'/><button id='sendacomment' onclick='send_comment(" +
-              req.body.zpostid +
-              ")'>Send</button></div>"
-          );
-          //console.log(result)
-          res.end();
-        }
-      );
+      // con.query(
+      //   "SELECT * FROM comments JOIN users ON comments.userid=users.uid WHERE postid = ? ORDER BY comments.id",
+      //   [req.body.zpostid],
+      //   function(err, result) {
+      //     if (err) throw err;
+      //     var numbaya = result.length;
+      //     res.write(
+      //       "<div class='numba_commentos'>" +
+      //         numbaya +
+      //         " comments on this post</div>"
+      //     );
+      //     for (var i = 0; i < numbaya; i++) {
+      //       var html_comments =
+      //         "<div class='comment'><div class='commenter_user'>" +
+      //         result[i].email +
+      //         "</div><div class='zawords'>" +
+      //         result[i].comment +
+      //         "</div></div>";
+      //       res.write(html_comments);
+      //     }
+      //     //write input for comments
+      //     res.write(
+      //       "<div class='input_container_send_message'><input type='text' id='comment_input' name='comment_input' placeholder='Your comment here...'/><button id='sendacomment' onclick='send_comment(" +
+      //         req.body.zpostid +
+      //         ")'>Send</button></div>"
+      //     );
+      //     //console.log(result)
+      //     res.end();
+      //   }
+      // );
       console.log(
         "User : " + req.session.email + " is fetching comments from a post!"
       );
+      return next(true);
     } else {
-      res.send("Error :( log back again"); //Make if receive that redirect to main...
+      // res.send("Error :( log back again"); //Make if receive that redirect to main...
+      return next(false);
     }
   }
 
@@ -160,17 +162,19 @@ function comment_feature() {
       console.log(req.body);
       console.log(req.body.comment);
       console.log(req.body.zpostid);
-      con.query(
-        "INSERT INTO comments VALUES (0,?,?,?)",
-        [req.session.userid, req.body.zpostid, req.body.comment],
-        function(err, result) {
-          if (err) throw err;
-        }
-      );
+      // con.query(
+      //   "INSERT INTO comments VALUES (0,?,?,?)",
+      //   [req.session.userid, req.body.zpostid, req.body.comment],
+      //   function(err, result) {
+      //     if (err) throw err;
+      //   }
+      // );
       console.log("User : " + req.session.email + " posted a comment!");
-      res.end();
+      //res.end();
+      return next(true);
     } else {
-      res.send("Error :( log back again"); //Make if receive that redirect to main...
+      //res.send("Error :( log back again"); //Make if receive that redirect to main...
+      return next(false);
     }
   }
 
