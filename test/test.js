@@ -227,6 +227,7 @@ describe("Testing General Feature", () => {
         };
         assert.equal(openDashboard(req, res, null), "/dashboard");
     });
+
     it("User is NOT logged in, should not open dashboard", () => {
         const req = {};
         const res = {
@@ -234,4 +235,79 @@ describe("Testing General Feature", () => {
         };
         assert.equal(openDashboard(req, res, null), "/client/index.html");
     });
+
+    it ("User is undefined, should NOT load gallery", function(){
+        var req = {body:{uid:null}};
+        var res = {};
+        const nextStub = (isPassed) => { return isPassed }
+
+        var result = functions.general_feature().loadGallery(req,res,nextStub);
+        assert.equal(result,"Undefined uid");
+    })
+
+    it ("User is less than zero, should NOT load gallery", function(){
+        var req = {body:{uid:-1}};
+        var res = {};
+        const nextStub = (isPassed) => { return isPassed }
+
+        var result = functions.general_feature().loadGallery(req,res,nextStub);
+        assert.equal(result,"uid less than zero");
+    })
+
+    it ("User is logged in, should load gallery", function(){
+        var req = {session:{email:"mounceph99@hotmail.com"},
+                body:{uid:1}};
+        var res = {};
+        const nextStub = (isPassed) => { return isPassed }
+
+        var result = functions.general_feature().loadGallery(req,res,nextStub);
+        assert.equal(result,true);
+    })
+
+    it ("User is NOT logged in, should NOT load gallery", function(){
+        var req = {body:{uid:1}};
+        var res = {};
+        const nextStub = (isPassed) => { return isPassed }
+
+        var result = functions.general_feature().loadGallery(req,res,nextStub);
+        assert.equal(result,false);
+    })
+
+    it ("User is undefined, should NOT fetch users", function(){
+        var req = {body:{uid:null}};
+        var res = {};
+        const nextStub = (isPassed) => { return isPassed }
+
+        var result = functions.general_feature().fetchUsers(req,res,nextStub);
+        assert.equal(result,"Undefined uid");
+    })
+
+    it ("User is less than zero, should NOT fetch users", function(){
+        var req = {body:{uid:-1}};
+        var res = {};
+        const nextStub = (isPassed) => { return isPassed }
+
+        var result = functions.general_feature().fetchUsers(req,res,nextStub);
+        assert.equal(result,"uid less than zero");
+    })
+
+    it ("User is logged in, should fetch users", function(){
+        var req = {session:{email:"mounceph99@hotmail.com"},
+                body:{uid:1}};
+        var res = {};
+        const nextStub = (isPassed) => { return isPassed }
+
+        var result = functions.general_feature().fetchUsers(req,res,nextStub);
+        assert.equal(result,true);
+    })
+
+    it ("User is NOT logged in, should NOT fetch users", function(){
+        var req = {body:{uid:1}};
+        var res = {};
+        const nextStub = (isPassed) => { return isPassed }
+
+        var result = functions.general_feature().fetchUsers(req,res,nextStub);
+        assert.equal(result,false);
+    })
+    
 });

@@ -586,178 +586,182 @@ function general_feature() {
   }
 
   function loadGallery(req, res, next) {
-    console.log(req.body.uid);
+    // console.log(req.body.uid);
     if (typeof req.body.uid == "undefined" || req.body.uid == null) {
-      res.send("Error :( try again...");
-      res.end();
-      return;
+      // res.send("Error :( try again...");
+      // res.end();
+      return next("Undefined uid");
     } else {
       if (req.body.uid < 0) {
-        res.send("Error :( What are you trying to do? ...");
-        res.end();
-        return;
+        // res.send("Error :( What are you trying to do? ...");
+        // res.end();
+        return next("uid less than zero");
       }
     }
     if (req.session && req.session.email) {
-      console.log(req.body.uid);
-      con.query(
-        "SELECT * FROM posts WHERE userid = ? ORDER BY RAND() LIMIT 11",
-        [req.body.uid],
-        function(err, result) {
-          if (err) throw err;
+      // console.log(req.body.uid);
+      // con.query(
+      //   "SELECT * FROM posts WHERE userid = ? ORDER BY RAND() LIMIT 11",
+      //   [req.body.uid],
+      //   function(err, result) {
+      //     if (err) throw err;
 
-          if (result.lenght < 0) {
-            res.send("Error :( This user this not exist... yet!");
-            res.end();
-            return;
-          }
+      //     if (result.lenght < 0) {
+      //       res.send("Error :( This user this not exist... yet!");
+      //       res.end();
+      //       return;
+      //     }
 
-          console.log(
-            "User : " +
-              req.session.email +
-              " fetched user gallery for " +
-              req.body.uid
-          );
+      //     console.log(
+      //       "User : " +
+      //         req.session.email +
+      //         " fetched user gallery for " +
+      //         req.body.uid
+      //     );
 
-          var html_to_send = "<div class='grid' style='width:100%;'>";
-          console.log(result);
-          html_to_send += "<div class='grid-sizer'>";
-          for (var i = 0; i < result.length; i++) {
-            //var j = (Math.random() * Math.floor(100)) % 3;
-            var j = i % 2;
-            if (j == 0) {
-              html_to_send += "<div class='grid-item'>";
-            } else {
-              html_to_send += "<div class='grid-item grid-item--width2'>";
-            }
-            html_to_send +=
-              "<div class='m_image' style='background-image:url(/uploads/" +
-              result[i].filename +
-              ");background-size:cover;'></div>";
-            html_to_send += "</div>";
-          }
+      //     var html_to_send = "<div class='grid' style='width:100%;'>";
+      //     console.log(result);
+      //     html_to_send += "<div class='grid-sizer'>";
+      //     for (var i = 0; i < result.length; i++) {
+      //       //var j = (Math.random() * Math.floor(100)) % 3;
+      //       var j = i % 2;
+      //       if (j == 0) {
+      //         html_to_send += "<div class='grid-item'>";
+      //       } else {
+      //         html_to_send += "<div class='grid-item grid-item--width2'>";
+      //       }
+      //       html_to_send +=
+      //         "<div class='m_image' style='background-image:url(/uploads/" +
+      //         result[i].filename +
+      //         ");background-size:cover;'></div>";
+      //       html_to_send += "</div>";
+      //     }
 
-          html_to_send += "</div></div>";
-          res.write(html_to_send);
-          res.end();
-        }
-      );
+      //     html_to_send += "</div></div>";
+      //     res.write(html_to_send);
+      //     res.end();
+      //   }
+      // );
+      return next(true);
     } else {
-      res.send("Error :( log back again"); //Make if receive that redirect to main...
+      // res.send("Error :( log back again"); //Make if receive that redirect to main...
+      return next(false);
     }
   }
 
   function fetchUsers(req, res, next) {
-    console.log(req.body.uid);
+    // console.log(req.body.uid);
     if (typeof req.body.uid == "undefined" || req.body.uid == null) {
-      res.send("Error :( try again...");
-      res.end();
-      return;
+      // res.send("Error :( try again...");
+      // res.end();
+      return next("Undefined uid");
     } else {
       if (req.body.uid < 0) {
-        res.send("Error :( What are you trying to do? ...");
-        res.end();
-        return;
+        // res.send("Error :( What are you trying to do? ...");
+        // res.end();
+        return next("uid less than zero");
       }
     }
     if (req.session && req.session.email) {
-      console.log(req.body.uid);
-      con.query(
-        "SELECT * FROM users WHERE users.uid = ? LIMIT 1",
-        [req.body.uid],
-        function(err, result) {
-          if (err) throw err;
+      // console.log(req.body.uid);
+      // con.query(
+      //   "SELECT * FROM users WHERE users.uid = ? LIMIT 1",
+      //   [req.body.uid],
+      //   function(err, result) {
+      //     if (err) throw err;
 
-          if (result.lenght <= 0) {
-            res.send("Error :( This user this not exist... yet!");
-            res.end();
-            return;
-          }
+      //     if (result.lenght <= 0) {
+      //       res.send("Error :( This user this not exist... yet!");
+      //       res.end();
+      //       return;
+      //     }
 
-          console.log(
-            "User : " + req.session.email + " fetched user " + req.body.uid
-          );
-          var same_user = 0;
-          if (req.session.userid == req.body.uid) {
-            same_user = 1;
-          }
+      //     console.log(
+      //       "User : " + req.session.email + " fetched user " + req.body.uid
+      //     );
+      //     var same_user = 0;
+      //     if (req.session.userid == req.body.uid) {
+      //       same_user = 1;
+      //     }
 
-          console.log(result);
-          var avatar_filename = result[0].avatar_fn;
-          if (
-            typeof avatar_filename == "undefined" ||
-            avatar_filename === null ||
-            avatar_filename == "null" ||
-            avatar_filename == "" ||
-            avatar_filename == " "
-          ) {
-            avatar_filename = "default_avatar.png";
-          }
-          console.log(avatar_filename);
-          var html_to_send = "<div class='user_avatar_container'>";
-          html_to_send +=
-            "<div class='user_avatar'><img class='avatar_img' src='/avatar/" +
-            avatar_filename +
-            "'></div>";
-          html_to_send += "</div>";
+      //     console.log(result);
+      //     var avatar_filename = result[0].avatar_fn;
+      //     if (
+      //       typeof avatar_filename == "undefined" ||
+      //       avatar_filename === null ||
+      //       avatar_filename == "null" ||
+      //       avatar_filename == "" ||
+      //       avatar_filename == " "
+      //     ) {
+      //       avatar_filename = "default_avatar.png";
+      //     }
+      //     console.log(avatar_filename);
+      //     var html_to_send = "<div class='user_avatar_container'>";
+      //     html_to_send +=
+      //       "<div class='user_avatar'><img class='avatar_img' src='/avatar/" +
+      //       avatar_filename +
+      //       "'></div>";
+      //     html_to_send += "</div>";
 
-          //show username
-          var username = result[0].email;
-          html_to_send += "<div class='username'>" + username + "</div>";
+      //     //show username
+      //     var username = result[0].email;
+      //     html_to_send += "<div class='username'>" + username + "</div>";
 
-          html_to_send += "<div class='follow_or_scrap'>";
-          con.query(
-            "SELECT * FROM followers WHERE followers.followerid = ? AND followers.userid = ? LIMIT 1",
-            [req.session.userid, req.body.uid],
-            function(err, result) {
-              if (err) throw err;
+      //     html_to_send += "<div class='follow_or_scrap'>";
+      //     con.query(
+      //       "SELECT * FROM followers WHERE followers.followerid = ? AND followers.userid = ? LIMIT 1",
+      //       [req.session.userid, req.body.uid],
+      //       function(err, result) {
+      //         if (err) throw err;
 
-              var is_following = parseInt(result.length);
-              console.log(
-                "IS FOLLOWING : " + is_following + "  " + typeof is_following
-              );
-              //here is a query to count all of them
-              con.query(
-                "SELECT * FROM followers WHERE followers.userid = ?",
-                [req.body.uid],
-                function(err, result) {
-                  if (err) throw err;
+      //         var is_following = parseInt(result.length);
+      //         console.log(
+      //           "IS FOLLOWING : " + is_following + "  " + typeof is_following
+      //         );
+      //         //here is a query to count all of them
+      //         con.query(
+      //           "SELECT * FROM followers WHERE followers.userid = ?",
+      //           [req.body.uid],
+      //           function(err, result) {
+      //             if (err) throw err;
 
-                  var follower_count = 0; //init
-                  follower_count = result.length;
+      //             var follower_count = 0; //init
+      //             follower_count = result.length;
 
-                  html_to_send +=
-                    "<div class='numba_followers'>" +
-                    follower_count +
-                    " Follower(s)</div>";
+      //             html_to_send +=
+      //               "<div class='numba_followers'>" +
+      //               follower_count +
+      //               " Follower(s)</div>";
 
-                  if (same_user <= 0) {
-                    //show follow button
-                    if (is_following <= 0) {
-                      html_to_send +=
-                        "<button class='button_user' id='id_button_follow' onclick='follow_user()'>Follow</button>";
-                    } else {
-                      html_to_send +=
-                        "<button class='unfollow_button_user' id='id_button_follow' onclick='unfollow_user()'>Unfollow</button>";
-                    }
-                  } else {
-                    //don't show follow button
-                  }
+      //             if (same_user <= 0) {
+      //               //show follow button
+      //               if (is_following <= 0) {
+      //                 html_to_send +=
+      //                   "<button class='button_user' id='id_button_follow' onclick='follow_user()'>Follow</button>";
+      //               } else {
+      //                 html_to_send +=
+      //                   "<button class='unfollow_button_user' id='id_button_follow' onclick='unfollow_user()'>Unfollow</button>";
+      //               }
+      //             } else {
+      //               //don't show follow button
+      //             }
 
-                  html_to_send +=
-                    "<button class='button_user' id='id_scrap_button_user' onclick='scrap_user()'>Scrap</button>";
-                  html_to_send += "</div>";
+      //             html_to_send +=
+      //               "<button class='button_user' id='id_scrap_button_user' onclick='scrap_user()'>Scrap</button>";
+      //             html_to_send += "</div>";
 
-                  res.write(html_to_send);
-                  res.end();
-                }
-              );
-            }
-          );
-        }
-      );
+      //             res.write(html_to_send);
+      //             res.end();
+      //           }
+      //         );
+      //       }
+      //     );
+      //   }
+      // );
+      return next(true);
     } else {
-      res.send("Error :( log back again"); //Make if receive that redirect to main...
+      // res.send("Error :( log back again"); //Make if receive that redirect to main...
+      return next(false);
     }
   }
 
