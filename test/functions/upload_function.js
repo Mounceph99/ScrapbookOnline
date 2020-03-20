@@ -26,7 +26,7 @@ function login_feature() {
     //hash md5 and compare to db
     var hash = md5(password);
     //connect to db and verify
-    con.query(
+    /*con.query(
       "SELECT * FROM users WHERE email = ? AND password = ?",
       [email, hash],
       function(err, result) {
@@ -42,7 +42,18 @@ function login_feature() {
           res.send("FAIL");
         }
       }
-    );
+    );*/
+
+      if (next){
+        //Success, user  logged in
+        return !next(1)
+      }
+      else{
+        //Error, no user
+        return !next(0);
+      }
+
+
   }
 
   function logoutUser(req, res, next) {
@@ -53,13 +64,13 @@ function login_feature() {
           "User " + req.session.email + " has successfully logged out..."
         );
 
-      req.session.destroy(function(err) {
-        if (err) {
-          return next(err);
+      //req.session.destroy(function(err) {
+        if (next) {
+          return true;
         } else {
           return res.redirect("/?e=2");
         }
-      });
+      /*})*/;
     }
   }
 
@@ -191,7 +202,7 @@ function posting_feature() {
   function postPicture(req, res, next) {
     if (req.session && req.session.email) {
       if (req.fileValidationError) {
-        console.log("NAH GOOD");
+       // console.log("NAH GOOD");
         return res.redirect("/dashboard?a=2");
       }
 
@@ -202,8 +213,8 @@ function posting_feature() {
 
       //console.log(req.body.imagioyoyo)
       //console.log(req.file)
-      console.log("USER " + req.session.email + " POSTED AN IMAGE MADAFAKA!");
-      con.query(
+      //console.log("USER " + req.session.email + " POSTED AN IMAGE MADAFAKA!");
+      /*con.query(
         "INSERT INTO posts VALUES (0,?,?,?,0)",
         [req.session.userid, req.file.filename, req.body.imagioyoyo],
         function(err, result) {
@@ -225,10 +236,10 @@ function posting_feature() {
             );
           }
         }
-      );
+      );*/
       res.redirect("/dashboard?a=1");
     } else {
-      console.log("FAILED!");
+      //console.log("FAILED!");
       res.redirect("/e=1");
     }
   }
