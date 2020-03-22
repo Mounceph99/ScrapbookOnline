@@ -209,13 +209,23 @@ async function initialize_server(con) {
 
       router.post('/fetch_feed', function(req,res,next) {
         if (req.session && req.session.email) {
-          con.query("SELECT * FROM posts LEFT JOIN users ON posts.userid=users.uid ORDER BY posts.id DESC LIMIT 10", [], function (err, result) {
+          // con.query("SELECT * FROM posts LEFT JOIN users ON posts.userid=users.uid ORDER BY posts.id DESC LIMIT 10", [], function (err, result) {
+            con.query("SELECT * FROM posts LEFT JOIN users ON posts.userid=users.uid LEFT JOIN likes ON likes.postid=posts.id WHERE (likes.likeId NOT IN (SELECT DISTINCT A.likeId FROM likes A, likes B WHERE A.whoLiked <> B.whoLiked AND A.postid = B.postid AND A.whoLiked <> ? ) ) OR likes.likeId IS NULL ORDER BY posts.id DESC LIMIT 10", [req.session.userid], function (err, result) {
             if (err) throw err
-            //console.log(result)
             var numbaya = result.length
+            var used_id = req.session.userid
             for (var i = 0; i < numbaya; i++) {
               var html_post = "<div class='post'><div class='post_description'><span style='font-weight:bold;margin-right:20px;'><a href='/user?uid=" + result[i].userid + "'>" + result[i].email + "</a></span>" + result[i].description + "</div><div class='image_container'><img style='max-height:400px;' src='/uploads/" + result[i].filename + "'/></div>"
-              html_post += "<div class='buttons_containah'><div class='like_button' onclick='likario(" + result[i].id + ")'></div><div id='"+result[i].id+"'class='likes'>+"+result[i].likeCount+"</div><div class='commentario' onclick='commentario(" + result[i].id + ")'></div></div></div>"
+
+              if(result[i].whoLiked != used_id)
+              {
+                html_post += "<div class='buttons_containah'><div id='post_"+result[i].id+"' class='like_button' onclick='likario(" + result[i].id + ")'></div><div id='"+result[i].id+"'class='likes'>+"+result[i].likeCount+"</div><div class='commentario' onclick='commentario(" + result[i].id + ")'></div></div></div>"
+              }
+              else
+              {
+                html_post += "<div class='buttons_containah'><div id='post_"+result[i].id+"' class='like_button_liked' onclick='likario(" + result[i].id + ")'></div><div id='"+result[i].id+"'class='likes'>+"+result[i].likeCount+"</div><div class='commentario' onclick='commentario(" + result[i].id + ")'></div></div></div>"
+              }
+              // html_post += "<div class='buttons_containah'><div class='like_button' onclick='likario(" + result[i].id + ")'></div><div id='"+result[i].id+"'class='likes'>+"+result[i].likeCount+"</div><div class='commentario' onclick='commentario(" + result[i].id + ")'></div></div></div>"
               res.write(html_post)
             }
             //console.log(result)
@@ -230,13 +240,36 @@ async function initialize_server(con) {
 
       router.post('/post_likes', function(req,res,next){
         if (req.session && req.session.email){
-          con.query("UPDATE posts SET likeCount = ? WHERE id = ? AND userid =?", [req.body.likes, req.body.zpostid, req.session.userid], function(err, result){
+          con.query("UPDATE posts SET likeCount = ? WHERE id = ?", [req.body.likes, req.body.zpostid], function(err, result){
+            if (err) throw err
+            res.end()
+          });
+          con.query("INSERT INTO likes VALUES (0,?,?)", [req.body.zpostid,req.session.userid], function(err, result){
             if (err) throw err
             res.end()
           });
         }
         else {
-          res.send("Error :( log back again") //Make if receive that redirect to main...
+          res.send("Error in post_likes API") 
+        }
+      })
+  
+      router.post('/like_once', function(req,res,next){
+        if(req.session && req.session.email){
+          con.query("SELECT postid, whoLiked FROM likes WHERE postid = ? AND whoLiked = ?", [req.body.zpostid,req.session.userid], function(err, result, field){
+            if (err) throw err
+            if(result.length == 0)
+            {
+              res.write("true")
+            }
+            else{
+              res.write("false")
+            }
+            res.end()
+          });
+        }
+        else{
+          res.send("Error in like_once API")
         }
       })
 
@@ -304,7 +337,7 @@ async function initialize_server(con) {
           con.query("SELECT * FROM posts WHERE userid = ? ORDER BY RAND() LIMIT 11", [req.body.uid], function (err, result) {
             if (err) throw err
 
-            if (result.lenght < 0) {
+            if (result.length < 0) {
               res.send("Error :( This user this not exist... yet!")
               res.end()
               return;
@@ -355,7 +388,7 @@ async function initialize_server(con) {
           con.query("SELECT * FROM users WHERE users.uid = ? LIMIT 1", [req.body.uid], function (err, result) {
             if (err) throw err
 
-            if (result.lenght <= 0) {
+            if (result.length <= 0) {
               res.send("Error :( This user this not exist... yet!")
               res.end()
               return;
@@ -440,7 +473,7 @@ async function initialize_server(con) {
           con.query("SELECT * FROM users WHERE users.uid = ? LIMIT 1", [req.body.uid], function (err, result) {
             if (err) throw err
 
-            if (result.lenght <= 0) {
+            if (result.length <= 0) {
               res.send("Error :( This user this not exist... yet!")
               res.end()
               return;
@@ -527,7 +560,7 @@ async function initialize_server(con) {
           con.query("SELECT * FROM users WHERE users.uid = ? LIMIT 1", [req.body.uid], function (err, result) {
             if (err) throw err
 
-            if (result.lenght <= 0) {
+            if (result.length <= 0) {
               res.send("Error :( This user this not exist... yet!")
               res.end()
               return;

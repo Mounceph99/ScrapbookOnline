@@ -161,7 +161,9 @@
      xhttp.send(data);
    }
 
-   function likario(postid){
+   function like_post(postid){
+
+    //Validate if user already liked the post 
     var xhttp = new XMLHttpRequest();
      xhttp.onreadystatechange = function() {
        if (this.readyState == 4 && this.status == 200) {
@@ -176,6 +178,26 @@
 
      xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
      xhttp.send(JSON.stringify({ "likes": likeCount, "zpostid": postid }));
+
+   }
+
+   function likario(postid){
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+       if (this.readyState == 4 && this.status == 200) {
+         var result = this.response;
+         console.log(result);
+         if(result == "true")
+         {
+           like_post(postid)
+           document.getElementById("post_"+postid).className = "like_button_liked"
+         }
+         
+       }
+     }
+    xhttp.open("POST", "/like_once");
+    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhttp.send(JSON.stringify({ "zpostid": postid }));
 
    }
 
