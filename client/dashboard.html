@@ -19,8 +19,7 @@
 
 </head>
 
-<body>
-  <input type="button" id="btnDarkMode" value="Dark Mode" />
+<body> 
   <div id="post_image_modal" data-micromodal-close="post_image_modal">
     <div class="middle_pane" data-micromodal-close="post_image_modal">
       <div class="add_post_pane">
@@ -51,6 +50,7 @@
               <div id="menu_item_1" class="mitem" onclick="window.location.href='/dashboard'"></div>
               <div id="menu_item_2" class="mitem" data-micromodal-trigger="post_image_modal"></div>
               <div id="menu_item_3" class="mitem"></div>
+              <div id="menu_item_dark" class="mitem"></div>
               <div id="menu_item_4" class="mitem"  onclick="logout()"></div>
           </div>
         </div>
@@ -90,10 +90,30 @@
 
    <script>
 
-    var btnDarkMode = document.getElementById('btnDarkMode');
-    btnDarkMode.addEventListener('click',function() {
-        document.body.classList.toggle('DarkMode');
-    });
+    var dark_mode = false; 
+    document.getElementById("menu_item_dark").addEventListener("click", 
+      function() {
+        if(dark_mode==false){
+          document.body.classList.toggle('dark_mode');
+          $("#menu_item_1").addClass('dark');
+          $("#menu_item_2").addClass('dark');
+          $("#menu_item_3").addClass('dark');
+          $("#menu_item_4").addClass('dark');
+          $("#menu_item_dark").addClass('dark');
+          $(".post").addClass('dark');
+          dark_mode = true; 
+        } else {
+          document.body.classList.toggle('dark_mode');
+          $("#menu_item_1").removeClass('dark');
+          $("#menu_item_2").removeClass('dark');
+          $("#menu_item_3").removeClass('dark');
+          $("#menu_item_4").removeClass('dark');
+          $("#menu_item_dark").removeClass('dark');
+          $(".post").removeClass('dark');
+          dark_mode = false; 
+        }
+      }
+    , false);  
 
    MicroModal.init({
      disableScroll: true, // [5]

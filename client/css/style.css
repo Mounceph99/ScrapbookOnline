@@ -9,7 +9,7 @@ html {
   width: 100%;
 }
 
-.DarkMode{
+.dark_mode{
   background: url("../assets/bg_dark.jpg") no-repeat center center fixed;
 }
 
@@ -310,6 +310,10 @@ button {
   background-image: url("../assets/shutdown_30.png");
 }
 
+#menu_item_dark { 
+  background-image: url("../assets/night_30.png");
+}
+
 #menu_item_1:hover {
   background-image: url("../assets/dashboard_hover_30.png");
 }
@@ -324,6 +328,30 @@ button {
 
 #menu_item_4:hover {
   background-image: url("../assets/shutdown_hover_30.png");
+}
+
+#menu_item_dark:hover {
+  background-image: url("../assets/night_hover_30.png");
+}
+
+#menu_item_1.dark {
+  background-image: url("../assets/dashboard_dark_30.png");
+}
+
+#menu_item_2.dark {
+  background-image: url("../assets/camera_dark_30.png");
+}
+
+#menu_item_3.dark {
+  background-image: url("../assets/gear_dark_30.png");
+}
+
+#menu_item_4.dark {
+  background-image: url("../assets/shutdown_dark_30.png");
+}
+
+#menu_item_dark.dark {
+  background-image: url("../assets/night_dark_30.png");
 }
 
 #indafeed {
@@ -458,6 +486,14 @@ button {
 
 .post {
   background: white;
+  padding: 20px;
+  margin-top: 30px;
+  margin-bottom: 70px;
+  box-shadow: 1px 1px 10px 1px #060606;
+}
+
+.post.dark {
+  background:rgba(151, 151, 151, 0.1); 
   padding: 20px;
   margin-top: 30px;
   margin-bottom: 70px;
