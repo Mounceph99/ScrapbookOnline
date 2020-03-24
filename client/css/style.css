@@ -506,6 +506,21 @@ body, input, button {
   background-image:url("../assets/heart_hover.png");
 }
 
+.like_button_liked{
+  background-image:url("../assets/heart_hover.png");
+  width:30px;
+  height:30px;
+  background-size: 30px;
+  display:inline-block;
+
+  margin-right:5px;
+
+}
+
+.like_button_liked:hover {
+  background-image:url("../assets/heart_hover.png");
+}
+
 .commentario {
   background-image:url("../assets/comment.png");
   width:30px;
