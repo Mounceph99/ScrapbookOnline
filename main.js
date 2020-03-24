@@ -112,43 +112,58 @@ async function initialize_server(con) {
         var register_email = req.body.register_email
         var register_password = req.body.register_password
         var register_confirm_password = req.body.register_confirm_password
+        
 
         //DO VERIFICATION STUFF
-        //1.check same password then check lenght
-        //2. check email if contain email shit, do regex
+        //1.check same password then check length
+        //2. check email if contain email , do regex
         var password_correct = false
-        if (register_password == register_confirm_password) {
+        if (register_password === register_confirm_password) {
           password_correct = true
         }
         var email_correct = false
+        var pattern = /(@hotmail.com|@gmail.com|@hotmail.ca|@gmail.ca)/g
         //REGEX here
-        email_correct = true
+        if(pattern.test(register_email))
+        {
+          email_correct = true
+        }
+        // email_correct = true
 
         //CHECK EVERYTHING CORRECT
         //if ()
         //verify if account is not already in DB
         var hash = md5(register_password)
 
-        con.query("SELECT * FROM users WHERE email = ?", [register_email], function (err, result) {
-          if (err) throw err
-          //console.log(result)
-          if (result.length >= 1) { //failsafe
-            console.log("Someone tried to create an already existing user...")
-            res.end()
-          } else {
-            con.query("INSERT INTO users VALUES (0,?,?,?)", [register_email, hash,'default_avatar.png'], function (err, resulta) {
-              if (err) {
-                res.send("FAIL")
-                throw err
-              } else {
-                console.log("A new user : " + register_email + " has just registered with user id : " + resulta['insertId'])
-                req.session.email = register_email
-                req.session.userid = resulta['insertId']
-                res.send("SUCCESS") //redirect in client browser
-              }
-            })
-          }
-        });
+        if(email_correct && password_correct)
+        {
+
+          con.query("SELECT * FROM users WHERE email = ?", [register_email], function (err, result) {
+            if (err) throw err
+            //console.log(result)
+            if (result.length >= 1) { //failsafe
+              console.log("Someone tried to create an already existing user...")
+              res.end()
+            } else {
+              con.query("INSERT INTO users VALUES (0,?,?,?)", [register_email, hash,'default_avatar.png'], function (err, resulta) {
+                if (err) {
+                  res.send("FAIL")
+                  throw err
+                } else {
+                  console.log("A new user : " + register_email + " has just registered with user id : " + resulta['insertId'])
+                  req.session.email = register_email
+                  req.session.userid = resulta['insertId']
+                  res.send("SUCCESS") //redirect in client browser
+                }
+              })
+            }
+          });
+      }
+      else
+      {
+        res.send("FAIL")
+      }
+      
       });
 
       //profile page
@@ -175,9 +190,9 @@ async function initialize_server(con) {
           //console.log(req.body.imagioyoyo)
           //console.log(req.file)
           console.log("USER " + req.session.email + " POSTED AN IMAGE MADAFAKA!")
-          con.query("INSERT INTO posts VALUES (0,?,?,?)", [req.session.userid, req.file.filename,req.body.imagioyoyo], function (err, result) {
+          con.query("INSERT INTO posts VALUES (0,?,?,?,0)", [req.session.userid, req.file.filename,req.body.imagioyoyo], function (err, result) {
             if (err) {
-              res.end("FAIL TO POST") //make this a page boiiii
+              res.end("FAIL TO POST") 
               throw err
               return
             } else {
@@ -194,14 +209,23 @@ async function initialize_server(con) {
 
       router.post('/fetch_feed', function(req,res,next) {
         if (req.session && req.session.email) {
-          con.query("SELECT * FROM posts LEFT JOIN users ON posts.userid=users.uid ORDER BY posts.id DESC LIMIT 10", [], function (err, result) {
+          // con.query("SELECT * FROM posts LEFT JOIN users ON posts.userid=users.uid ORDER BY posts.id DESC LIMIT 10", [], function (err, result) {
+            con.query("SELECT * FROM posts LEFT JOIN users ON posts.userid=users.uid LEFT JOIN likes ON likes.postid=posts.id WHERE (likes.likeId NOT IN (SELECT DISTINCT A.likeId FROM likes A, likes B WHERE A.whoLiked <> B.whoLiked AND A.postid = B.postid AND A.whoLiked <> ? ) ) OR likes.likeId IS NULL ORDER BY posts.id DESC LIMIT 10", [req.session.userid], function (err, result) {
             if (err) throw err
-            //console.log(result)
-            //ta do lil bitch -> instead of doing all these queries just use SQL JOIN. BIATCH!- > OK DONE FAGGOT!
             var numbaya = result.length
+            var used_id = req.session.userid
             for (var i = 0; i < numbaya; i++) {
               var html_post = "<div class='post'><div class='post_description'><span style='font-weight:bold;margin-right:20px;'><a href='/user?uid=" + result[i].userid + "'>" + result[i].email + "</a></span>" + result[i].description + "</div><div class='image_container'><img style='max-height:400px;' src='/uploads/" + result[i].filename + "'/></div>"
-              html_post += "<div class='buttons_containah'><div class='like_button' onclick='likario(" + result[i].id + ")'></div><div class='commentario' onclick='commentario(" + result[i].id + ")'></div></div></div>"
+
+              if(result[i].whoLiked != used_id)
+              {
+                html_post += "<div class='buttons_containah'><div id='post_"+result[i].id+"' class='like_button' onclick='likario(" + result[i].id + ")'></div><div id='"+result[i].id+"'class='likes'>+"+result[i].likeCount+"</div><div class='commentario' onclick='commentario(" + result[i].id + ")'></div></div></div>"
+              }
+              else
+              {
+                html_post += "<div class='buttons_containah'><div id='post_"+result[i].id+"' class='like_button_liked' onclick='likario(" + result[i].id + ")'></div><div id='"+result[i].id+"'class='likes'>+"+result[i].likeCount+"</div><div class='commentario' onclick='commentario(" + result[i].id + ")'></div></div></div>"
+              }
+              // html_post += "<div class='buttons_containah'><div class='like_button' onclick='likario(" + result[i].id + ")'></div><div id='"+result[i].id+"'class='likes'>+"+result[i].likeCount+"</div><div class='commentario' onclick='commentario(" + result[i].id + ")'></div></div></div>"
               res.write(html_post)
             }
             //console.log(result)
@@ -212,6 +236,41 @@ async function initialize_server(con) {
           res.send("Error :( log back again") //Make if receive that redirect to main...
         }
 
+      })
+
+      router.post('/post_likes', function(req,res,next){
+        if (req.session && req.session.email){
+          con.query("UPDATE posts SET likeCount = ? WHERE id = ?", [req.body.likes, req.body.zpostid], function(err, result){
+            if (err) throw err
+            res.end()
+          });
+          con.query("INSERT INTO likes VALUES (0,?,?)", [req.body.zpostid,req.session.userid], function(err, result){
+            if (err) throw err
+            res.end()
+          });
+        }
+        else {
+          res.send("Error in post_likes API") 
+        }
+      })
+  
+      router.post('/like_once', function(req,res,next){
+        if(req.session && req.session.email){
+          con.query("SELECT postid, whoLiked FROM likes WHERE postid = ? AND whoLiked = ?", [req.body.zpostid,req.session.userid], function(err, result, field){
+            if (err) throw err
+            if(result.length == 0)
+            {
+              res.write("true")
+            }
+            else{
+              res.write("false")
+            }
+            res.end()
+          });
+        }
+        else{
+          res.send("Error in like_once API")
+        }
       })
 
       router.post('/fetch_comments', function(req,res,next) {
@@ -278,7 +337,7 @@ async function initialize_server(con) {
           con.query("SELECT * FROM posts WHERE userid = ? ORDER BY RAND() LIMIT 11", [req.body.uid], function (err, result) {
             if (err) throw err
 
-            if (result.lenght < 0) {
+            if (result.length < 0) {
               res.send("Error :( This user this not exist... yet!")
               res.end()
               return;
@@ -329,7 +388,7 @@ async function initialize_server(con) {
           con.query("SELECT * FROM users WHERE users.uid = ? LIMIT 1", [req.body.uid], function (err, result) {
             if (err) throw err
 
-            if (result.lenght <= 0) {
+            if (result.length <= 0) {
               res.send("Error :( This user this not exist... yet!")
               res.end()
               return;
@@ -396,7 +455,6 @@ async function initialize_server(con) {
 
       })
 
-      //basicly a copy paste from the other one... so we need to decouple it
       router.post('/unfollow_user', function(req,res,next) {
         console.log(req.body.uid)
         if (typeof req.body.uid == 'undefined' || req.body.uid == null) {
@@ -415,7 +473,7 @@ async function initialize_server(con) {
           con.query("SELECT * FROM users WHERE users.uid = ? LIMIT 1", [req.body.uid], function (err, result) {
             if (err) throw err
 
-            if (result.lenght <= 0) {
+            if (result.length <= 0) {
               res.send("Error :( This user this not exist... yet!")
               res.end()
               return;
@@ -502,7 +560,7 @@ async function initialize_server(con) {
           con.query("SELECT * FROM users WHERE users.uid = ? LIMIT 1", [req.body.uid], function (err, result) {
             if (err) throw err
 
-            if (result.lenght <= 0) {
+            if (result.length <= 0) {
               res.send("Error :( This user this not exist... yet!")
               res.end()
               return;

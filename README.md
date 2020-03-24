@@ -6,13 +6,21 @@
 2. Install Visual Studio Code for your editor.
 3. Install GitHub Desktop for the version control.
 4. Clone the repository onto the local with repository page, it will ask you to open GitHub desktop.
+5. Install XAMPP Control Panel
 
 ## To Run the Project
 
 1. Open VS Code and open the folder of codebase.
-2. Open Terminal, input "npm install" and enter, this step can be skipped after first initialization.
-3. Input "npm start" and enter, the default browser will open the website onto a temporary server.
-
+2. Open XAMPP Control Panel and START 'Apache' and 'mySQL' then select "Admin" for "mySQL"
+3. On the redirect web tab that just happened, create a database and name it "scrapbook" 
+4. Then on that database, create tables as follows:
+	-Table 1: "users" Fields: "uid" as INT and PRIMARY KEY, "email" as VARCHAR(256), "password" as VARCHAR(256), "avatar_fn" as VARCHAR(256)
+	-Table 2: "comments" Fields: "id" as INT and PRIMARY KEY, "userid" as INT, "postid" as INT, "comment" as VARCHAR(256)
+	-Table 3: "posts" Fields: "id" as INT and PRIMARY KEY, "userid" as INT, "filename" as VARCHAR(256), "description" as VARCHAR(256)
+	-Table 4: "followers" Fields: "id" as INT and PRIMARY KEY, "userid" as INT, "followerid" as INT
+5. In order to run the server, open VSC and enter command on terminal "node main.js" which will open the server.
+6. Open a browser and go to "localhost:8080".
+ 
 
 Project Description:
 
@@ -31,14 +39,15 @@ Joseph Loiselle    : JoeLoiselle
 TianMing Chen      : Ming424
 David Liang        : DavidLiang01
 Jeffey Wilgus      : jeffrey-w
-Yan Kassab	   : iyado1
+Yan Kassab	   	   : iyado1
 
 Tools, Languages and Techniques that are to be used:
 Language: JavaScript
-Tools:  HTML, CSS, jQuerey NodeJS, Material UI, Visual Studio Code
+Tools:  HTML, CSS, jQuerey NodeJS, Visual Studio Code, XAMPP Control Panel
 Database: MySQL
 Server: SQL Server
 CI: TravisCI
+Testing: Mocha
 
 Core Features
 - Upload Picture to their ScrapBook
@@ -49,6 +58,18 @@ Tentative Features:
 - Dark mode
 - Like posts
 - Show post history
+
+Quality of code:
+
+Here are some rules to follow in order to make the code look good and easily maintainable.
+1. Use Camel Casing.
+2. Give appropriate descriptive name to variable. (e.g. NOT 'num1')
+3. Comment every function with pertinent description of what it does and the intent.
+4. Have adequate spacing. 
+5. Lines in editor should not exceed the width of the page (i.e. Not horizontal scrolling)
+6. Do not write deadcode; Every function written must be used and every condition must be 
+	possible to execute.
+7. Indent code appropriatly.
 
 Objective: 
 For Sprint 1:
@@ -86,8 +107,32 @@ For Sprint 2:
 -Discuss objectives for Sprint 3
 
 For Sprint 3:
+- Update README.md
 - Implement a backend
 - Continue developing and finalized core features
 - Implement user accounts (facilitating core features)
 - Write a robust test suite and connect to CI tool
 - Develop high level concepts/prototype for additional features
+- Create Acceptance test
+
+For Sprint 4:
+- Have at least 1-2 meetings before end of sprint (deadline)
+- Update README.md
+- Implement supplemental features
+	-Users can swap to Dark mode and normal mode
+	-Users can like other users posts
+	-Users can see their own post history
+- Update user feed to prioritize their followers recent posts; Also have a global feed
+-Write tests for the core features; Basically fill in the skeletons in "test/test.js"
+-Implement additional test for supplemental features and write them in "test/test.js"
+-This is the final sprint hence, all needs to be done.
+
+
+
+
+
+
+
+
+
+

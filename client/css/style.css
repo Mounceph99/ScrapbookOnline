@@ -95,6 +95,9 @@ button {
 #register_click:hover {
   color: #1490b7;
 }
+#error_message{
+  color: red;
+}
 
 .input_group {
   margin: 10px 0px;
@@ -516,19 +519,45 @@ button {
   height: 30px;
   margin-top: 15px;
 }
+.likes{
+  display:inline-block;
+  margin-right:15px;
+  position: relative;
+  bottom: 10px;
+  font-size: large;
 
-.like_button {
-  background-image: url("../assets/heart.png");
-  width: 30px;
-  height: 30px;
+ 
+
+}
+.like_button{
+  background-image:url("../assets/heart.png");
+  width:30px;
+  height:30px;
   background-size: 30px;
-  display: inline-block;
+  display:inline-block;
+
+  margin-right:5px; 
 
   margin-right: 10px;
 }
 
 .like_button:hover {
   background-image: url("../assets/heart_hover.png");
+}
+
+.like_button_liked{
+  background-image:url("../assets/heart_hover.png");
+  width:30px;
+  height:30px;
+  background-size: 30px;
+  display:inline-block;
+
+  margin-right:5px;
+
+}
+
+.like_button_liked:hover {
+  background-image:url("../assets/heart_hover.png");
 }
 
 .commentario {
