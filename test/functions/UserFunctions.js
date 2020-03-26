@@ -94,7 +94,7 @@ function logout() {
 }
 
 module.exports = {
-  fetch_gallery,
+  fetch_gallery,  
   fetch_user,
   follow_user,
   unfollow_user,
