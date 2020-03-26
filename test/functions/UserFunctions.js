@@ -1,21 +1,27 @@
-function fetch_gallery(uid) {
-    console.log("fetching gallery")
-      var xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function() {
+class Document {
+  constructor() {
+    this.document = "";
+    this.style = {display:""};
+    this.value = {"": this.style,"":"ad0"}
+    
+  }
+    
+  getElementById(arg1){
+    return this.value;
+  }
+}
+var document = new Document();
+
+function fetch_gallery(uid,xhttp,testingVariable) {
+      
+      xhttp.onreadystatechange = function(testingVariable) {
         if (this.readyState == 4 && this.status == 200) { //response success
            document.getElementById("indagallery").innerHTML = this.responseText;
-           $('.grid').masonry({
-           // set itemSelector so .grid-sizer is not used in layout
-             itemSelector: '.grid-item',
-             // use element for option
-             columnWidth: '.grid-sizer',
-             percentPosition: true,
-             originLeft: true
-           })
-
+           return testingVariable = "grid"
         } else if (this.readyState == 4 && this.status == 504) { //timeout
            //document.getElementById("indafeed").innerHTML = this.responseText;
            //HANDLE TIMEOUTS! ERR NO CONNECTED!
+           return testingVariable = "timeout"
          }
       }
       xhttp.open("POST", "/fetch_gallery");
@@ -25,16 +31,16 @@ function fetch_gallery(uid) {
       xhttp.send(JSON.stringify({ "uid":uid }));
 }
 
-function fetch_user(uid) {
-  console.log("fetching user")
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
+function fetch_user(uid,xhttp,testingVariable) {
+ 
+    xhttp.onreadystatechange = function(testingVariable) {
       if (this.readyState == 4 && this.status == 200) { //response success
          document.getElementById("indauser").innerHTML = this.responseText;
-
+        return testingVariable = "indauser";
       } else if (this.readyState == 4 && this.status == 504) { //timeout
          //document.getElementById("indafeed").innerHTML = this.responseText;
          //HANDLE TIMEOUTS! ERR NO CONNECTED!
+         return testingVariable = "timeout"
        }
     }
     xhttp.open("POST", "/fetch_user");
@@ -44,17 +50,16 @@ function fetch_user(uid) {
     xhttp.send(JSON.stringify({ "uid":uid }));
 }
 
-function follow_user() {
-  console.log(uid_);
-  console.log("following user")
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
+function follow_user(xhttp,testingVariable) {
+  
+    xhttp.onreadystatechange = function(testingVariable) {
       if (this.readyState == 4 && this.status == 200) { //response success
          document.getElementById("indauser").innerHTML = this.responseText;
-
+         return testingVariable = "indauser"
       } else if (this.readyState == 4 && this.status == 504) { //timeout
          //document.getElementById("indafeed").innerHTML = this.responseText;
          //HANDLE TIMEOUTS! ERR NO CONNECTED!
+         return testingVariable = "timeout"
        }
     }
     xhttp.open("POST", "/follow_user");
@@ -64,17 +69,16 @@ function follow_user() {
     xhttp.send(JSON.stringify({ "uid":uid_ }));
 }
 
-function unfollow_user() {
-  console.log(uid_);
-  console.log("following user")
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
+function unfollow_user(xhttp,testingVariable) {
+  
+    xhttp.onreadystatechange = function(testingVariable) {
       if (this.readyState == 4 && this.status == 200) { //response success
          document.getElementById("indauser").innerHTML = this.responseText;
-
+         return testingVariable = "indauser"
       } else if (this.readyState == 4 && this.status == 504) { //timeout
          //document.getElementById("indafeed").innerHTML = this.responseText;
          //HANDLE TIMEOUTS! ERR NO CONNECTED!
+         return testingVariable = "timeout"
        }
     }
     xhttp.open("POST", "/unfollow_user");
@@ -86,5 +90,13 @@ function unfollow_user() {
 
 
 function logout() {
-  window.location.href="/logout"
+  return "logout"
+}
+
+module.exports = {
+  fetch_gallery,
+  fetch_user,
+  follow_user,
+  unfollow_user,
+  logout
 }
