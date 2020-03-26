@@ -1,4 +1,4 @@
-'use strict'
+"use strict"
 
 /*
  * Title : SOEN341_scrapbook
@@ -11,21 +11,21 @@
  */
 
 //dependencies
-const express = require('express') //express minimal JS framework
-const path = require('path') //to resolve directory when sendFile html (app.get response.sendFile())
-const http = require('http') //for http server...
-const mysql = require('mysql') //db for historical data
-const session = require('express-session') //for sessions
-const md5 = require('md5') //md5 hashing for password db
-const multer = require('multer'); //to upload file buffers
+const express = require("express") //express minimal JS framework
+const path = require("path") //to resolve directory when sendFile html (app.get response.sendFile())
+const http = require("http") //for http server...
+const mysql = require("mysql") //db for historical data
+const session = require("express-session") //for sessions
+const md5 = require("md5") //md5 hashing for password db
+const multer = require("multer"); //to upload file buffers
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, './uploads/');
+        cb(null, "./uploads/");
     },
     filename: function(req, file, cb) {
       if (file)
-        cb(null, file.originalname + '-' + Date.now());
+        cb(null, file.originalname + "-" + Date.now());
       else {
         req.fileValidationError = "NO NO!"
         console.log("NO NO!")
@@ -38,7 +38,7 @@ var upload = multer({storage,    fileFilter: function (req, file, cb) {
    if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg" || file.mimetype == "image/gif") {
      cb(null, true);
    } else {
-     req.fileValidationError = 'NAH GOOD FILE!';
+     req.fileValidationError = "NAH GOOD FILE!";
      cb(null, false);
    }
  }});
@@ -53,11 +53,11 @@ async function initialize_server(con) {
 
       var server_instance = http.createServer(app)
       server_instance.listen(8080)
-      console.log('Listening on 127.0.0.1:8080')
+      console.log("Listening on 127.0.0.1:8080")
 
       //create sessions
       app.use(session({
-        secret: 'trytocrackthis',
+        secret: "trytocrackthis",
         resave: true,
         saveUninitialized: false
       }))
@@ -66,11 +66,11 @@ async function initialize_server(con) {
       //prepare the GET response to return main index
       //General feature
       //Function Name: openDashboard
-      router.get('/',function(req,res){
+      router.get("/",function(req,res){
         if (req.session && req.session.email) {
-          res.redirect('/dashboard')
+          res.redirect("/dashboard")
         } else {
-          res.sendFile(path.join(__dirname + '/client/index.html'))
+          res.sendFile(path.join(__dirname + "/client/index.html"))
         }
       });
 
@@ -80,7 +80,7 @@ async function initialize_server(con) {
           return next();
         } else {
           //var err = new Error('You must be logged in to view this page.');
-          return res.redirect('/?e=1')
+          return res.redirect("/?e=1")
           //err.status = 401;
           //return next(err);
         }
@@ -89,7 +89,7 @@ async function initialize_server(con) {
       //Login feature
       //Function name: loginUser
       app.use(express.json()) //can parse json
-      router.post('/login', function(req, res, next) {
+      router.post("/login", function(req, res, next) {
         var email = req.body.email
         var password = req.body.password
 
@@ -103,7 +103,7 @@ async function initialize_server(con) {
             console.log("User " + email + " has logged in successfully...")
             //set sessions variable
             req.session.email = email
-            req.session.userid = result[0]['uid']
+            req.session.userid = result[0]["uid"]
             res.send("SUCCESS")
           } else {
             res.send("FAIL")
@@ -113,7 +113,7 @@ async function initialize_server(con) {
 
       //Register Feature
       //Function Name: registerNewUser
-      router.post('/register', function(req, res, next) {
+      router.post("/register", function(req, res, next) {
         var register_email = req.body.register_email
         var register_password = req.body.register_password
         var register_confirm_password = req.body.register_confirm_password
@@ -150,14 +150,14 @@ async function initialize_server(con) {
               console.log("Someone tried to create an already existing user...")
               res.end()
             } else {
-              con.query("INSERT INTO users VALUES (0,?,?,?)", [register_email, hash,'default_avatar.png'], function (err, resulta) {
+              con.query("INSERT INTO users VALUES (0,?,?,?)", [register_email, hash,"default_avatar.png"], function (err, resulta) {
                 if (err) {
                   res.send("FAIL")
                   throw err
                 } else {
-                  console.log("A new user : " + register_email + " has just registered with user id : " + resulta['insertId'])
+                  console.log("A new user : " + register_email + " has just registered with user id : " + resulta["insertId"])
                   req.session.email = register_email
-                  req.session.userid = resulta['insertId']
+                  req.session.userid = resulta["insertId"]
                   res.send("SUCCESS") //redirect in client browser
                 }
               })
@@ -172,25 +172,25 @@ async function initialize_server(con) {
       });
       //General feature
       //Function name: loadDashboardPage
-      router.get('/dashboard', require_login, function(req, res, next) {
+      router.get("/dashboard", require_login, function(req, res, next) {
         //...
-        res.sendFile(path.join(__dirname + '/client/dashboard.html'))
+        res.sendFile(path.join(__dirname + "/client/dashboard.html"))
       });
 
 
       //Posting Picture Feature
       //Function Name: postPicture
-      router.post('/post_image', upload.single('data_filez'), function(req, res, next) {
+      router.post("/post_image", upload.single("data_filez"), function(req, res, next) {
         if (req.session && req.session.email) {
 
           if(req.fileValidationError) {
             console.log("NAH GOOD")
-                return res.redirect('/dashboard?a=2');
+                return res.redirect("/dashboard?a=2");
           }
           if (req.file) {
 
           } else {
-            return res.redirect('/dashboard?a=3');
+            return res.redirect("/dashboard?a=3");
           }
 
           //console.log(req.body.imagioyoyo)
@@ -206,17 +206,17 @@ async function initialize_server(con) {
               console.log("A new post from : " + req.session.email + " with user id : " + req.session.userid + " has been posted as  : " + req.file.filename + " with description : " + req.body.imagioyoyo)
             }
           })
-          res.redirect('/dashboard?a=1')
+          res.redirect("/dashboard?a=1")
         } else {
           console.log("FAILED!")
-          res.redirect('/e=1')
+          res.redirect("/e=1")
         }
       });
 
 
       //General feature
       //Function name: fetchFeed
-      router.post('/fetch_feed', function(req,res,next) {
+      router.post("/fetch_feed", function(req,res,next) {
         if (req.session && req.session.email) {
           // con.query("SELECT * FROM posts LEFT JOIN users ON posts.userid=users.uid ORDER BY posts.id DESC LIMIT 10", [], function (err, result) {
             con.query("SELECT * FROM posts LEFT JOIN users ON posts.userid=users.uid LEFT JOIN likes ON likes.postid=posts.id WHERE (likes.likeId NOT IN (SELECT DISTINCT A.likeId FROM likes A, likes B WHERE A.whoLiked <> B.whoLiked AND A.postid = B.postid AND A.whoLiked <> ? ) ) OR likes.likeId IS NULL ORDER BY posts.id DESC LIMIT 10", [req.session.userid], function (err, result) {
@@ -249,7 +249,7 @@ async function initialize_server(con) {
 
       //Like feature
       //Function name: likePicture
-      router.post('/post_likes', function(req,res,next){
+      router.post("/post_likes", function(req,res,next){
         if (req.session && req.session.email){
           con.query("UPDATE posts SET likeCount = ? WHERE id = ?", [req.body.likes, req.body.zpostid], function(err, result){
             if (err) throw err
@@ -265,7 +265,7 @@ async function initialize_server(con) {
         }
       })
   
-      router.post('/like_once', function(req,res,next){
+      router.post("/like_once", function(req,res,next){
         if(req.session && req.session.email){
           con.query("SELECT postid, whoLiked FROM likes WHERE postid = ? AND whoLiked = ?", [req.body.zpostid,req.session.userid], function(err, result, field){
             if (err) throw err
@@ -286,7 +286,7 @@ async function initialize_server(con) {
 
       //Comments feature
       //Function name: fetchComments
-      router.post('/fetch_comments', function(req,res,next) {
+      router.post("/fetch_comments", function(req,res,next) {
         if (req.session && req.session.email) {
           console.log(req.body)
           console.log(req.body.zpostid)
@@ -312,7 +312,7 @@ async function initialize_server(con) {
 
       //Comments feature
       //Function name: sendComments
-      router.post('/send_comment', function(req,res,next) {
+      router.post("/send_comment", function(req,res,next) {
         if (req.session && req.session.email) {
           console.log(req.body)
           console.log(req.body.comment)
@@ -331,17 +331,17 @@ async function initialize_server(con) {
       //General feature
       //Profile page
       //Function name: loadProfilePage
-      router.get('/user', require_login, function(req, res, next) {
+      router.get("/user", require_login, function(req, res, next) {
         //...
-        res.sendFile(path.join(__dirname + '/client/user.html'))
+        res.sendFile(path.join(__dirname + "/client/user.html"))
       });
 
       //General feature
       //Profile page
       //Function name: loadGallery
-      router.post('/fetch_gallery', function(req,res,next) {
+      router.post("/fetch_gallery", function(req,res,next) {
         console.log(req.body.uid)
-        if (typeof req.body.uid == 'undefined' || req.body.uid == null) {
+        if (typeof req.body.uid == "undefined" || req.body.uid == null) {
           res.send("Error :( try again...")
           res.end()
           return;
@@ -392,9 +392,9 @@ async function initialize_server(con) {
 
       //General feature
       //Functions name: fetchUsers
-      router.post('/fetch_user', function(req,res,next) {
+      router.post("/fetch_user", function(req,res,next) {
         console.log(req.body.uid)
-        if (typeof req.body.uid == 'undefined' || req.body.uid == null) {
+        if (typeof req.body.uid == "undefined" || req.body.uid == null) {
           res.send("Error :( try again...")
           res.end()
           return;
@@ -424,7 +424,7 @@ async function initialize_server(con) {
 
             console.log(result)
             var avatar_filename = result[0].avatar_fn;
-            if (typeof avatar_filename == 'undefined' || avatar_filename === null || avatar_filename == 'null' || avatar_filename == "" || avatar_filename == " ") {
+            if (typeof avatar_filename == "undefined" || avatar_filename === null || avatar_filename == "null" || avatar_filename == "" || avatar_filename == " ") {
               avatar_filename = "default_avatar.png";
             }
             console.log(avatar_filename)
@@ -479,9 +479,9 @@ async function initialize_server(con) {
 
       //Follow Feature
       //Function name: unfollowUser
-      router.post('/unfollow_user', function(req,res,next) {
+      router.post("/unfollow_user", function(req,res,next) {
         console.log(req.body.uid)
-        if (typeof req.body.uid == 'undefined' || req.body.uid == null) {
+        if (typeof req.body.uid == "undefined" || req.body.uid == null) {
           res.send("Error :( try again...")
           res.end()
           return;
@@ -514,7 +514,7 @@ async function initialize_server(con) {
 
             console.log(result)
             var avatar_filename = result[0].avatar_fn;
-            if (typeof avatar_filename == 'undefined' || avatar_filename === null || avatar_filename == 'null' || avatar_filename == "" || avatar_filename == " ") {
+            if (typeof avatar_filename == "undefined" || avatar_filename === null || avatar_filename == "null" || avatar_filename == "" || avatar_filename == " ") {
               avatar_filename = "default_avatar.png";
             }
             console.log(avatar_filename)
@@ -568,9 +568,9 @@ async function initialize_server(con) {
 
       //Follow feature
       //Function name: followUser
-      router.post('/follow_user', function(req,res,next) {
+      router.post("/follow_user", function(req,res,next) {
         console.log(req.body.uid)
-        if (typeof req.body.uid == 'undefined' || req.body.uid == null) {
+        if (typeof req.body.uid == "undefined" || req.body.uid == null) {
           res.send("Error :( try again...")
           res.end()
           return;
@@ -603,7 +603,7 @@ async function initialize_server(con) {
 
             console.log(result)
             var avatar_filename = result[0].avatar_fn;
-            if (typeof avatar_filename == 'undefined' || avatar_filename === null || avatar_filename == 'null' || avatar_filename == "" || avatar_filename == " ") {
+            if (typeof avatar_filename == "undefined" || avatar_filename === null || avatar_filename == "null" || avatar_filename == "" || avatar_filename == " ") {
               avatar_filename = "default_avatar.png";
             }
             console.log(avatar_filename)
@@ -657,7 +657,7 @@ async function initialize_server(con) {
       // GET /logout
       //Login feature
       //Function name: logoutUser
-      router.get('/logout', function(req, res, next) {
+      router.get("/logout", function(req, res, next) {
         if (req.session) {
           //delete session object
           if (req.session.email)
@@ -667,19 +667,19 @@ async function initialize_server(con) {
             if(err) {
               return next(err);
             } else {
-              return res.redirect('/?e=2')
+              return res.redirect("/?e=2")
             }
           });
         }
       });
 
       //add the router to the express app
-      app.use('/', router)
+      app.use("/", router)
 
       //add to the app the route to all static files (csv data, images, etc)
-      app.use(express.static(__dirname + '/'))
-      app.use(express.static(__dirname + '/client/'))
-      app.use(express.static(__dirname + '/client/assets/'))
+      app.use(express.static(__dirname + "/"))
+      app.use(express.static(__dirname + "/client/"))
+      app.use(express.static(__dirname + "/client/assets/"))
 
       console.log("Server ready and running!")
 
@@ -721,4 +721,4 @@ initDB()
     initialize_server(con_instance)
 })
 
-module.exports = 'Main';
+module.exports = "Main";
