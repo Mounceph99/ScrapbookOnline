@@ -73,7 +73,7 @@ async function initialize_server(con) {
           res.sendFile(path.join(__dirname + '/client/index.html'))
         }
       });
-
+      //Login feature
       //requireslogin middleware
       function require_login(req, res, next) {
         if (req.session && req.session.email) {
@@ -265,6 +265,8 @@ async function initialize_server(con) {
         }
       })
   
+      //Like feature
+      //Function name: likeOnce
       router.post('/like_once', function(req,res,next){
         if(req.session && req.session.email){
           con.query("SELECT postid, whoLiked FROM likes WHERE postid = ? AND whoLiked = ?", [req.body.zpostid,req.session.userid], function(err, result, field){

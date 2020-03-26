@@ -1,7 +1,7 @@
 const assert = require('assert');
 const functions = require('./functions/TestingFunction');
 
-
+//Testing functions from main.js
 describe("Testing Login", function(){
 it("User is already logged in, should follow through next action", function(){
 
@@ -180,6 +180,27 @@ describe("Testing Like", function(){
         var result = functions.like_feature().likePicture(req,res,nextStub);
         assert.equal(result,false);
     })
+
+    it("User is logged in, increment like couter on that post", function(){
+        var req = {session:{email:"mounceph99@hotmail.com", userid:1234},
+                  body:{likes:12, zpostid:111}};
+        var res = {};
+        const nextStub = (isPassed) => { return isPassed }
+
+        var result = functions.like_feature().likeOnce(req,res,nextStub);
+        assert.equal(result,true);
+    })
+
+    it("User is NOT logged in, do not increment like couter on that post", function(){
+        var req = {};
+        var res = {};
+        const nextStub = (isPassed) => { return isPassed }
+
+        var result = functions.like_feature().likeOnce(req,res,nextStub);
+        assert.equal(result,false);
+    })
+
+    
 
 
 });
@@ -472,3 +493,8 @@ describe("Testing General Feature", () => {
     })
     
 });
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+
+//Testing from dashboard.html
