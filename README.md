@@ -14,15 +14,16 @@
 2. Open XAMPP Control Panel and START 'Apache' and 'mySQL' then select "Admin" for "mySQL"
 3. On the redirect web tab that just happened, create a database and name it "scrapbook" 
 4. Then on that database, create tables as follows:
-	-Table 1: "users" Fields: "uid" as INT and PRIMARY KEY, "email" as VARCHAR(256), "password" as VARCHAR(256), "avatar_fn" as VARCHAR(256)
+	-Table 1: "users" Fields: "uid" as INT and PRIMARY KEY, "email" as VARCHAR(256), "password" as VARCHAR(256), "avatar_filename" as VARCHAR(256)
 	-Table 2: "comments" Fields: "id" as INT and PRIMARY KEY, "userid" as INT, "postid" as INT, "comment" as VARCHAR(256)
-	-Table 3: "posts" Fields: "id" as INT and PRIMARY KEY, "userid" as INT, "filename" as VARCHAR(256), "description" as VARCHAR(256)
+	-Table 3: "posts" Fields: "id" as INT and PRIMARY KEY, "userid" as INT, "filename" as VARCHAR(256), "description" as VARCHAR(256), "likeCount" as INT
 	-Table 4: "followers" Fields: "id" as INT and PRIMARY KEY, "userid" as INT, "followerid" as INT
+	-Table 5: "likes" Fields: "likeId" as INT and PRIMARY KEY, "postid" as INT, "whoLiked" as INT
 5. In order to run the server, open VSC and enter command on terminal "node main.js" which will open the server.
 6. Open a browser and go to "localhost:8080".
  
 
-Project Description:
+##Project Description:
 
 Welcome to ScrapBook Online!!!
 
@@ -33,7 +34,7 @@ create a welcoming community. ScrapBookers will have the chance to follow their 
 they get notified when the followee uploads a picture to their ScrapBook.
 
 
-Developer Team	   : GitHub Usernames
+##Developer Team	   : GitHub Usernames
 Mounceph Morssaoui : Mounceph99
 Joseph Loiselle    : JoeLoiselle
 TianMing Chen      : Ming424
@@ -41,7 +42,7 @@ David Liang        : DavidLiang01
 Jeffey Wilgus      : jeffrey-w
 Yan Kassab	   	   : iyado1
 
-Tools, Languages and Techniques that are to be used:
+##Tools, Languages and Techniques that are to be used:
 Language: JavaScript
 Tools:  HTML, CSS, jQuerey NodeJS, Visual Studio Code, XAMPP Control Panel
 Database: MySQL
@@ -49,17 +50,18 @@ Server: SQL Server
 CI: TravisCI
 Testing: Mocha
 
-Core Features
+##Core Features
 - Upload Picture to their ScrapBook
 - Follow other ScrapBookers
 - Leave comments to uploaded pictures
 
-Tentative Features:
+##Tentative Features:
 - Dark mode
 - Like posts
 - Show post history
 
-Quality of code:
+##Quality of code:
+Note that for a more detailed and accurate rundown of code quality, see wiki page under "Code Style Guide"
 
 Here are some rules to follow in order to make the code look good and easily maintainable.
 1. Use Camel Casing.
@@ -71,7 +73,7 @@ Here are some rules to follow in order to make the code look good and easily mai
 	possible to execute.
 7. Indent code appropriatly.
 
-Objective: 
+##Objective: 
 For Sprint 1:
 - Have at least 3-4 meetings before the end of the sprint
 	-Distribute issues
