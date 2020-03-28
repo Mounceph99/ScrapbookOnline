@@ -16,7 +16,8 @@ const path = require("path"); //to resolve directory when sendFile html (app.get
 const http = require("http"); //for http server...
 const mysql = require("mysql"); //db for historical data
 const session = require("express-session"); //for sessions
-const account = require('./account');
+const account = require("./account");
+const general = require("./general");
 const post = require("./post");
 
 async function initialize_server(con) {
@@ -58,42 +59,38 @@ async function initialize_server(con) {
 
 		//parse json
 		app.use(express.json());
-		
-		//Login feature
+
+		//Account feature
 		account.login(router, con);
-		//Register Feature
 		account.register(router, con);
+		//General features
+		general.fetchFeed(router, con);
+		general.fetchGallery(router, con);
+		general.fetchUsers(router, con);
 		//Posting Picture Feature
 		post.postPicture(router, con);
-		//General feature
-		post.fetchFeed(router, con);
 		//Like feature
 		post.likePicture(router, con);
 		//Comments feature
 		post.fetchComments(router, con);
 		post.sendComments(router, con);
-		//General feature
-		//Profile page
-		post.fetchGallery(router, con);
-		//General feature
-		post.fetchUsers(router, con);
 		//Follow Feature
 		post.unfollowUser(router, con);
 		post.followUser(router, con);
-		
+
 		//General feature
 		//Function name: loadDashboardPage
 		router.get("/dashboard", require_login, function(req, res, next) {
 			res.sendFile(path.join(__dirname + "/client/dashboard.html"));
 		});
-		
+
 		//General feature
 		//Profile page
 		//Function name: loadProfilePage
 		router.get("/user", require_login, function(req, res, next) {
 			res.sendFile(path.join(__dirname + "/client/user.html"));
 		});
-		
+
 		// GET /logout
 		//Login feature
 		//Function name: logoutUser
@@ -110,7 +107,7 @@ async function initialize_server(con) {
 				});
 			}
 		});
-		
+
 		//add the router to the express app
 		app.use("/", router);
 		//add to the app the route to all static files (csv data, images, etc)
