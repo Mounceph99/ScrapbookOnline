@@ -18,6 +18,7 @@ const mysql = require("mysql"); //db for historical data
 const session = require("express-session"); //for sessions
 const account = require("./account");
 const general = require("./general");
+const picture = require("./picture");
 const post = require("./post");
 
 async function initialize_server(con) {
@@ -67,10 +68,9 @@ async function initialize_server(con) {
 		general.fetchFeed(router, con);
 		general.fetchGallery(router, con);
 		general.fetchUsers(router, con);
-		//Posting Picture Feature
-		post.postPicture(router, con);
-		//Like feature
-		post.likePicture(router, con);
+		//Picture Features
+		picture.postPicture(router, con);
+		picture.likePicture(router, con);
 		//Comments feature
 		post.fetchComments(router, con);
 		post.sendComments(router, con);
