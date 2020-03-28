@@ -17,6 +17,7 @@ const http = require("http"); //for http server...
 const mysql = require("mysql"); //db for historical data
 const session = require("express-session"); //for sessions
 const account = require("./account");
+const comment = require("./comments");
 const general = require("./general");
 const picture = require("./picture");
 const post = require("./post");
@@ -72,8 +73,8 @@ async function initialize_server(con) {
 		picture.postPicture(router, con);
 		picture.likePicture(router, con);
 		//Comments feature
-		post.fetchComments(router, con);
-		post.sendComments(router, con);
+		comment.fetchComments(router, con);
+		comment.sendComments(router, con);
 		//Follow Feature
 		post.unfollowUser(router, con);
 		post.followUser(router, con);
