@@ -74,8 +74,6 @@ function unfollowUser(router, con) {
 											"<div class='numba_followers'>" + parseInt(follower_count - 1) + " Follower(s)</div>";
 										html_to_send +=
 											"<button class='button_user' id='id_button_follow' onclick='follow_user()'>Follow</button>";
-										html_to_send +=
-											"<button class='button_user' id='id_scrap_button_user' onclick='scrap_user()'>Scrap</button>";
 										html_to_send += "</div>";
 										res.write(html_to_send);
 										res.end();
@@ -85,8 +83,6 @@ function unfollowUser(router, con) {
 								html_to_send += "<div class='numba_followers'>" + follower_count + " Follower(s)</div>";
 								html_to_send +=
 									"<button class='button_user' id='id_button_follow' onclick='follow_user()'>Follow</button>";
-								html_to_send +=
-									"<button class='button_user' id='id_scrap_button_user' onclick='scrap_user()'>Scrap</button>";
 								html_to_send += "</div>";
 								res.write(html_to_send);
 								res.end();
@@ -175,8 +171,6 @@ function followUser(router, con) {
 									html_to_send += "<div class='numba_followers'>" + parseInt(follower_count + 1) + " Follower(s)</div>";
 									html_to_send +=
 										"<button class='unfollow_button_user' id='id_button_follow' onclick='unfollow_user()'>Unfollow</button>";
-									html_to_send +=
-										"<button class='button_user' id='id_scrap_button_user' onclick='scrap_user()'>Scrap</button>";
 									html_to_send += "</div>";
 									res.write(html_to_send);
 									res.end();
@@ -185,8 +179,6 @@ function followUser(router, con) {
 								html_to_send += "<div class='numba_followers'>" + follower_count + " Follower(s)</div>";
 								html_to_send +=
 									"<button class='unfollow_button_user' id='id_button_follow' onclick='unfollow_user()'>Unfollow</button>";
-								html_to_send +=
-									"<button class='button_user' id='id_scrap_button_user' onclick='scrap_user()'>Scrap</button>";
 								html_to_send += "</div>";
 								res.write(html_to_send);
 								res.end();
