@@ -1,3 +1,36 @@
+const path = require("path"); //to resolve directory when sendFile html (app.get response.sendFile())
+
+function loadDashboard(router) {
+	router.get("/dashboard", require_login, function(req, res, next) {
+		res.sendFile(path.join(__dirname + "/client/dashboard.html"));
+	});
+}
+
+function loadProfile(router) {
+	router.get("/user", require_login, function(req, res, next) {
+		res.sendFile(path.join(__dirname + "/client/user.html"));
+	});
+}
+
+//requireslogin middleware
+function require_login(req, res, next) {
+	if (req.session && req.session.email) {
+		return next();
+	} else {
+		return res.redirect("/?e=1");
+	}
+}
+
+function openDashboard(router) {
+	router.get("/", function(req, res) {
+		if (req.session && req.session.email) {
+			res.redirect("/dashboard");
+		} else {
+			res.sendFile(path.join(__dirname + "/client/index.html"));
+		}
+	});
+}
+
 function fetchFeed(router, con) {
 	router.post("/fetch_feed", function(req, res, next) {
 		if (req.session && req.session.email) {
@@ -192,8 +225,6 @@ function fetchUsers(router, con) {
 							} else {
 								//don't show follow button
 							}
-							html_to_send +=
-								"<button class='button_user' id='id_scrap_button_user' onclick='scrap_user()'>Scrap</button>";
 							html_to_send += "</div>";
 							res.write(html_to_send);
 							res.end();
@@ -207,6 +238,9 @@ function fetchUsers(router, con) {
 	});
 }
 
+exports.loadDashboard = loadDashboard;
+exports.loadProfile = loadProfile;
+exports.openDashboard = openDashboard;
 exports.fetchFeed = fetchFeed;
 exports.fetchGallery = fetchGallery;
 exports.fetchUsers = fetchUsers;
