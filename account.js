@@ -24,6 +24,22 @@ function login(router, con) {
 	});
 }
 
+function logout(router) {
+	router.get("/logout", function(req, res, next) {
+		if (req.session) {
+			//delete session object
+			if (req.session.email) console.log("User " + req.session.email + " has successfully logged out...");
+			req.session.destroy(function(err) {
+				if (err) {
+					return next(err);
+				} else {
+					return res.redirect("/?e=2");
+				}
+			});
+		}
+	});
+}
+
 function register(router, con) {
 	router.post("/register", function(req, res, next) {
 		const register_email = req.body.register_email;
@@ -81,4 +97,5 @@ function register(router, con) {
 }
 
 exports.login = login;
+exports.logout = logout;
 exports.register = register;
