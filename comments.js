@@ -1,8 +1,6 @@
 function fetchComments(router, con) {
-	router.post("/fetch_comments", function(req, res, next) {
+	router.post("/fetch_comments", function(req, res) {
 		if (req.session && req.session.email) {
-			console.log(req.body);
-			console.log(req.body.zpostid);
 			con.query(
 				"SELECT * FROM comments JOIN users ON comments.userid=users.uid WHERE postid = ? ORDER BY comments.id",
 				[req.body.zpostid],
@@ -13,7 +11,7 @@ function fetchComments(router, con) {
 					const number = result.length;
 					res.write("<div class='numba_commentos'>" + number + " comments on this post</div>");
 					for (let i = 0; i < number; i++) {
-						let html_comments =
+						const html_comments =
 							"<div class='comment'><div class='commenter_user'>" +
 							result[i].email +
 							"</div><div class='zawords'>" +
@@ -21,7 +19,7 @@ function fetchComments(router, con) {
 							"</div></div>";
 						res.write(html_comments);
 					}
-					//write input for comments
+					// write input for comments
 					res.write(
 						"<div class='input_container_send_message'><input type='text' id='comment_input' name='comment_input' placeholder='Your comment here...'/><button id='sendacomment' onclick='send_comment(" +
 							req.body.zpostid +
@@ -38,15 +36,12 @@ function fetchComments(router, con) {
 }
 
 function sendComments(router, con) {
-	router.post("/send_comment", function(req, res, next) {
+	router.post("/send_comment", function(req, res) {
 		if (req.session && req.session.email) {
-			console.log(req.body);
-			console.log(req.body.comment);
-			console.log(req.body.zpostid);
 			con.query(
 				"INSERT INTO comments VALUES (0,?,?,?)",
 				[req.session.userid, req.body.zpostid, req.body.comment],
-				function(err, result) {
+				function(err) {
 					if (err) {
 						throw err;
 					}

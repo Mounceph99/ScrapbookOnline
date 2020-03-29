@@ -1,6 +1,5 @@
 function unfollowUser(router, con) {
-	router.post("/unfollow_user", function(req, res, next) {
-		console.log(req.body.uid);
+	router.post("/unfollow_user", function(req, res) {
 		if (typeof req.body.uid == "undefined" || req.body.uid == null) {
 			res.send("Error : try again.");
 			res.end();
@@ -13,7 +12,6 @@ function unfollowUser(router, con) {
 			}
 		}
 		if (req.session && req.session.email) {
-			console.log(req.body.uid);
 			con.query("SELECT * FROM users WHERE users.uid = ? LIMIT 1", [req.body.uid], function(err, result) {
 				if (err) {
 					throw err;
@@ -24,14 +22,11 @@ function unfollowUser(router, con) {
 					return;
 				}
 				console.log("User : " + req.session.email + " wants to unfollow user " + req.body.uid + ".");
-				let same_user = 0;
 				if (req.session.userid == req.body.uid) {
-					same_user = 1;
 					res.send("Error : you can't follow yourself.");
 					res.end();
 					return;
 				}
-				console.log(result);
 				let avatar_filename = result[0].avatar_fn;
 				if (
 					typeof avatar_filename == "undefined" ||
@@ -42,11 +37,10 @@ function unfollowUser(router, con) {
 				) {
 					avatar_filename = "default_avatar.png";
 				}
-				console.log(avatar_filename);
 				let html_to_send = "<div class='user_avatar_container'>";
 				html_to_send += "<div class='user_avatar'><img class='avatar_img' src='/avatar/" + avatar_filename + "'></div>";
 				html_to_send += "</div>";
-				//show username
+				// show username
 				const username = result[0].email;
 				html_to_send += "<div class='username'>" + username + "</div>";
 				html_to_send += "<div class='follow_or_scrap'>";
@@ -58,18 +52,18 @@ function unfollowUser(router, con) {
 							throw err;
 						}
 						const is_following = parseInt(result.length);
-						//here is a query to count all of them
+						// here is a query to count all of them
 						con.query("SELECT * FROM followers WHERE followers.userid = ?", [req.body.uid], function(err, result) {
 							if (err) {
 								throw err;
 							}
-							let follower_count = 0; //init
+							let follower_count = 0; // init
 							follower_count = result.length;
 							if (is_following > 0) {
 								con.query(
 									"DELETE FROM followers WHERE followers.followerid = ? AND followers.userid = ?",
 									[req.session.userid, req.body.uid],
-									function(err, result) {
+									function() {
 										html_to_send +=
 											"<div class='numba_followers'>" + parseInt(follower_count - 1) + " Follower(s)</div>";
 										html_to_send +=
@@ -98,8 +92,7 @@ function unfollowUser(router, con) {
 }
 
 function followUser(router, con) {
-	router.post("/follow_user", function(req, res, next) {
-		console.log(req.body.uid);
+	router.post("/follow_user", function(req, res) {
 		if (typeof req.body.uid == "undefined" || req.body.uid == null) {
 			res.send("Error : try again.");
 			res.end();
@@ -112,7 +105,6 @@ function followUser(router, con) {
 			}
 		}
 		if (req.session && req.session.email) {
-			console.log(req.body.uid);
 			con.query("SELECT * FROM users WHERE users.uid = ? LIMIT 1", [req.body.uid], function(err, result) {
 				if (err) {
 					throw err;
@@ -123,14 +115,11 @@ function followUser(router, con) {
 					return;
 				}
 				console.log("User : " + req.session.email + " wants to follow user " + req.body.uid + ".");
-				var same_user = 0;
 				if (req.session.userid == req.body.uid) {
-					same_user = 1;
 					res.send("Error : you can't follow yourself.");
 					res.end();
 					return;
 				}
-				console.log(result);
 				let avatar_filename = result[0].avatar_fn;
 				if (
 					typeof avatar_filename == "undefined" ||
@@ -141,11 +130,10 @@ function followUser(router, con) {
 				) {
 					avatar_filename = "default_avatar.png";
 				}
-				console.log(avatar_filename);
 				let html_to_send = "<div class='user_avatar_container'>";
 				html_to_send += "<div class='user_avatar'><img class='avatar_img' src='/avatar/" + avatar_filename + "'></div>";
 				html_to_send += "</div>";
-				//show username
+				// show username
 				const username = result[0].email;
 				html_to_send += "<div class='username'>" + username + "</div>";
 				html_to_send += "<div class='follow_or_scrap'>";
@@ -161,12 +149,10 @@ function followUser(router, con) {
 							if (err) {
 								throw err;
 							}
-							let follower_count = 0; //init
+							let follower_count = 0; // init
 							follower_count = result.length;
 							if (is_following <= 0) {
 								con.query("INSERT INTO followers VALUES (0,?,?)", [req.body.uid, req.session.userid], function(
-									err,
-									result
 								) {
 									html_to_send += "<div class='numba_followers'>" + parseInt(follower_count + 1) + " Follower(s)</div>";
 									html_to_send +=

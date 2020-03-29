@@ -1,18 +1,18 @@
-const path = require("path"); //to resolve directory when sendFile html (app.get response.sendFile())
+const path = require("path"); // to resolve directory when sendFile html (app.get response.sendFile())
 
 function loadDashboard(router) {
-	router.get("/dashboard", require_login, function(req, res, next) {
+	router.get("/dashboard", require_login, function(req, res) {
 		res.sendFile(path.join(__dirname + "/client/dashboard.html"));
 	});
 }
 
 function loadProfile(router) {
-	router.get("/user", require_login, function(req, res, next) {
+	router.get("/user", require_login, function(req, res) {
 		res.sendFile(path.join(__dirname + "/client/user.html"));
 	});
 }
 
-//requireslogin middleware
+// requireslogin middleware
 function require_login(req, res, next) {
 	if (req.session && req.session.email) {
 		return next();
@@ -32,7 +32,7 @@ function openDashboard(router) {
 }
 
 function fetchFeed(router, con) {
-	router.post("/fetch_feed", function(req, res, next) {
+	router.post("/fetch_feed", function(req, res) {
 		if (req.session && req.session.email) {
 			con.query(
 				"SELECT * FROM posts LEFT JOIN users ON posts.userid=users.uid LEFT JOIN likes ON likes.postid=posts.id WHERE (likes.likeId NOT IN (SELECT DISTINCT A.likeId FROM likes A, likes B WHERE A.whoLiked <> B.whoLiked AND A.postid = B.postid AND A.whoLiked <> ? ) ) OR likes.likeId IS NULL ORDER BY posts.id DESC LIMIT 10",
@@ -95,8 +95,7 @@ function fetchFeed(router, con) {
 }
 
 function fetchGallery(router, con) {
-	router.post("/fetch_gallery", function(req, res, next) {
-		console.log(req.body.uid);
+	router.post("/fetch_gallery", function(req, res) {
 		if (typeof req.body.uid == "undefined" || req.body.uid == null) {
 			res.send("Error : try again.");
 			res.end();
@@ -109,7 +108,6 @@ function fetchGallery(router, con) {
 			}
 		}
 		if (req.session && req.session.email) {
-			console.log(req.body.uid);
 			con.query("SELECT * FROM posts WHERE userid = ? ORDER BY RAND() LIMIT 11", [req.body.uid], function(err, result) {
 				if (err) {
 					throw err;
@@ -121,10 +119,9 @@ function fetchGallery(router, con) {
 				}
 				console.log("User : " + req.session.email + " fetched user gallery for " + req.body.uid + ".");
 				let html_to_send = "<div class='grid' style='width:100%;'>";
-				console.log(result);
 				html_to_send += "<div class='grid-sizer'>";
 				for (let i = 0; i < result.length; i++) {
-					//i is odd
+					// i is odd
 					if (i & 1) {
 						html_to_send += "<div class='grid-item grid-item--width2'>";
 					} else {
@@ -148,8 +145,7 @@ function fetchGallery(router, con) {
 }
 
 function fetchUsers(router, con) {
-	router.post("/fetch_user", function(req, res, next) {
-		console.log(req.body.uid);
+	router.post("/fetch_user", function(req, res) {
 		if (typeof req.body.uid == "undefined" || req.body.uid == null) {
 			res.send("Error : try again.");
 			res.end();
@@ -162,7 +158,6 @@ function fetchUsers(router, con) {
 			}
 		}
 		if (req.session && req.session.email) {
-			console.log(req.body.uid);
 			con.query("SELECT * FROM users WHERE users.uid = ? LIMIT 1", [req.body.uid], function(err, result) {
 				if (err) {
 					throw err;
@@ -177,7 +172,6 @@ function fetchUsers(router, con) {
 				if (req.session.userid == req.body.uid) {
 					same_user = 1;
 				}
-				console.log(result);
 				let avatar_filename = result[0].avatar_fn;
 				if (
 					typeof avatar_filename == "undefined" ||
@@ -188,11 +182,10 @@ function fetchUsers(router, con) {
 				) {
 					avatar_filename = "default_avatar.png";
 				}
-				console.log(avatar_filename);
 				let html_to_send = "<div class='user_avatar_container'>";
 				html_to_send += "<div class='user_avatar'><img class='avatar_img' src='/avatar/" + avatar_filename + "'></div>";
 				html_to_send += "</div>";
-				//show username
+				// show username
 				var username = result[0].email;
 				html_to_send += "<div class='username'>" + username + "</div>";
 
@@ -210,11 +203,11 @@ function fetchUsers(router, con) {
 							if (err) {
 								throw err;
 							}
-							var follower_count = 0; //init
+							var follower_count = 0; // init
 							follower_count = result.length;
 							html_to_send += "<div class='numba_followers'>" + follower_count + " Follower(s)</div>";
 							if (same_user <= 0) {
-								//show follow button
+								// show follow button
 								if (is_following <= 0) {
 									html_to_send +=
 										"<button class='button_user' id='id_button_follow' onclick='follow_user()'>Follow</button>";
@@ -223,7 +216,7 @@ function fetchUsers(router, con) {
 										"<button class='unfollow_button_user' id='id_button_follow' onclick='unfollow_user()'>Unfollow</button>";
 								}
 							} else {
-								//don't show follow button
+								// don't show follow button
 							}
 							html_to_send += "</div>";
 							res.write(html_to_send);
