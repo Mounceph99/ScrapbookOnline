@@ -1,274 +1,231 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
+	<head>
+		<meta charset="utf-8" />
+		<title>SOEN341_dashboard</title>
+		<meta name="description" content="SOEN341_dashboard" />
+		<meta name="author" content="SOEN341_Group" />
+		<link rel="stylesheet" href="/css/style.css" />
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="/js/thirdparty/micromodal.min.js"></script>
+	</head>
+	<body>
+		<div id="post_image_modal" data-micromodal-close="post_image_modal">
+			<div class="middle_pane" data-micromodal-close="post_image_modal">
+				<div class="add_post_pane">
+					<div class="post_image_form">
+						<span class="title_post_modal_form">Post an image!</span>
+						<form id="senda" enctype="multipart/form-data" method="POST" action="/post_image">
+							<div class="input_group">
+								<span class="input-group-addon"><i class="far fa-sticky-note"></i></span>
+								<input id="image_desc" name="imagioyoyo" type="text" class="form-control" placeholder="Description" />
+							</div>
+							<div class="input_group">
+								<span class="input-group-addon"><i class="far fa-folder"></i></span>
+								<input id="image_file" name="data_filez" type="file" class="form-control" placeholder="filename.png" />
+							</div>
+							<button type="submit" class="float">Post</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="mcontainer">
+			<div class="row">
+				<div id="left_menu" class="column">
+					<div class="inner_cont">
+						<div class="inda_inner_cont">
+							<div id="logo_top_small"></div>
+							<div id="menu_item_1" class="mitem" onclick="window.location.href='/dashboard'"></div>
+							<div id="menu_item_2" class="mitem" data-micromodal-trigger="post_image_modal"></div>
+							<div id="menu_item_dark" class="mitem"></div>
+							<div id="menu_item_4" class="mitem" onclick="logout()"></div>
+						</div>
+					</div>
+				</div>
+				<div id="feed_col" class="column">
+					<div class="inner_cont">
+						<div class="inda_inner_cont" id="indafeed">
+							<!-- DEFAULT CONTENT HERE ... spinner... -->
+						</div>
+					</div>
+				</div>
+				<div id="comments_col" class="column">
+					<div class="inner_cont">
+						<div class="inda_inner_cont" id="indacomments">
+							<div id="select_a_post_inner">
+								Click on a post to show the comments...
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="image_success_modal" data-micromodal-close="image_success_modal">
+			<div class="middle_pane" data-micromodal-close="image_success_modal">
+				<div class="add_post_pane">
+					<div class="post_image_form">
+						<span id="changethistext" class="title_post_modal_form">Image uploaded successfully!</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			var dark_mode = false;
+			document.getElementById("menu_item_dark").addEventListener(
+				"click",
+				function() {
+					if (dark_mode == false) {
+						document.body.classList.toggle("dark_mode");
+						$("#menu_item_1").addClass("dark");
+						$("#menu_item_2").addClass("dark");
+						$("#menu_item_4").addClass("dark");
+						$("#menu_item_dark").addClass("dark");
+						$(".post").addClass("dark");
+						dark_mode = true;
+					} else {
+						document.body.classList.toggle("dark_mode");
+						$("#menu_item_1").removeClass("dark");
+						$("#menu_item_2").removeClass("dark");
+						$("#menu_item_4").removeClass("dark");
+						$("#menu_item_dark").removeClass("dark");
+						$(".post").removeClass("dark");
+						dark_mode = false;
+					}
+				},
+				false
+			);
 
-  <title>SOEN341_dashboard</title>
-  <meta name="description" content="SOEN341_dashboard">
-  <meta name="author" content="SOEN341_Group">
+			MicroModal.init({
+				disableScroll: true, // [5]
+				disableFocus: false, // [6]
+				awaitOpenAnimation: false, // [7]
+				awaitCloseAnimation: false, // [8]
+				debugMode: true // [9]
+			});
 
-  <link rel="stylesheet" href="/css/style.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      var how_much_u_need = 0;
+      
+      document.onload = fetch_feed();
+      
+			function fetch_feed() {
+				console.log("Fetching images.");
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						document.getElementById("indafeed").innerHTML = this.responseText;
+					}
+				};
+				xhttp.open("POST", "/fetch_feed");
+				data = new FormData();
+				data.append("numba", how_much_u_need);
+				xhttp.send(data);
+			}
+			var url = new URL(window.location.href);
+			var a = url.searchParams.get("a");
+			console.log("error a : " + a);
+			//show you must login
+			if (a == 1) {
+				MicroModal.show("image_success_modal");
+			}
+			if (a == 2) {
+				document.getElementById("changethistext").innerHTML = "You cannot post these kind of files.";
+				MicroModal.show("image_success_modal");
+			}
 
+			//get the file in the input form everytime we set it
+			var files;
+			$("input[type=file]").on("change", store_file);
+			function store_file(e) {
+				files = e.target.files;
+			}
+			
+			function post_image_ajax() {
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						document.getElementById("feed").innerHTML += this.responseText;
+					}
+				};
+				xhttp.open("POST", "/post_image");
+				var image_desc = document.getElementById("image_desc").value;
+				xhttp.setRequestHeader("Content-Type", "application/w-xxx-form-urlencoded");
+				xhttp.setRequestHeader("enctype", "multipart/form-data");
+				data = new FormData();
+				data.append("imagio", image_desc);
+				data.append("data_filez", files[0]);
+				for (var pair of data.entries()) {
+					console.log(pair[0] + ", " + pair[1]);
+				}
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+				xhttp.send(data);
+			}
 
-  <script src="/js/thirdparty/micromodal.min.js"></script>
+			function like_post(postid) {
+				//Validate if user already liked the post
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						document.getElementById(postid.toString()).innerText = "+" + likeCount;
+					}
+				};
+				xhttp.open("POST", "/post_likes");
+				var likeCount = document.getElementById(postid.toString()).innerText;
+				likeCount = parseInt(likeCount.substring(1, likeCount.length));
+				likeCount++;
+				xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+				xhttp.send(JSON.stringify({ likes: likeCount, zpostid: postid }));
+			}
 
-</head>
+			function likario(postid) {
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						var result = this.response;
+						console.log(result);
+						if (result == "true") {
+							like_post(postid);
+							document.getElementById("post_" + postid).className = "like_button_liked";
+						}
+					}
+				};
+				xhttp.open("POST", "/like_once");
+				xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+				xhttp.send(JSON.stringify({ zpostid: postid }));
+			}
 
-<body> 
-  <div id="post_image_modal" data-micromodal-close="post_image_modal">
-    <div class="middle_pane" data-micromodal-close="post_image_modal">
-      <div class="add_post_pane">
-        <div class="post_image_form">
-          <span class="title_post_modal_form">Post an image!</span>
-
-          <form id="senda" enctype="multipart/form-data" method="POST" action="/post_image">
-            <div class="input_group">
-              <span class="input-group-addon"><i class="far fa-sticky-note"></i></span>
-              <input id="image_desc" name="imagioyoyo" type="text" class="form-control" placeholder="Description">
-            </div>
-            <div class="input_group">
-              <span class="input-group-addon"><i class="far fa-folder"></i></span>
-              <input id="image_file" name="data_filez" type="file" class="form-control" placeholder="filename.png">
-            </div>
-            <button type="submit" class="float">Post</button>
-          </form>
-      </div>
-      </div>
-    </div>
-  </div>
-  <div id="mcontainer">
-    <div class="row">
-      <div id="left_menu" class="column">
-        <div class='inner_cont'>
-          <div class='inda_inner_cont'>
-              <div id="logo_top_small"></div>
-              <div id="menu_item_1" class="mitem" onclick="window.location.href='/dashboard'"></div>
-              <div id="menu_item_2" class="mitem" data-micromodal-trigger="post_image_modal"></div>
-              <div id="menu_item_3" class="mitem"></div>
-              <div id="menu_item_dark" class="mitem"></div>
-              <div id="menu_item_4" class="mitem"  onclick="logout()"></div>
-          </div>
-        </div>
-      </div>
-      <div id="feed_col" class="column">
-        <div class='inner_cont'>
-          <div class='inda_inner_cont' id="indafeed">
-
-              <!-- DEFAULT CONTENT HERE ... spinner... -->
-
-          </div>
-        </div>
-      </div>
-      <div id="comments_col" class="column">
-        <div class='inner_cont'>
-          <div class='inda_inner_cont' id="indacomments">
-
-            <div id="select_a_post_inner">
-              Click on a post to show the comments...
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="image_success_modal" data-micromodal-close="image_success_modal">
-    <div class="middle_pane" data-micromodal-close="image_success_modal">
-      <div class="add_post_pane">
-        <div class="post_image_form">
-          <span id="changethistext" class="title_post_modal_form">Image uploaded successfully!</span>
-      </div>
-      </div>
-    </div>
-  </div>
-
-   <script>
-
-    var dark_mode = false; 
-    document.getElementById("menu_item_dark").addEventListener("click", 
-      function() {
-        if(dark_mode==false){
-          document.body.classList.toggle('dark_mode');
-          $("#menu_item_1").addClass('dark');
-          $("#menu_item_2").addClass('dark');
-          $("#menu_item_3").addClass('dark');
-          $("#menu_item_4").addClass('dark');
-          $("#menu_item_dark").addClass('dark');
-          $(".post").addClass('dark');
-          dark_mode = true; 
-        } else {
-          document.body.classList.toggle('dark_mode');
-          $("#menu_item_1").removeClass('dark');
-          $("#menu_item_2").removeClass('dark');
-          $("#menu_item_3").removeClass('dark');
-          $("#menu_item_4").removeClass('dark');
-          $("#menu_item_dark").removeClass('dark');
-          $(".post").removeClass('dark');
-          dark_mode = false; 
-        }
+			function commentario(postid) {
+				console.log(postid);
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						document.getElementById("indacomments").innerHTML = this.responseText;
+					}
+				};
+				xhttp.open("POST", "/fetch_comments");
+				xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+				xhttp.send(JSON.stringify({ zpostid: postid }));
       }
-    , false);  
+      
+			function send_comment(postid) {
+				console.log(postid);
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						commentario(postid);
+					}
+				};
+				xhttp.open("POST", "/send_comment");
+				var comment = document.getElementById("comment_input").value;
+				xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+				xhttp.send(JSON.stringify({ zpostid: postid, comment: comment }));
+			}
 
-   MicroModal.init({
-     disableScroll: true, // [5]
-     disableFocus: false, // [6]
-     awaitOpenAnimation: false, // [7]
-     awaitCloseAnimation: false, // [8]
-     debugMode: true // [9]
-   });
-
-
-   //when on click image get the comments
-
-   document.onload = fetch_feed()
-   //setInterval(fetch_feed, 10000); //60000ms is 1 minute
-   var how_much_u_need = 0;
-   function fetch_feed() {
-       console.log("MAKING A POST REQUEST TO FETCH IMAGES!")
-         var xhttp = new XMLHttpRequest();
-         xhttp.onreadystatechange = function() {
-           if (this.readyState == 4 && this.status == 200) {
-              document.getElementById("indafeed").innerHTML = this.responseText;
-           }
-         }
-         xhttp.open("POST", "/fetch_feed");
-
-         data = new FormData()
-         data.append("numba", how_much_u_need)
-
-         xhttp.send(data);
-   }
-
-   var url = new URL(window.location.href);
-   var a = url.searchParams.get("a");
-   console.log("error a : " + a);
-   //show you must login!
-   if (a == 1) {
-     MicroModal.show('image_success_modal');
-   }
-   if (a == 2) {
-     document.getElementById("changethistext").innerHTML = "You cannot post these kind of files!"
-     MicroModal.show('image_success_modal');
-   }
-
-   ///// get the file in the input form everytime we set it
-   var files;
-   $('input[type=file]').on('change', store_file);
-   function store_file(e){
-     files = e.target.files;
-   };
-   ////
-   function post_image_ajax() {
-     var xhttp = new XMLHttpRequest();
-     xhttp.onreadystatechange = function() {
-       if (this.readyState == 4 && this.status == 200) {
-          document.getElementById("feed").innerHTML+= this.responseText;
-       }
-     }
-     xhttp.open("POST", "/post_image");
-
-     var image_desc = document.getElementById("image_desc").value
-
-     xhttp.setRequestHeader("Content-Type", "application/w-xxx-form-urlencoded")
-     xhttp.setRequestHeader("enctype" , "multipart/form-data")
-
-     data = new FormData()
-     data.append('imagio', image_desc)
-     data.append('data_filez', files[0]);
-     for (var pair of data.entries()) {
-       console.log(pair[0]+ ', ' + pair[1]);
-     }
-
-     xhttp.send(data);
-   }
-
-   function like_post(postid){
-
-    //Validate if user already liked the post 
-    var xhttp = new XMLHttpRequest();
-     xhttp.onreadystatechange = function() {
-       if (this.readyState == 4 && this.status == 200) {
-         document.getElementById(postid.toString()).innerText = "+"+likeCount;
-       }
-     }
-     xhttp.open("POST", "/post_likes");
-
-    var likeCount= document.getElementById(postid.toString()).innerText;
-    likeCount= parseInt(likeCount.substring(1, likeCount.length));
-    likeCount++;
-
-     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-     xhttp.send(JSON.stringify({ "likes": likeCount, "zpostid": postid }));
-
-   }
-
-   function likario(postid){
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-       if (this.readyState == 4 && this.status == 200) {
-         var result = this.response;
-         console.log(result);
-         if(result == "true")
-         {
-           like_post(postid)
-           document.getElementById("post_"+postid).className = "like_button_liked"
-         }
-         
-       }
-     }
-    xhttp.open("POST", "/like_once");
-    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhttp.send(JSON.stringify({ "zpostid": postid }));
-
-   }
-
-   function commentario(postid) {
-     console.log(postid)
-     var xhttp = new XMLHttpRequest();
-     xhttp.onreadystatechange = function() {
-       if (this.readyState == 4 && this.status == 200) {
-          document.getElementById("indacomments").innerHTML = this.responseText;
-       }
-     }
-     xhttp.open("POST", "/fetch_comments");
-
-     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-     xhttp.send(JSON.stringify({ "zpostid": postid }));
-   }
-
-   function logout() {
-     window.location.href="/logout"
-   }
-
-   function send_comment(postid) {
-     console.log(postid)
-     var xhttp = new XMLHttpRequest();
-     xhttp.onreadystatechange = function() {
-       if (this.readyState == 4 && this.status == 200) {
-          //document.getElementById("select_a_post").innerHTML = this.responseText;
-          commentario(postid)
-       }
-     }
-     xhttp.open("POST", "/send_comment");
-
-     var comment = document.getElementById("comment_input").value
-
-     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-     xhttp.send(JSON.stringify({ "zpostid": postid,  "comment" : comment}));
-   }
-
-   function logout() {
-     window.location.href="/logout"
-   }
-   </script>
-
-
-</body>
-
+			function logout() {
+				window.location.href = "/logout";
+			}
+		</script>
+	</body>
 </html>

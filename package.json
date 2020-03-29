@@ -48,5 +48,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://us-central1-socialplatform-801be.cloudfunctions.net/api"
+  "proxy": "https://us-central1-socialplatform-801be.cloudfunctions.net/api",
+  "devDependencies": {
+    "eslint": "^6.8.0"
+  }
 }
