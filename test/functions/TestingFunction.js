@@ -184,8 +184,19 @@ function like_feature() {
     }
   }
 
+  function likeOnce (req,res,next){
+    if (req.session && req.session.email) {
+      return next(true);
+    } else {
+      return next(false);
+    }
+
+  }
+  
+
   return {
-    likePicture
+    likePicture,
+    likeOnce
   };
 }
 
@@ -202,12 +213,35 @@ function general_feature() {
     return res.sendFile("/client/dashboard.html");
   }
 
+  //Giving/initializing values for test
+  numbaya = 2;
+  result = [
+    {whoLiked:1, userid:1,email:"some@email.com",description:"desc",filename:"file"},
+    {whoLiked:2,id:7,likeCount:3}];
+  used_id = 1;
   function fetchFeed(req, res, next) {
+
     if (req.session && req.session.email) {
+
+      for (var i = 0; i < numbaya; i++) {
+        var html_post = "<div class='post'><div class='post_description'><span style='font-weight:bold;margin-right:20px;'><a href='/user?uid=" + result[i].userid + "'>" + result[i].email + "</a></span>" + result[i].description + "</div><div class='image_container'><img style='max-height:400px;' src='/uploads/" + result[i].filename + "'/></div>"
+
+        if(result[i].whoLiked != used_id)
+        {
+          html_post += "<div class='buttons_containah'><div id='post_"+result[i].id+"' class='like_button' onclick='likario(" + result[i].id + ")'></div><div id='"+result[i].id+"'class='likes'>+"+result[i].likeCount+"</div><div class='commentario' onclick='commentario(" + result[i].id + ")'></div></div></div>"
+        }
+        else
+        {
+          html_post += "<div class='buttons_containah'><div id='post_"+result[i].id+"' class='like_button_liked' onclick='likario(" + result[i].id + ")'></div><div id='"+result[i].id+"'class='likes'>+"+result[i].likeCount+"</div><div class='commentario' onclick='commentario(" + result[i].id + ")'></div></div></div>"
+        }
+      }
+
+
       return "User : " + req.session.email + " is fetching the feed!";
     } else {
       res.send("Error :( log back again");
     }
+  
   }
 
   function loadProfilePage(req, res, next) {
