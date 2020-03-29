@@ -10,11 +10,11 @@
  * How it works : start by running a standard server and connect to DB
  */
 
-//dependencies
-const express = require("express"); //express minimal JS framework
-const http = require("http"); //for http server...
-const mysql = require("mysql"); //db for historical data
-const session = require("express-session"); //for sessions
+// dependencies
+const express = require("express"); // express minimal JS framework
+const http = require("http"); // for http server...
+const mysql = require("mysql"); // db for historical data
+const session = require("express-session"); // for sessions
 const account = require("./account");
 const comment = require("./comments");
 const follow = require("./follow");
@@ -29,7 +29,7 @@ async function initialize_server(con) {
 		var server_instance = http.createServer(app);
 		server_instance.listen(8080);
 		console.log("Listening on 127.0.0.1:8080");
-		//create sessions
+		// create sessions
 		app.use(
 			session({
 				secret: "trytocrackthis",
@@ -37,36 +37,36 @@ async function initialize_server(con) {
 				saveUninitialized: false
 			})
 		);
-		//parse json
+		// parse json
 		app.use(express.json());
-		//Account feature
+		// Account feature
 		account.login(router, con);
 		account.logout(router);
 		account.register(router, con);
-		//Comments feature
+		// Comments feature
 		comment.fetchComments(router, con);
 		comment.sendComments(router, con);
-		//Follow Feature
+		// Follow Feature
 		follow.unfollowUser(router, con);
 		follow.followUser(router, con);
-		//General features
+		// General features
 		general.loadDashboard(router);
 		general.loadProfile(router);
 		general.openDashboard(router);
 		general.fetchFeed(router, con);
 		general.fetchGallery(router, con);
 		general.fetchUsers(router, con);
-		//Picture Features
+		// Picture Features
 		picture.postPicture(router, con);
 		picture.likePicture(router, con);
-		//add the router to the express app
+		// add the router to the express app
 		app.use("/", router);
-		//add to the app the route to all static files (csv data, images, etc)
+		// add to the app the route to all static files (csv data, images, etc)
 		app.use(express.static(__dirname + "/"));
 		app.use(express.static(__dirname + "/client/"));
 		app.use(express.static(__dirname + "/client/assets/"));
 		console.log("Server ready and running.");
-		//return the promise of having a server instance
+		// return the promise of having a server instance
 		return server_instance;
 	} catch (err) {
 		console.log(err);
@@ -74,7 +74,7 @@ async function initialize_server(con) {
 }
 
 async function initDB() {
-	let con = mysql.createConnection({
+	const con = mysql.createConnection({
 		host: "localhost",
 		user: "root",
 		password: "", // corresponding password
@@ -88,7 +88,7 @@ async function initDB() {
 	return con;
 }
 
-//initialize server
+// initialize server
 initDB().then((con_instance) => {
 	initialize_server(con_instance);
 });

@@ -15,6 +15,13 @@
     },
     "rules": {
         "quotes": ["warn", "double"],
-        "no-console": "error"
+        "no-console": "warn",
+        "no-extra-parens": "error",
+        "default-param-last": "error",
+        "no-invalid-this": "error",
+        "no-labels": "error",
+        "no-undefined": "error",
+        "spaced-comment": "error",
+        "prefer-const": "error"
     }
 }
