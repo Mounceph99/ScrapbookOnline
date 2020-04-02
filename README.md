@@ -1,4 +1,4 @@
-# soen341_project
+# ScrapBook Online
 
 ## To Set Up Project
 
