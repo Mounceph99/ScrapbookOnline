@@ -11,6 +11,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<script src="/js/thirdparty/micromodal.min.js"></script>
 		<script src="/js/thirdparty/masonry.min.js"></script>
+		
 	</head>
 	<body>
 		<div id="mcontainer">
@@ -20,6 +21,7 @@
 						<div class="inda_inner_cont">
 							<div id="logo_top_small"></div>
 							<div id="menu_item_1" class="mitem" onclick="window.location.href='/dashboard'"></div>
+							<div id="menu_item_dark" class="mitem"></div>
 							<div id="menu_item_4" class="mitem" onclick="logout()"></div>
 						</div>
 					</div>
@@ -40,6 +42,7 @@
 				</div>
 			</div>
 		</div>
+		<script type="text/javascript" src="sessionvars.js"></script>
 		<script>
 			var url = new URL(window.location.href);
 			var uid_ = url.searchParams.get("uid");

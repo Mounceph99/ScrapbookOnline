@@ -9,9 +9,6 @@ html {
   width: 100%;
 }
 
-.dark_mode{
-  background: url("../assets/bg_dark.jpg") no-repeat center center fixed;
-}
 
 body {
   background: transparent;
@@ -21,6 +18,11 @@ body {
 
   margin: 0px;
 }
+
+body.dark{
+  background: url("../assets/bg_dark.jpg") no-repeat center center fixed;
+}
+
 
 body,
 input,
@@ -241,13 +243,17 @@ button {
 }
 
 .inda_inner_cont {
-  background: #c4cd7061;
+  background: #7a804661;
   height: 91%;
   margin: 10px;
   border-radius: 10px;
   box-shadow: 1px 1px 14px 1px black;
   overflow-y: scroll;
 }
+
+
+
+
 
 .inda_inner_cont::-webkit-scrollbar {
   display: none;
@@ -282,6 +288,10 @@ button {
   margin: 0 auto;
   margin-top: 20px;
   margin-bottom: 30px;
+}
+
+#logo_top_small.dark {
+  background-image: url("../assets/logosmall_dark.png"); 
 }
 
 .mitem {
@@ -495,18 +505,29 @@ button {
   box-shadow: 1px 1px 10px 1px #060606;
 }
 
-.post.dark {
-  background:rgba(151, 151, 151, 0.1); 
+.inda_inner_cont.dark .post { 
+  background:rgba(136, 136, 136, 0.267); 
   padding: 20px;
   margin-top: 30px;
   margin-bottom: 70px;
   box-shadow: 1px 1px 10px 1px #060606;
+} 
+
+.inda_inner_cont.dark .post .post_description span a {
+  color: white;
+}
+
+.inda_inner_cont.dark .post .post_description {
+  color: white;
 }
 
 .post_description {
   line-height: 1.5;
   margin-bottom: 15px;
+  
 }
+
+
 
 .image_container {
   max-height: 400px;
