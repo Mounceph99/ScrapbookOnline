@@ -72,31 +72,8 @@
 				</div>
 			</div>
 		</div>
+		<script type="text/javascript" src="sessionvars.js"></script>
 		<script>
-			var dark_mode = false;
-			document.getElementById("menu_item_dark").addEventListener(
-				"click",
-				function() {
-					if (dark_mode == false) {
-						document.body.classList.toggle("dark_mode");
-						$("#menu_item_1").addClass("dark");
-						$("#menu_item_2").addClass("dark");
-						$("#menu_item_4").addClass("dark");
-						$("#menu_item_dark").addClass("dark");
-						$(".post").addClass("dark");
-						dark_mode = true;
-					} else {
-						document.body.classList.toggle("dark_mode");
-						$("#menu_item_1").removeClass("dark");
-						$("#menu_item_2").removeClass("dark");
-						$("#menu_item_4").removeClass("dark");
-						$("#menu_item_dark").removeClass("dark");
-						$(".post").removeClass("dark");
-						dark_mode = false;
-					}
-				},
-				false
-			);
 
 			MicroModal.init({
 				disableScroll: true, // [5]
@@ -109,9 +86,10 @@
       var how_much_u_need = 0;
       
       document.onload = fetch_feed();
-      
+	  
+	  
 			function fetch_feed() {
-				console.log("Fetching images.");
+				console.log("Fetching images."); 
 				var xhttp = new XMLHttpRequest();
 				xhttp.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
@@ -142,7 +120,7 @@
 				files = e.target.files;
 			}
 			
-			function post_image_ajax() {
+			function post_image_ajax() { 
 				var xhttp = new XMLHttpRequest();
 				xhttp.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
@@ -224,6 +202,7 @@
 			}
 
 			function logout() {
+				sessionStorage.clear();
 				window.location.href = "/logout";
 			}
 		</script>
