@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>SOEN341_dashboard</title>
+		<meta name="description" content="SOEN341_user" />
+		<meta name="author" content="SOEN341_Group" />
+		<link rel="stylesheet" href="/css/style.css" />
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="/js/thirdparty/micromodal.min.js"></script>
+		<script src="/js/thirdparty/masonry.min.js"></script>
+		
+	</head>
+	<body>
+		<div id="mcontainer">
+			<div class="row">
+				<div id="left_menu" class="column">
+					<div class="inner_cont">
+						<div class="inda_inner_cont">
+							<div id="logo_top_small"></div>
+							<div id="menu_item_1" class="mitem" onclick="window.location.href='/dashboard'"></div>
+							<div id="menu_item_dark" class="mitem"></div>
+							<div id="menu_item_4" class="mitem" onclick="logout()"></div>
+						</div>
+					</div>
+				</div>
+				<div id="user_col" class="column">
+					<div class="inner_cont">
+						<div class="inda_inner_cont" id="indauser">
+							<!-- DEFAULT CONTENT HERE ... spinner... -->
+						</div>
+					</div>
+				</div>
+				<div id="gallery_col" class="column">
+					<div class="inner_cont">
+						<div class="inda_inner_cont" id="indagallery">
+							<div class="grid"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="sessionvars.js"></script>
+		<script>
+			var url = new URL(window.location.href);
+			var uid_ = url.searchParams.get("uid");
+
+			document.onload = fetch_gallery(uid_);
+			document.onload = fetch_user(uid_);
+
+			function fetch_gallery(uid) {
+				console.log("fetching gallery");
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						//response success
+						document.getElementById("indagallery").innerHTML = this.responseText;
+						$(".grid").masonry({
+							itemSelector: ".grid-item",
+							// use element for option
+							columnWidth: ".grid-sizer",
+							percentPosition: true,
+							originLeft: true
+						});
+					} else if (this.readyState == 4 && this.status == 504) {
+						//TODO timeout
+					}
+				};
+				xhttp.open("POST", "/fetch_gallery");
+				//send post parameter
+				xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+				xhttp.send(JSON.stringify({ uid: uid }));
+			}
+
+			function fetch_user(uid) {
+				console.log("fetching user");
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						//response success
+						document.getElementById("indauser").innerHTML = this.responseText;
+					} else if (this.readyState == 4 && this.status == 504) {
+						//TODO timeout
+					}
+				};
+				xhttp.open("POST", "/fetch_user");
+				//send post parameter
+				xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+				xhttp.send(JSON.stringify({ uid: uid }));
+			}
+
+			function fetch_user(uid) {
+				console.log("fetching user");
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						//response success
+						document.getElementById("indauser").innerHTML = this.responseText;
+					} else if (this.readyState == 4 && this.status == 504) {
+						//TODO timeout
+					}
+				};
+				xhttp.open("POST", "/fetch_user");
+				//send post parameter
+				xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+				xhttp.send(JSON.stringify({ uid: uid }));
+			}
+
+			function follow_user() {
+				console.log(uid_);
+				console.log("following user");
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						//response success
+						document.getElementById("indauser").innerHTML = this.responseText;
+					} else if (this.readyState == 4 && this.status == 504) {
+						//TODO timeout
+					}
+				};
+				xhttp.open("POST", "/follow_user");
+				//send post parameter
+				xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+				xhttp.send(JSON.stringify({ uid: uid_ }));
+			}
+
+			function unfollow_user() {
+				console.log(uid_);
+				console.log("following user");
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						//response success
+						document.getElementById("indauser").innerHTML = this.responseText;
+					} else if (this.readyState == 4 && this.status == 504) {
+						//TODO timeout
+					}
+				};
+				xhttp.open("POST", "/unfollow_user");
+				//send post parameter
+				xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+				xhttp.send(JSON.stringify({ uid: uid_ }));
+			}
+
+			function logout() {
+				window.location.href = "/logout";
+			}
+		</script>
+	</body>
+</html>
