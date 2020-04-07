@@ -125,17 +125,7 @@ Testing: Mocha
 - Show post history on user page
 
 ## Quality of code:
-Note that for a more detailed and accurate rundown of code quality, see wiki page under "Code Style Guide"
-
-Here are some rules to follow in order to make the code look good and easily maintainable.
-1. Use Camel Casing.
-2. Give appropriate descriptive name to variable. (e.g. NOT 'num1')
-3. Comment every function with pertinent description of what it does and the intent.
-4. Have adequate spacing. 
-5. Lines in editor should not exceed the width of the page (i.e. Not horizontal scrolling)
-6. Do not write deadcode; Every function written must be used and every condition must be 
-	possible to execute.
-7. Indent code appropriatly.
+Note that for more details and accurate rundown of code quality, see wiki page under "Code Style Guide"
 
 ## Objective: 
 For Sprint 1:
