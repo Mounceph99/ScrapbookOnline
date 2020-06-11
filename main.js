@@ -2,7 +2,6 @@
 
 /*
  * Title : SOEN341_scrapbook
- * Author : Iyad Al-Kassab @ UConcordia
  * Date : 25/02/2020
  * Description : Basic demo showcase where it answers to POST requests and send data
  * Installed dependencies (non standard module) : express, mysql
